@@ -68,7 +68,7 @@
 	<div class="mb-5">
 		<Button
 			text="Add Event"
-			variant="sand"
+			variant="default"
 			size="default"
 			onClick={handleAddEvent}
 			customIcon={Plus}

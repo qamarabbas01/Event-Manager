@@ -3,7 +3,7 @@
 	import ArrowDown from './icons/ArrowDown.svelte';
 
 	interface Props {
-		options: string[];
+		options: readonly string[];
 		value?: string;
 		placeholder?: string;
 		class?: string;
