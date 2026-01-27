@@ -14,7 +14,7 @@
 		emptyStateText?: string;
 		itemsCountText?: string;
 		searchableColumns?: string[];
-		filterableColumns?: { key: string; options: string[] }[];
+		filterableColumns?: { key: string; options: readonly string[] }[];
 	}
 
 	let {
@@ -25,8 +25,8 @@
 		itemsCountText = '',
 		searchableColumns = ['title'],
 		filterableColumns = [
-			{ key: 'category', options: categories },
-			{ key: 'status', options: statuses }
+			{ key: 'category', options: categories as readonly string[] },
+			{ key: 'status', options: statuses as readonly string[] }
 		]
 	}: Props = $props();
 
@@ -53,7 +53,9 @@
 			const query = searchQuery.toLowerCase();
 			result = result.filter((row) =>
 				searchableColumns.some((key) =>
-					String(row[key] || '').toLowerCase().includes(query)
+					String(row[key] || '')
+						.toLowerCase()
+						.includes(query)
 				)
 			);
 		}
@@ -74,7 +76,6 @@
 		filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 	);
 
-	// 🔥 Actions column ALWAYS LAST
 	const sortedColumns = $derived.by(() => {
 		const actions = columns.find((c) => c.key === 'actions');
 		const rest = columns.filter((c) => c.key !== 'actions');
@@ -104,13 +105,11 @@
 	}
 
 	const hasActiveFilters = $derived(
-		searchQuery.trim() !== '' ||
-			filterableColumns.some((f) => filterValues[f.key] !== 'All')
+		searchQuery.trim() !== '' || filterableColumns.some((f) => filterValues[f.key] !== 'All')
 	);
 </script>
 
 <div class="w-full">
-	<!-- HEADER -->
 	<div class="flex flex-col sm:flex-row justify-between gap-4 py-5">
 		{#if title}
 			<h2 class="text-lg font-semibold text-[#3B2617]">{title}</h2>
@@ -118,20 +117,20 @@
 
 		<div class="flex items-center gap-3">
 			<span class="text-xs text-[#ADA295]">
-				{totalItems} {itemsCountText}
+				{totalItems}
+				{itemsCountText}
 			</span>
 
-			<button on:click={toggleSearch} class="rounded-full bg-[#E8E2DB] p-2">
-				<SearchIcon class="h-5 w-5" />
+			<button onclick={toggleSearch} class="rounded-full bg-[#E8E2DB] p-2">
+				<SearchIcon class="h-5 w-5 cursor-pointer" />
 			</button>
 
-			<button on:click={toggleFilters} class="rounded-full bg-[#E8E2DB] p-2">
-				<Filter class="h-5 w-5" />
+			<button onclick={toggleFilters} class="rounded-full bg-[#E8E2DB] p-2">
+				<Filter class="h-5 w-5 cursor-pointer" />
 			</button>
 		</div>
 	</div>
 
-	<!-- SEARCH -->
 	{#if showSearch}
 		<Input
 			placeholder="Search..."
@@ -141,39 +140,27 @@
 		/>
 	{/if}
 
-	<!-- FILTERS -->
 	{#if showFilters}
 		<div class="flex flex-wrap gap-3 mb-4">
 			{#each filterableColumns as filter}
-				<SelectDropdown
-					options={filter.options}
-					bind:value={filterValues[filter.key]}
-				/>
+				<SelectDropdown options={filter.options} bind:value={filterValues[filter.key]} />
 			{/each}
 
 			{#if hasActiveFilters}
-				<button
-					on:click={clearFilters}
-					class="text-xs underline text-[#7B6242]"
-				>
+				<button onclick={clearFilters} class="text-xs underline cursor-pointer text-[#7B6242]">
 					Clear filters
 				</button>
 			{/if}
 		</div>
 	{/if}
 
-	<!-- TABLE WRAPPER -->
 	<div class="overflow-hidden rounded-3xl bg-[#59452B1A] p-[2px]">
 		<div class="rounded-3xl bg-white px-3 sm:px-6 py-2">
-
 			{#if totalItems === 0}
 				<div class="py-10 text-center text-[#BDB8B4]">
 					{emptyStateText}
 				</div>
-
 			{:else}
-
-				<!-- 📱 MOBILE -->
 				<div class="block sm:hidden">
 					{#each paginatedData as row (row.id)}
 						<div class="border-b py-4 space-y-2">
@@ -193,7 +180,6 @@
 					{/each}
 				</div>
 
-				<!-- 🖥 DESKTOP (SEMANTIC TABLE) -->
 				<div class="hidden sm:block overflow-x-auto">
 					<table class="w-full border-collapse">
 						<thead>
@@ -208,7 +194,7 @@
 
 						<tbody>
 							{#each paginatedData as row (row.id)}
-								<tr class="border-b hover:bg-gray-50">
+								<tr class="border-b border-gray-200 hover:bg-gray-50">
 									{#each sortedColumns as col}
 										<td class="px-4 py-4">
 											{#if col.render}
@@ -223,18 +209,11 @@
 						</tbody>
 					</table>
 				</div>
-
 			{/if}
 		</div>
 	</div>
 
-	<!-- PAGINATION -->
 	<div class="py-6">
-		<Pagination
-			{currentPage}
-			{totalPages}
-			onPageChange={handlePageChange}
-			width="800"
-		/>
+		<Pagination {currentPage} {totalPages} onPageChange={handlePageChange} width="800" />
 	</div>
 </div>

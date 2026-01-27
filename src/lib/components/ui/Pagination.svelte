@@ -26,7 +26,7 @@
 		scrollTarget = null,
 		scrollOffset = 20,
 		width = 'max-w-[779px]',
-		buttonBg = 'bg-sand',
+		buttonBg = 'bg-gray-300'
 	}: Props = $props();
 
 	const pageNumbers = $derived.by(() => {
@@ -75,21 +75,19 @@
 {#if totalPages > 1}
 	<div class="mx-auto flex {width} items-center justify-between gap-4">
 		<button
-			class="flex h-9 cursor-pointer items-center justify-center gap-1.25 rounded-[6.32813rem] {buttonBg} px-4 py-1.25 transition-colors hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+			class="flex h-9 cursor-pointer items-center justify-center gap-3 rounded-full {buttonBg} px-4 py-1.25 transition-colors hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
 			disabled={currentPage === 1}
 			onclick={() => goToPage(currentPage - 1)}
 		>
-			<Arrowleft size={16} class="text-bark-brown" />
-			<span class="text-[0.9375rem] leading-[150%] font-semibold text-brand-primary"
-				>{backText}</span
-			>
+			<Arrowleft size={13} class="text-gray-500 flex items-center justify-center mt-[2px]" />
+			<span class="text-[0.9375rem] leading-[150%] font-normal text-brand-primary">{backText}</span>
 		</button>
 		<div class="flex items-center gap-2">
 			{#each pageNumbers as pageNum}
 				<button
 					class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-base font-normal transition-colors {pageNum ===
 					currentPage
-						? 'bg-brand-orange text-[15px] leading-[150%] font-semibold text-brand-primary'
+						? 'bg-orange-300 text-[15px] leading-[150%] font-semibold text-brand-primary'
 						: 'bg-[#E8E2DB] text-[15px] leading-[150%] font-semibold text-[#59452B] hover:bg-brand-gray-3'}"
 					onclick={() => goToPage(pageNum)}
 				>
@@ -98,12 +96,12 @@
 			{/each}
 		</div>
 		<button
-			class="flex h-9 cursor-pointer items-center justify-center gap-1.25 rounded-[6.32813rem] {buttonBg} px-4 py-1.25 transition-colors hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+			class="flex h-9 cursor-pointer items-center justify-center gap-3 rounded-full {buttonBg} px-4 py-1.25 transition-colors hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
 			disabled={currentPage === totalPages}
 			onclick={() => goToPage(currentPage + 1)}
 		>
-			<span class="text-[0.9375rem] leading-[150%] font-semibold text-bark-brown">{nextText}</span>
-			<RightArrow size={16} class="text-bark-brown" />
+			<span class="text-[0.9375rem] leading-[150%] font-normal text-bark-brown">{nextText}</span>
+			<RightArrow size={13} class="text-bark-brown flex items-center justify-center mt-[2px]" />
 		</button>
 	</div>
 {/if}

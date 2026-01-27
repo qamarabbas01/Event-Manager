@@ -1,5 +1,8 @@
 export type Category = 'Work' | 'Business' | 'Personal';
+
 export type Status = 'Active' | 'Pending' | 'Completed';
+
+export type TableAction = 'edit' | 'delete';
 
 export interface Event {
 	id: number;
@@ -19,6 +22,86 @@ export interface DashboardTableColumn {
 	key: string;
 	class?: string;
 	render?: (row: DashboardTableRow) => string;
+}
+
+export const categories = ['All', 'Work', 'Business', 'Personal'] as const;
+
+export const statuses = ['All', 'Active', 'Pending', 'Completed'] as const;
+
+const ACTION_ATTRIBUTES = {
+	ACTION: 'data-action',
+	EVENT_ID: 'data-event-id'
+} as const;
+
+const ICON_SIZE = 18;
+
+function createEditIcon(): string {
+	return `<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="${ICON_SIZE}"
+		height="${ICON_SIZE}"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="black"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		class="text-black"
+	>
+		<path d="M12 20h9" />
+		<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+	</svg>`;
+}
+
+function createDeleteIcon(): string {
+	return `<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="${ICON_SIZE}"
+		height="${ICON_SIZE}"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="red"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		class="text-red-500"
+	>
+		<polyline points="3 6 5 6 21 6" />
+		<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+		<path d="M10 11v6" />
+		<path d="M14 11v6" />
+		<path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+	</svg>`;
+}
+
+function createActionButton(
+	action: TableAction,
+	eventId: number,
+	icon: string
+): string {
+	return `<button
+		class="text-white rounded text-xs cursor-pointer"
+		${ACTION_ATTRIBUTES.ACTION}="${action}"
+		${ACTION_ATTRIBUTES.EVENT_ID}="${eventId}"
+		aria-label="${action} event ${eventId}"
+	>
+		${icon}
+	</button>`;
+}
+
+function renderActionsColumn(row: DashboardTableRow): string {
+	const eventId = Number(row.id);
+	if (isNaN(eventId)) {
+		return '';
+	}
+
+	const editButton = createActionButton('edit', eventId, createEditIcon());
+	const deleteButton = createActionButton('delete', eventId, createDeleteIcon());
+
+	return `<div class="flex gap-3 flex-col md:flex-row" ${ACTION_ATTRIBUTES.EVENT_ID}="${eventId}">
+		${editButton}
+		${deleteButton}
+	</div>`;
 }
 
 export const initialEvents: Event[] = [
@@ -46,10 +129,6 @@ export const initialEvents: Event[] = [
 	{ id: 22, title: 'Retrospective', date: '2026-03-20', category: 'Work', status: 'Completed' }
 ];
 
-export const categories = ['All', 'Work', 'Business', 'Personal'];
-export const statuses = ['All', 'Active', 'Pending', 'Completed'];
-
-
 export const tableColumns: DashboardTableColumn[] = [
 	{ label: 'Title', key: 'title' },
 	{ label: 'Date', key: 'date' },
@@ -58,26 +137,6 @@ export const tableColumns: DashboardTableColumn[] = [
 	{
 		label: 'Actions',
 		key: 'actions',
-		render: (row) => {
-			const eventId = row.id as number;
-			return `
-				<div class="flex gap-2 flex-col md:flex-row" data-event-id="${eventId}">
-					<button
-						class="bg-gray-800 text-white border-none px-3 py-1.5 rounded text-xs cursor-pointer hover:bg-gray-600 w-full md:w-auto action-edit"
-						data-action="edit"
-						data-event-id="${eventId}"
-					>
-						Edit
-					</button>
-					<button
-						class="bg-gray-800 text-white border-none px-3 py-1.5 rounded text-xs cursor-pointer hover:bg-gray-600 w-full md:w-auto action-delete"
-						data-action="delete"
-						data-event-id="${eventId}"
-					>
-						Delete
-					</button>
-				</div>
-			`;
-		}
+		render: renderActionsColumn
 	}
 ];
