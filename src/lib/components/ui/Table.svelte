@@ -121,11 +121,11 @@
 				{itemsCountText}
 			</span>
 
-			<button onclick={toggleSearch} class="rounded-full bg-[#E8E2DB] p-2">
+			<button onclick={toggleSearch} class="rounded-full border border-gray-200 hover:border-gray-300 p-2">
 				<SearchIcon class="h-5 w-5 cursor-pointer" />
 			</button>
 
-			<button onclick={toggleFilters} class="rounded-full bg-[#E8E2DB] p-2">
+			<button onclick={toggleFilters} class="rounded-full border border-gray-200 hover:border-gray-300 p-2">
 				<Filter class="h-5 w-5 cursor-pointer" />
 			</button>
 		</div>
@@ -136,7 +136,7 @@
 			placeholder="Search..."
 			bind:value={searchQuery}
 			leftIcon={SearchIcon}
-			class="max-w-md mb-4"
+			class="max-w-lg mb-4"
 		/>
 	{/if}
 
@@ -185,7 +185,7 @@
 						<thead>
 							<tr class="h-16 text-left">
 								{#each sortedColumns as col}
-									<th class="px-4 text-xs text-[#7B6242]">
+									<th class="px-4 text-sm font-medium border-b border-gray-200 text-[#7B6242]">
 										{col.label}
 									</th>
 								{/each}

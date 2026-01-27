@@ -26,7 +26,7 @@
 		scrollTarget = null,
 		scrollOffset = 20,
 		width = 'max-w-[779px]',
-		buttonBg = 'bg-gray-300'
+		buttonBg = 'bg-[#E8E2DB]'
 	}: Props = $props();
 
 	const pageNumbers = $derived.by(() => {
@@ -79,8 +79,8 @@
 			disabled={currentPage === 1}
 			onclick={() => goToPage(currentPage - 1)}
 		>
-			<Arrowleft size={13} class="text-gray-500 flex items-center justify-center mt-[2px]" />
-			<span class="text-[0.9375rem] leading-[150%] font-normal text-brand-primary">{backText}</span>
+			<Arrowleft size={13} class="text-[#59452B] flex items-center justify-center mt-[2px]" />
+			<span class="text-[0.9375rem] leading-[150%] font-semibold text-[#59452B]">{backText}</span>
 		</button>
 		<div class="flex items-center gap-2">
 			{#each pageNumbers as pageNum}
@@ -100,8 +100,8 @@
 			disabled={currentPage === totalPages}
 			onclick={() => goToPage(currentPage + 1)}
 		>
-			<span class="text-[0.9375rem] leading-[150%] font-normal text-bark-brown">{nextText}</span>
-			<RightArrow size={13} class="text-bark-brown flex items-center justify-center mt-[2px]" />
+			<span class="text-[0.9375rem] leading-[150%] font-semibold text-[#59452B]">{nextText}</span>
+			<RightArrow size={13} class="text-[#59452B] flex items-center justify-center mt-[2px]" />
 		</button>
 	</div>
 {/if}

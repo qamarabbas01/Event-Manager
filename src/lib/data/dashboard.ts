@@ -126,7 +126,13 @@ export const initialEvents: Event[] = [
 	{ id: 19, title: 'Sprint Demo', date: '2026-03-12', category: 'Work', status: 'Pending' },
 	{ id: 20, title: 'Anniversary', date: '2026-03-15', category: 'Personal', status: 'Active' },
 	{ id: 21, title: 'Board Meeting', date: '2026-03-17', category: 'Business', status: 'Active' },
-	{ id: 22, title: 'Retrospective', date: '2026-03-20', category: 'Work', status: 'Completed' }
+	{ id: 22, title: 'Code Review', date: '2026-03-19', category: 'Work', status: 'Pending' },
+	{ id: 23, title: 'Investor Call', date: '2026-03-21', category: 'Business', status: 'Active' },
+	{ id: 24, title: 'Vacation', date: '2026-03-24', category: 'Personal', status: 'Completed' },
+	{ id: 25, title: 'Release Planning', date: '2026-03-28', category: 'Work', status: 'Pending' },
+	{ id: 26, title: 'Medical Checkup', date: '2026-03-31', category: 'Personal', status: 'Active' },
+	{ id: 27, title: 'Sales Demo', date: '2026-04-02', category: 'Business', status: 'Completed' },
+	{ id: 28, title: 'Town Hall', date: '2026-04-05', category: 'Work', status: 'Active' }
 ];
 
 export const tableColumns: DashboardTableColumn[] = [
