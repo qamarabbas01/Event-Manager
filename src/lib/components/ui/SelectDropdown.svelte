@@ -56,7 +56,7 @@
 		}))
 	);
 
-	const displayValue = $derived(value || placeholder);
+	const displayValue = $derived(value && value !== 'All' ? value : placeholder);
 </script>
 
 <div class="relative">

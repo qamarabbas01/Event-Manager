@@ -1,0 +1,222 @@
+<script lang="ts">
+	import Button from '$lib/components/ui/Button.svelte';
+	import Plus from '$lib/components/ui/icons/Plus.svelte';
+	import Table from '$lib/components/ui/Table.svelte';
+	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
+	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
+	import PauseCircle from '$lib/components/ui/icons/PauseCircle.svelte';
+	import {
+		initialEvents,
+		tableColumns,
+		type Event,
+		type DashboardTableRow,
+		type Status
+	} from '$lib/data/dashboard';
+
+	let events = $state<Event[]>([...initialEvents]);
+
+	function handleAddEvent() {
+		console.log('Add event clicked');
+	}
+
+	function handleEdit(id: number) {
+		console.log('Edit event:', id);
+	}
+
+	function handleDelete(id: number) {
+		events = events.filter((e) => e.id !== id);
+	}
+
+	const tableData: DashboardTableRow[] = $derived(
+		events.map((event) => ({
+			id: event.id,
+			title: event.title,
+			date: event.date,
+			category: event.category,
+			status: event.status,
+			actions: ''
+		}))
+	);
+
+	// Calculate statistics
+	const totalEvents = $derived(events.length);
+	const activeEvents = $derived(events.filter((e) => e.status === 'Active').length);
+	const pendingEvents = $derived(events.filter((e) => e.status === 'Pending').length);
+	const completedEvents = $derived(events.filter((e) => e.status === 'Completed').length);
+
+	// Get upcoming events (next 5)
+	const upcomingEvents = $derived(
+		[...events]
+			.filter((e) => e.status === 'Active' || e.status === 'Pending')
+			.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+			.slice(0, 5)
+	);
+
+	$effect(() => {
+		function handleTableAction(e: MouseEvent) {
+			const target = e.target as HTMLElement;
+			const button = target.closest('button[data-action]') as HTMLButtonElement;
+			if (!button) return;
+
+			const action = button.getAttribute('data-action');
+			const eventIdStr = button.getAttribute('data-event-id');
+			if (!action || !eventIdStr) return;
+
+			const eventId = parseInt(eventIdStr, 10);
+			if (isNaN(eventId)) return;
+
+			e.stopPropagation();
+			e.preventDefault();
+
+			if (action === 'edit') {
+				handleEdit(eventId);
+			} else if (action === 'delete') {
+				handleDelete(eventId);
+			}
+		}
+
+		document.addEventListener('click', handleTableAction as EventListener);
+		return () => {
+			document.removeEventListener('click', handleTableAction as EventListener);
+		};
+	});
+
+	function formatDate(dateString: string): string {
+		const date = new Date(dateString);
+		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+	}
+
+	function getStatusColor(status: Status): string {
+		switch (status) {
+			case 'Active':
+				return 'bg-green-100 text-green-800';
+			case 'Pending':
+				return 'bg-yellow-100 text-yellow-800';
+			case 'Completed':
+				return 'bg-blue-100 text-blue-800';
+			default:
+				return 'bg-gray-100 text-gray-800';
+		}
+	}
+</script>
+
+<div class="bg-gray-50 min-h-screen p-4 md:p-6">
+	<div class="max-w-[1400px] mx-auto space-y-6">
+		<!-- Header -->
+		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+			<div>
+				<h1 class="text-3xl font-bold text-[#59452B]">Dashboard</h1>
+				<p class="text-[#7B6242] mt-1">Overview of your events and activities</p>
+			</div>
+			<Button
+				text="Add Event"
+				variant="default"
+				size="default"
+				onClick={handleAddEvent}
+				customIcon={Plus}
+			/>
+		</div>
+
+		<!-- Stats Cards -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+			<!-- Total Events -->
+			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-[#ADA295] mb-1">Total Events</p>
+						<p class="text-3xl font-bold text-[#59452B]">{totalEvents}</p>
+					</div>
+					<div class="p-3 bg-[#59452B1A] rounded-full">
+						<CalendarIcon size={24} class="text-[#59452B]" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Active Events -->
+			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-[#ADA295] mb-1">Active</p>
+						<p class="text-3xl font-bold text-green-600">{activeEvents}</p>
+					</div>
+					<div class="p-3 bg-green-100 rounded-full">
+						<CheckFilled size={24} class="text-green-600" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Pending Events -->
+			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-[#ADA295] mb-1">Pending</p>
+						<p class="text-3xl font-bold text-yellow-600">{pendingEvents}</p>
+					</div>
+					<div class="p-3 bg-yellow-100 rounded-full">
+						<PauseCircle size={24} class="text-yellow-600" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Completed Events -->
+			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-[#ADA295] mb-1">Completed</p>
+						<p class="text-3xl font-bold text-blue-600">{completedEvents}</p>
+					</div>
+					<div class="p-3 bg-blue-100 rounded-full">
+						<CheckFilled size={24} class="text-blue-600" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Content Grid -->
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+			<!-- Events Table - Takes 2 columns on large screens -->
+			<div class="lg:col-span-2">
+				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+					<h2 class="text-xl font-semibold text-[#59452B] mb-4">All Events</h2>
+					<Table
+						data={tableData}
+						columns={tableColumns}
+						emptyStateText="No events found"
+						itemsCountText="events"
+					/>
+				</div>
+			</div>
+
+			<!-- Upcoming Events Sidebar -->
+			<div class="lg:col-span-1">
+				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+					<h2 class="text-xl font-semibold text-[#59452B] mb-4">Upcoming Events</h2>
+					{#if upcomingEvents.length === 0}
+						<p class="text-[#ADA295] text-sm">No upcoming events</p>
+					{:else}
+						<div class="space-y-3">
+							{#each upcomingEvents as event}
+								<div class="p-4 rounded-lg border border-gray-200 hover:border-[#59452B] transition-colors">
+									<div class="flex items-start justify-between gap-2">
+										<div class="flex-1 min-w-0">
+											<h3 class="font-medium text-[#59452B] truncate">{event.title}</h3>
+											<p class="text-sm text-[#7B6242] mt-1">{formatDate(event.date)}</p>
+											<div class="flex items-center gap-2 mt-2">
+												<span
+													class="text-xs px-2 py-1 rounded-full {getStatusColor(event.status)}"
+												>
+													{event.status}
+												</span>
+												<span class="text-xs text-[#ADA295]">{event.category}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							{/each}
+						</div>
+					{/if}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
