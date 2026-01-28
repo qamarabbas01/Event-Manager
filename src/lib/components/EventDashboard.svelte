@@ -64,7 +64,7 @@
 	});
 </script>
 
-<div class="bg-white min-h-screen p-3 md:p-5 max-w-[1200px] mx-auto">
+<div class="bg-white min-h-screen p-3 md:p-5 max-w-full mx-auto md:mx-0">
 	<div class="mb-5">
 		<Button
 			text="Add Event"

@@ -14,7 +14,7 @@
 		emptyStateText?: string;
 		itemsCountText?: string;
 		searchableColumns?: string[];
-		filterableColumns?: { key: string; options: readonly string[] }[];
+		filterableColumns?: { key: string; options: readonly string[]; label: string }[];
 	}
 
 	let {
@@ -25,8 +25,8 @@
 		itemsCountText = '',
 		searchableColumns = ['title'],
 		filterableColumns = [
-			{ key: 'category', options: categories as readonly string[] },
-			{ key: 'status', options: statuses as readonly string[] }
+			{ key: 'category', options: categories as readonly string[], label: 'Category' },
+			{ key: 'status', options: statuses as readonly string[], label: 'Status' }
 		]
 	}: Props = $props();
 
@@ -121,11 +121,17 @@
 				{itemsCountText}
 			</span>
 
-			<button onclick={toggleSearch} class="rounded-full border border-gray-200 hover:border-gray-300 p-2">
+			<button
+				onclick={toggleSearch}
+				class="rounded-full border border-gray-200 cursor-pointer hover:border-gray-300 p-2"
+			>
 				<SearchIcon class="h-5 w-5 cursor-pointer" />
 			</button>
 
-			<button onclick={toggleFilters} class="rounded-full border border-gray-200 hover:border-gray-300 p-2">
+			<button
+				onclick={toggleFilters}
+				class="rounded-full border border-gray-200 cursor-pointer hover:border-gray-300 p-2"
+			>
 				<Filter class="h-5 w-5 cursor-pointer" />
 			</button>
 		</div>
@@ -143,7 +149,11 @@
 	{#if showFilters}
 		<div class="flex flex-wrap gap-3 mb-4">
 			{#each filterableColumns as filter}
-				<SelectDropdown options={filter.options} bind:value={filterValues[filter.key]} />
+				<SelectDropdown
+					options={filter.options}
+					bind:value={filterValues[filter.key]}
+					placeholder={`All ${filter.label}`}
+				/>
 			{/each}
 
 			{#if hasActiveFilters}
@@ -154,7 +164,7 @@
 		</div>
 	{/if}
 
-	<div class="overflow-hidden rounded-3xl bg-[#59452B1A] p-[2px]">
+	<div class="overflow-hidden rounded-3xl bg-[#59452B1A] p-px">
 		<div class="rounded-3xl bg-white px-3 sm:px-6 py-2">
 			{#if totalItems === 0}
 				<div class="py-10 text-center text-[#BDB8B4]">
