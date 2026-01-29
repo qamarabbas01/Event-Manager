@@ -2,6 +2,7 @@
 	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {
+		id?: string;
 		icons?: boolean;
 		leftIcon?: IconComponent;
 		placeholder?: string;
@@ -13,6 +14,7 @@
 	}
 
 	let {
+		id,
 		icons,
 		leftIcon,
 		placeholder = '',
@@ -28,13 +30,14 @@
 <div class="relative inline-flex items-center w-full">
 	{#if showIcons && leftIcon}
 		{#key leftIcon}
-			<div class="absolute left-3 pointer-events-none z-10 flex items-center mt-[-18px]">
+			<div class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10 flex items-center justify-center">
 				<!-- svelte-ignore svelte_component_deprecated -->
-				<svelte:component this={leftIcon} size={iconSize} class="text-gray-400" />
+				<svelte:component this={leftIcon} size={iconSize} class="text-gray-400 shrink-0" />
 			</div>
 		{/key}
 	{/if}
 	<input
+		{id}
 		{type}
 		bind:value
 		{placeholder}
