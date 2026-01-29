@@ -5,6 +5,8 @@
 	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
 	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
 	import PauseCircle from '$lib/components/ui/icons/PauseCircle.svelte';
+	import AddEventModal from '$lib/components/dashboard/AddEventModal.svelte';
+	import StatCard from '$lib/components/dashboard/StatCard.svelte';
 	import {
 		initialEvents,
 		tableColumns,
@@ -19,13 +21,61 @@
 	} from '$lib/data/dashboard';
 
 	let events = $state<Event[]>([...initialEvents]);
+	let addEventModalOpen = $state(false);
+	let eventToEdit = $state<Event | null>(null);
 
 	function handleAddEvent() {
-		console.log('Add event clicked');
+		eventToEdit = null;
+		addEventModalOpen = true;
+	}
+
+	function handleAddEventSubmit(payload: {
+		title: string;
+		date: string;
+		category: Event['category'];
+		status: Status;
+	}) {
+		const nextId = events.length === 0 ? 1 : Math.max(...events.map((e) => e.id), 0) + 1;
+		events = [
+			...events,
+			{
+				id: nextId,
+				title: payload.title,
+				date: payload.date,
+				category: payload.category,
+				status: payload.status
+			}
+		];
+	}
+
+	function handleEditEvent(
+		id: number,
+		payload: {
+			title: string;
+			date: string;
+			category: Event['category'];
+			status: Status;
+		}
+	) {
+		events = events.map((e) =>
+			e.id === id
+				? {
+						id: e.id,
+						title: payload.title,
+						date: payload.date,
+						category: payload.category,
+						status: payload.status
+					}
+				: e
+		);
 	}
 
 	function handleEdit(id: number) {
-		console.log('Edit event:', id);
+		const event = events.find((e) => e.id === id);
+		if (event) {
+			eventToEdit = event;
+			addEventModalOpen = true;
+		}
 	}
 
 	function handleDelete(id: number) {
@@ -120,64 +170,58 @@
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.totalEvents}</p>
-						<p class="text-3xl font-bold text-[#59452B]">{totalEvents}</p>
-					</div>
-					<div class="p-3 bg-[#59452B1A] rounded-full">
-						<CalendarIcon size={24} class="text-[#59452B]" />
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.active}</p>
-						<p class="text-3xl font-bold text-green-600">{activeEvents}</p>
-					</div>
-					<div class="p-3 bg-green-100 rounded-full">
-						<CheckFilled size={24} class="text-green-600" />
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.pending}</p>
-						<p class="text-3xl font-bold text-yellow-600">{pendingEvents}</p>
-					</div>
-					<div class="p-3 bg-yellow-100 rounded-full">
-						<PauseCircle size={24} class="text-yellow-600" />
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.completed}</p>
-						<p class="text-3xl font-bold text-blue-600">{completedEvents}</p>
-					</div>
-					<div class="p-3 bg-blue-100 rounded-full">
-						<CheckFilled size={24} class="text-blue-600" />
-					</div>
-				</div>
-			</div>
+			<StatCard
+				label={eventsStatsLabels.totalEvents}
+				value={totalEvents}
+				icon={CalendarIcon}
+				valueColor="text-[#59452B]"
+				iconBg="bg-[#59452B1A]"
+				iconColor="text-[#59452B]"
+			/>
+			<StatCard
+				label={eventsStatsLabels.active}
+				value={activeEvents}
+				icon={CheckFilled}
+				valueColor="text-green-600"
+				iconBg="bg-green-100"
+				iconColor="text-green-600"
+			/>
+			<StatCard
+				label={eventsStatsLabels.pending}
+				value={pendingEvents}
+				icon={PauseCircle}
+				valueColor="text-yellow-600"
+				iconBg="bg-yellow-100"
+				iconColor="text-yellow-600"
+			/>
+			<StatCard
+				label={eventsStatsLabels.completed}
+				value={completedEvents}
+				icon={CheckFilled}
+				valueColor="text-blue-600"
+				iconBg="bg-blue-100"
+				iconColor="text-blue-600"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 			<div class="lg:col-span-2">
 				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-					<h2 class="text-xl font-semibold text-[#59452B] mb-4">{eventsDashboardPage.allEventsTitle}</h2>
+					<div class="flex items-center justify-between mb-4">
+						<h2 class="text-xl font-semibold">
+							{eventsDashboardPage.allEventsTitle}
+						</h2>
+						<a
+							href="/events"
+							class="text-sm text-[#7B6242] hover:text-[#59452B] underline underline-offset-2 cursor-pointer"
+						>
+							View All Events
+						</a>
+					</div>
 					<Table
 						data={tableData}
 						columns={tableColumns}
 						emptyStateText={eventsDashboardPage.emptyStateText}
-						itemsCountText={eventsDashboardPage.itemsCountText}
 						searchPlaceholder={tableUi.searchPlaceholder}
 						filterableColumns={[
 							{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
@@ -190,21 +234,23 @@
 
 			<div class="lg:col-span-1">
 				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-					<h2 class="text-xl font-semibold text-[#59452B] mb-4">{eventsDashboardPage.upcomingTitle}</h2>
+					<h2 class="text-xl font-semibold mb-4">
+						{eventsDashboardPage.upcomingTitle}
+					</h2>
 					{#if upcomingEvents.length === 0}
 						<p class="text-[#ADA295] text-sm">{eventsDashboardPage.noUpcomingText}</p>
 					{:else}
 						<div class="space-y-3">
 							{#each upcomingEvents as event}
-								<div class="p-4 rounded-lg border border-gray-200 hover:border-[#59452B] transition-colors">
+								<div
+									class="p-4 rounded-lg border border-gray-200 hover:border-[#59452B] transition-colors"
+								>
 									<div class="flex items-start justify-between gap-2">
 										<div class="flex-1 min-w-0">
 											<h3 class="font-medium text-[#59452B] truncate">{event.title}</h3>
 											<p class="text-sm text-[#7B6242] mt-1">{formatDate(event.date)}</p>
 											<div class="flex items-center gap-2 mt-2">
-												<span
-													class="text-xs px-2 py-1 rounded-full {getStatusColor(event.status)}"
-												>
+												<span class="text-xs px-2 py-1 rounded-full {getStatusColor(event.status)}">
 													{event.status}
 												</span>
 												<span class="text-xs text-[#ADA295]">{event.category}</span>
@@ -219,4 +265,15 @@
 			</div>
 		</div>
 	</div>
+
+	<AddEventModal
+		bind:open={addEventModalOpen}
+		{eventToEdit}
+		onAdd={handleAddEventSubmit}
+		onEdit={handleEditEvent}
+		onClose={() => {
+			addEventModalOpen = false;
+			eventToEdit = null;
+		}}
+	/>
 </div>

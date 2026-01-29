@@ -22,6 +22,7 @@
 
 	interface Props {
 		text?: string;
+		type?: 'button' | 'submit' | 'reset';
 		variant?: ButtonVariant;
 		size?: ButtonSize;
 		state?: ButtonState;
@@ -36,7 +37,8 @@
 	}
 
 	let {
-		text = 'Button',
+		text = '',
+		type: buttonType = 'button',
 		variant = 'default',
 		size = 'default',
 		state = 'default',
@@ -197,7 +199,7 @@
 		{/if}
 	</a>
 {:else}
-	<button type="button" class={allClasses} disabled={isDisabled} onclick={onClick}>
+	<button type={buttonType} class={allClasses} disabled={isDisabled} onclick={onClick}>
 		{#if customIconPosition === 'right'}
 			<span>{text}</span>
 		{/if}

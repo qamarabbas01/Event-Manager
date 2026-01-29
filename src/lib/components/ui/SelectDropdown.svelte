@@ -57,6 +57,7 @@
 	);
 
 	const displayValue = $derived(value && value !== 'All' ? value : placeholder);
+	const isPlaceholder = $derived(!value || value === 'All');
 </script>
 
 <div class="relative">
@@ -64,17 +65,18 @@
 		bind:this={triggerRef}
 		type="button"
 		onclick={toggleDropdown}
-		class="flex items-center justify-between gap-2 border border-gray-300 px-3 py-2 rounded text-sm bg-white min-w-[120px] w-full md:w-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent hover:border-gray-400 {className}"
+		class="flex items-center justify-between gap-2 border border-gray-300 px-3 py-2 rounded text-sm bg-white min-w-[120px] w-full md:w-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent hover:border-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed {className}"
 		aria-expanded={isOpen}
-		aria-haspopup="true"
+		aria-haspopup="listbox"
+		aria-label={placeholder}
 	>
-		<span class="flex-1 text-left">{displayValue}</span>
-		<ArrowDown size={10} class="transition-transform {isOpen ? 'rotate-180' : ''}" />
+		<span class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400' : ''}">{displayValue}</span>
+		<ArrowDown size={10} class="shrink-0 ml-1 transition-transform {isOpen ? 'rotate-180' : ''}" />
 	</button>
 
 	{#if isOpen}
 		<div bind:this={dropdownRef} class="absolute top-full left-0 mt-1 z-50 w-full min-w-[120px]">
-			<div class="rounded border border-gray-400/10 bg-white shadow-lg">
+			<div class="rounded border border-gray-200 bg-white shadow-md py-1">
 				<ul class="flex flex-col gap-1 p-2" role="menu">
 					{#each dropdownItems as item, index (index)}
 						<li role="menuitem" class="list-none">
@@ -86,7 +88,7 @@
 									item.onclick?.();
 									isOpen = false;
 								}}
-								class="flex w-full items-center gap-3 text-base font-normal text-black hover:bg-gray-50 cursor-pointer py-2 px-4 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1"
+								class="flex w-full items-center gap-3 text-sm font-normal text-gray-800 hover:bg-gray-50 cursor-pointer py-2 px-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1 rounded"
 								aria-disabled={item.disabled}
 							>
 								{#if item.icon}

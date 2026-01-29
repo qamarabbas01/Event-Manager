@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SearchIcon from './icons/SearchIcon.svelte';
-	import Filter from './icons/Filter.svelte';
 	import Pagination from './Pagination.svelte';
 	import Input from './Input.svelte';
 	import SelectDropdown from './SelectDropdown.svelte';
@@ -12,40 +11,46 @@
 		columns: DashboardTableColumn[];
 		title?: string;
 		emptyStateText?: string;
-		itemsCountText?: string;
 		searchPlaceholder?: string;
 		clearFiltersText?: string;
 		searchableColumns?: string[];
 		filterableColumns?: { key: string; options: readonly string[]; label: string }[];
+		onRowClick?: (row: DashboardTableRow) => void;
 	}
 
 	let {
 		data,
 		columns,
-		title = '',
-		emptyStateText = '',
-		itemsCountText = '',
+		emptyStateText,
 		searchPlaceholder = tableUi.searchPlaceholder,
 		clearFiltersText = tableUi.clearFiltersText,
 		searchableColumns = ['title'],
 		filterableColumns = [
-			{ key: 'category', options: categories as readonly string[], label: tableUi.filterCategoryLabel },
+			{
+				key: 'category',
+				options: categories as readonly string[],
+				label: tableUi.filterCategoryLabel
+			},
 			{ key: 'status', options: statuses as readonly string[], label: tableUi.filterStatusLabel }
-		]
+		],
+		onRowClick
 	}: Props = $props();
 
 	let currentPage = $state(1);
 	const pageSize = 10;
 
-	let showSearch = $state(false);
-	let showFilters = $state(false);
 	let searchQuery = $state('');
-	let filterValues = $state<Record<string, string>>({});
+	let filterValues = $state<Record<string, string>>(
+		Object.fromEntries(
+			// svelte-ignore state_referenced_locally
+			filterableColumns.map((f) => [f.key, f.options[0] || 'All'])
+		)
+	);
 
 	$effect(() => {
 		filterableColumns.forEach((filter) => {
-			if (!filterValues[filter.key]) {
-				filterValues[filter.key] = filter.options[0] || 'All';
+			if (filterValues[filter.key] === undefined || filterValues[filter.key] === '') {
+				filterValues = { ...filterValues, [filter.key]: filter.options[0] || 'All' };
 			}
 		});
 	});
@@ -90,21 +95,12 @@
 		currentPage = page;
 	}
 
-	function toggleSearch() {
-		showSearch = !showSearch;
-		if (showSearch) showFilters = false;
-	}
-
-	function toggleFilters() {
-		showFilters = !showFilters;
-		if (showFilters) showSearch = false;
-	}
-
 	function clearFilters() {
 		searchQuery = '';
-		filterableColumns.forEach((f) => {
-			filterValues[f.key] = f.options[0] || 'All';
-		});
+		filterValues = {
+			...filterValues,
+			...Object.fromEntries(filterableColumns.map((f) => [f.key, f.options[0] || 'All']))
+		};
 		currentPage = 1;
 	}
 
@@ -114,44 +110,11 @@
 </script>
 
 <div class="w-full">
-	<div class="flex flex-col sm:flex-row justify-between gap-4 py-5">
-		{#if title}
-			<h2 class="text-lg font-semibold text-[#3B2617]">{title}</h2>
-		{/if}
-
-		<div class="flex items-center gap-3">
-			<span class="text-xs text-[#ADA295]">
-				{totalItems}
-				{itemsCountText}
-			</span>
-
-			<button
-				onclick={toggleSearch}
-				class="rounded-full border border-gray-200 cursor-pointer hover:border-gray-300 p-2"
-			>
-				<SearchIcon class="h-5 w-5 cursor-pointer" />
-			</button>
-
-			<button
-				onclick={toggleFilters}
-				class="rounded-full border border-gray-200 cursor-pointer hover:border-gray-300 p-2"
-			>
-				<Filter class="h-5 w-5 cursor-pointer" />
-			</button>
+	<div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-4">
+		<div class="flex-1 min-w-0 sm:max-w-xs">
+			<Input placeholder={searchPlaceholder} bind:value={searchQuery} leftIcon={SearchIcon} />
 		</div>
-	</div>
-
-	{#if showSearch}
-		<Input
-			placeholder={searchPlaceholder}
-			bind:value={searchQuery}
-			leftIcon={SearchIcon}
-			class="max-w-lg mb-4"
-		/>
-	{/if}
-
-	{#if showFilters}
-		<div class="flex flex-wrap gap-3 mb-4">
+		<div class="flex flex-wrap items-center gap-3">
 			{#each filterableColumns as filter}
 				<SelectDropdown
 					options={filter.options}
@@ -159,14 +122,17 @@
 					placeholder={`All ${filter.label}`}
 				/>
 			{/each}
-
 			{#if hasActiveFilters}
-				<button onclick={clearFilters} class="text-xs underline cursor-pointer text-[#7B6242]">
+				<button
+					type="button"
+					onclick={clearFilters}
+					class="text-sm text-[#7B6242] hover:text-[#59452B] underline underline-offset-2 cursor-pointer shrink-0"
+				>
 					{clearFiltersText}
 				</button>
 			{/if}
 		</div>
-	{/if}
+	</div>
 
 	<div class="overflow-hidden rounded-3xl bg-[#59452B1A] p-px">
 		<div class="rounded-3xl bg-white px-3 sm:px-6 py-2">
@@ -208,7 +174,10 @@
 
 						<tbody>
 							{#each paginatedData as row (row.id)}
-								<tr class="border-b border-gray-200 hover:bg-gray-50">
+								<tr
+									class="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+									onclick={() => onRowClick?.(row)}
+								>
 									{#each sortedColumns as col}
 										<td class="px-4 py-4">
 											{#if col.render}

@@ -83,7 +83,6 @@
 		data={tableData}
 		columns={tableColumns}
 		emptyStateText={eventsDashboardPage.emptyStateText}
-		itemsCountText={eventsDashboardPage.itemsCountText}
 		searchPlaceholder={tableUi.searchPlaceholder}
 		filterableColumns={[
 			{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
