@@ -5,6 +5,10 @@
 	import {
 		initialEvents,
 		tableColumns,
+		eventsDashboardPage,
+		tableUi,
+		categories,
+		statuses,
 		type Event,
 		type DashboardTableRow
 	} from '$lib/data/dashboard';
@@ -67,7 +71,7 @@
 <div class="bg-white min-h-screen p-3 md:p-5 max-w-full mx-auto md:mx-0">
 	<div class="mb-5">
 		<Button
-			text="Add Event"
+			text={eventsDashboardPage.addEventButtonText}
 			variant="default"
 			size="default"
 			onClick={handleAddEvent}
@@ -78,7 +82,13 @@
 	<Table
 		data={tableData}
 		columns={tableColumns}
-		emptyStateText="No events found"
-		itemsCountText="events"
+		emptyStateText={eventsDashboardPage.emptyStateText}
+		itemsCountText={eventsDashboardPage.itemsCountText}
+		searchPlaceholder={tableUi.searchPlaceholder}
+		filterableColumns={[
+			{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
+			{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
+		]}
+		clearFiltersText={tableUi.clearFiltersText}
 	/>
 </div>

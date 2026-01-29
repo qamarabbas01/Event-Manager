@@ -12,7 +12,7 @@
 
 <div class="flex min-h-screen">
 	<SideBar />
-	<main class="flex-1">
+	<main class="flex-1 min-w-0 md:ml-64">
 		{@render children()}
 	</main>
 </div>
