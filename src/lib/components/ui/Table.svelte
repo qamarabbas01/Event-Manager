@@ -4,7 +4,7 @@
 	import Pagination from './Pagination.svelte';
 	import Input from './Input.svelte';
 	import SelectDropdown from './SelectDropdown.svelte';
-	import { categories, statuses } from '$lib/data/dashboard';
+	import { categories, statuses, tableUi } from '$lib/data/dashboard';
 	import type { DashboardTableColumn, DashboardTableRow } from '$lib/data/dashboard';
 
 	interface Props {
@@ -13,6 +13,8 @@
 		title?: string;
 		emptyStateText?: string;
 		itemsCountText?: string;
+		searchPlaceholder?: string;
+		clearFiltersText?: string;
 		searchableColumns?: string[];
 		filterableColumns?: { key: string; options: readonly string[]; label: string }[];
 	}
@@ -23,10 +25,12 @@
 		title = '',
 		emptyStateText = '',
 		itemsCountText = '',
+		searchPlaceholder = tableUi.searchPlaceholder,
+		clearFiltersText = tableUi.clearFiltersText,
 		searchableColumns = ['title'],
 		filterableColumns = [
-			{ key: 'category', options: categories as readonly string[], label: 'Category' },
-			{ key: 'status', options: statuses as readonly string[], label: 'Status' }
+			{ key: 'category', options: categories as readonly string[], label: tableUi.filterCategoryLabel },
+			{ key: 'status', options: statuses as readonly string[], label: tableUi.filterStatusLabel }
 		]
 	}: Props = $props();
 
@@ -139,7 +143,7 @@
 
 	{#if showSearch}
 		<Input
-			placeholder="Search..."
+			placeholder={searchPlaceholder}
 			bind:value={searchQuery}
 			leftIcon={SearchIcon}
 			class="max-w-lg mb-4"
@@ -158,7 +162,7 @@
 
 			{#if hasActiveFilters}
 				<button onclick={clearFilters} class="text-xs underline cursor-pointer text-[#7B6242]">
-					Clear filters
+					{clearFiltersText}
 				</button>
 			{/if}
 		</div>

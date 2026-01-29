@@ -8,6 +8,11 @@
 	import {
 		initialEvents,
 		tableColumns,
+		eventsDashboardPage,
+		eventsStatsLabels,
+		tableUi,
+		categories,
+		statuses,
 		type Event,
 		type DashboardTableRow,
 		type Status
@@ -38,13 +43,11 @@
 		}))
 	);
 
-	// Calculate statistics
 	const totalEvents = $derived(events.length);
 	const activeEvents = $derived(events.filter((e) => e.status === 'Active').length);
 	const pendingEvents = $derived(events.filter((e) => e.status === 'Pending').length);
 	const completedEvents = $derived(events.filter((e) => e.status === 'Completed').length);
 
-	// Get upcoming events (next 5)
 	const upcomingEvents = $derived(
 		[...events]
 			.filter((e) => e.status === 'Active' || e.status === 'Pending')
@@ -100,16 +103,15 @@
 	}
 </script>
 
-<div class="bg-gray-50 min-h-screen p-4 md:p-6">
-	<div class="max-w-[1400px] mx-auto space-y-6">
-		<!-- Header -->
+<div class="bg-gray-50 min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0">
+	<div class="max-w-full mx-auto space-y-6">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 			<div>
-				<h1 class="text-3xl font-bold text-[#59452B]">Dashboard</h1>
-				<p class="text-[#7B6242] mt-1">Overview of your events and activities</p>
+				<h1 class="text-3xl font-bold">{eventsDashboardPage.title}</h1>
+				<p class="text-gray-600 mt-1">{eventsDashboardPage.subtitle}</p>
 			</div>
 			<Button
-				text="Add Event"
+				text={eventsDashboardPage.addEventButtonText}
 				variant="default"
 				size="default"
 				onClick={handleAddEvent}
@@ -117,13 +119,11 @@
 			/>
 		</div>
 
-		<!-- Stats Cards -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-			<!-- Total Events -->
 			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-sm text-[#ADA295] mb-1">Total Events</p>
+						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.totalEvents}</p>
 						<p class="text-3xl font-bold text-[#59452B]">{totalEvents}</p>
 					</div>
 					<div class="p-3 bg-[#59452B1A] rounded-full">
@@ -132,11 +132,10 @@
 				</div>
 			</div>
 
-			<!-- Active Events -->
 			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-sm text-[#ADA295] mb-1">Active</p>
+						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.active}</p>
 						<p class="text-3xl font-bold text-green-600">{activeEvents}</p>
 					</div>
 					<div class="p-3 bg-green-100 rounded-full">
@@ -145,11 +144,10 @@
 				</div>
 			</div>
 
-			<!-- Pending Events -->
 			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-sm text-[#ADA295] mb-1">Pending</p>
+						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.pending}</p>
 						<p class="text-3xl font-bold text-yellow-600">{pendingEvents}</p>
 					</div>
 					<div class="p-3 bg-yellow-100 rounded-full">
@@ -158,11 +156,10 @@
 				</div>
 			</div>
 
-			<!-- Completed Events -->
 			<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-sm text-[#ADA295] mb-1">Completed</p>
+						<p class="text-sm text-[#ADA295] mb-1">{eventsStatsLabels.completed}</p>
 						<p class="text-3xl font-bold text-blue-600">{completedEvents}</p>
 					</div>
 					<div class="p-3 bg-blue-100 rounded-full">
@@ -172,27 +169,30 @@
 			</div>
 		</div>
 
-		<!-- Main Content Grid -->
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-			<!-- Events Table - Takes 2 columns on large screens -->
 			<div class="lg:col-span-2">
 				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-					<h2 class="text-xl font-semibold text-[#59452B] mb-4">All Events</h2>
+					<h2 class="text-xl font-semibold text-[#59452B] mb-4">{eventsDashboardPage.allEventsTitle}</h2>
 					<Table
 						data={tableData}
 						columns={tableColumns}
-						emptyStateText="No events found"
-						itemsCountText="events"
+						emptyStateText={eventsDashboardPage.emptyStateText}
+						itemsCountText={eventsDashboardPage.itemsCountText}
+						searchPlaceholder={tableUi.searchPlaceholder}
+						filterableColumns={[
+							{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
+							{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
+						]}
+						clearFiltersText={tableUi.clearFiltersText}
 					/>
 				</div>
 			</div>
 
-			<!-- Upcoming Events Sidebar -->
 			<div class="lg:col-span-1">
 				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-					<h2 class="text-xl font-semibold text-[#59452B] mb-4">Upcoming Events</h2>
+					<h2 class="text-xl font-semibold text-[#59452B] mb-4">{eventsDashboardPage.upcomingTitle}</h2>
 					{#if upcomingEvents.length === 0}
-						<p class="text-[#ADA295] text-sm">No upcoming events</p>
+						<p class="text-[#ADA295] text-sm">{eventsDashboardPage.noUpcomingText}</p>
 					{:else}
 						<div class="space-y-3">
 							{#each upcomingEvents as event}

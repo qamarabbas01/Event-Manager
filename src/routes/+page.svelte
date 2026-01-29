@@ -10,90 +10,52 @@
 	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
 	import InfoIcon from '$lib/components/ui/icons/InfoIcon.svelte';
 	import WarningIcon from '$lib/components/ui/icons/WarningIcon.svelte';
+	import {
+		dashboardPage,
+		metricsData,
+		bookingTrendsData,
+		revenueOverviewData,
+		chartsConfig,
+		notificationsData,
+		notificationsSectionTitle
+	} from '$lib/data/dashboard';
+	import type { IconComponent } from '$lib/types/components';
 
-	const metrics = {
-		totalEvents: {
-			label: 'Total Events',
-			value: '24',
-			trend: { value: '+12%', isPositive: true },
-			icon: CalendarIcon,
-			iconBgColor: 'bg-purple-100',
-			iconColor: 'text-purple-600'
-		},
-		totalBookings: {
-			label: 'Total Bookings',
-			value: '1,847',
-			trend: { value: '+18%', isPositive: true },
-			icon: Users,
-			iconBgColor: 'bg-green-100',
-			iconColor: 'text-green-600'
-		},
-		revenue: {
-			label: 'Revenue',
-			value: '$89,420',
-			trend: { value: '+23%', isPositive: true },
-			icon: Revenue,
-			iconBgColor: 'bg-purple-100',
-			iconColor: 'text-purple-600'
-		},
-		avgAttendance: {
-			label: 'Avg Attendance',
-			value: '77',
-			trend: { value: '-5%', isPositive: false },
-			icon: Attendance,
-			iconBgColor: 'bg-orange-100',
-			iconColor: 'text-orange-600'
-		}
+	const iconMap: Record<string, IconComponent> = {
+		CalendarIcon,
+		Users,
+		Revenue,
+		Attendance,
+		CheckFilled,
+		InfoIcon,
+		WarningIcon
 	};
 
-	const bookingTrends = [
-		{ label: 'Jan', value: 45 },
-		{ label: 'Feb', value: 50 },
-		{ label: 'Mar', value: 60 },
-		{ label: 'Apr', value: 58 },
-		{ label: 'May', value: 70 },
-		{ label: 'Jun', value: 85 }
-	];
+	const metrics = $derived(
+		Object.fromEntries(
+			Object.entries(metricsData).map(([key, m]) => [
+				key,
+				{
+					...m,
+					icon: iconMap[m.iconKey] ?? CalendarIcon
+				}
+			])
+		)
+	);
 
-	const revenueOverview = [
-		{ label: 'Jan', value: 11000 },
-		{ label: 'Feb', value: 14000 },
-		{ label: 'Mar', value: 17000 },
-		{ label: 'Apr', value: 15000 },
-		{ label: 'May', value: 20000 },
-		{ label: 'Jun', value: 24000 }
-	];
-
-	const notifications = [
-		{
-			type: 'success' as const,
-			title: 'New Event Registration',
-			message: 'Tech Conference 2024 has 150 new registrations',
-			timestamp: '2 hours ago',
-			icon: CheckFilled
-		},
-		{
-			type: 'warning' as const,
-			title: 'Low Ticket Availability',
-			message: 'Summer Music Festival has only 20 tickets left',
-			timestamp: '5 hours ago',
-			icon: WarningIcon
-		},
-		{
-			type: 'info' as const,
-			title: 'Event Starting Soon',
-			message: 'Marketing Workshop begins in 2 days',
-			timestamp: '1 day ago',
-			icon: InfoIcon
-		}
-	];
+	const notifications = $derived(
+		notificationsData.map((n) => ({
+			...n,
+			icon: iconMap[n.iconKey] ?? InfoIcon
+		}))
+	);
 </script>
 
 <div class="bg-gray-50 min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0">
 	<div class="max-w-full mx-auto space-y-6">
 		<div>
-			<h1 class="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
-			<p class="text-gray-600">Welcome back! Here is your event summary.</p>
+			<h1 class="text-3xl font-bold text-gray-900 mb-2">{dashboardPage.title}</h1>
+			<p class="text-gray-600">{dashboardPage.subtitle}</p>
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -132,12 +94,25 @@
 		</div>
 
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-			<LineChart title="Booking Trends" data={bookingTrends} color="#3b82f6" />
-			<BarChart title="Revenue Overview" data={revenueOverview} color="#9333ea" />
+			<LineChart
+				title={chartsConfig.bookingTrends.title}
+				data={bookingTrendsData}
+				color={chartsConfig.bookingTrends.color}
+				height={chartsConfig.bookingTrends.height}
+				baseYear={chartsConfig.bookingTrends.baseYear}
+			/>
+			<BarChart
+				title={chartsConfig.revenueOverview.title}
+				data={revenueOverviewData}
+				color={chartsConfig.revenueOverview.color}
+				height={chartsConfig.revenueOverview.height}
+				baseYear={chartsConfig.revenueOverview.baseYear}
+				valuePrefix="$"
+			/>
 		</div>
 
 		<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-			<h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Notifications</h2>
+			<h2 class="text-xl font-semibold text-gray-900 mb-4">{notificationsSectionTitle}</h2>
 			<div class="space-y-3">
 				{#each notifications as notification}
 					<NotificationItem

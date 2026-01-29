@@ -1,5 +1,220 @@
 export type Category = 'Work' | 'Business' | 'Personal';
 
+export const dashboardPage = {
+	title: 'Dashboard Overview',
+	subtitle: 'Welcome back! Here is your event summary.'
+} as const;
+
+export interface MetricData {
+	label: string;
+	value: string;
+	trend: { value: string; isPositive: boolean };
+	iconKey: string;
+	iconBgColor: string;
+	iconColor: string;
+}
+
+export const metricsData: Record<string, MetricData> = {
+	totalEvents: {
+		label: 'Total Events',
+		value: '24',
+		trend: { value: '+12%', isPositive: true },
+		iconKey: 'CalendarIcon',
+		iconBgColor: 'bg-purple-100',
+		iconColor: 'text-purple-600'
+	},
+	totalBookings: {
+		label: 'Total Bookings',
+		value: '1,847',
+		trend: { value: '+18%', isPositive: true },
+		iconKey: 'Users',
+		iconBgColor: 'bg-green-100',
+		iconColor: 'text-green-600'
+	},
+	revenue: {
+		label: 'Revenue',
+		value: '$89,420',
+		trend: { value: '+23%', isPositive: true },
+		iconKey: 'Revenue',
+		iconBgColor: 'bg-purple-100',
+		iconColor: 'text-purple-600'
+	},
+	avgAttendance: {
+		label: 'Avg Attendance',
+		value: '77',
+		trend: { value: '-5%', isPositive: false },
+		iconKey: 'Attendance',
+		iconBgColor: 'bg-orange-100',
+		iconColor: 'text-orange-600'
+	}
+};
+
+export interface ChartDataPoint {
+	label: string;
+	value: number;
+	date: string;
+}
+
+const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function buildMonthlyChartData(
+	startYear: number,
+	startMonth: number,
+	endYear: number,
+	endMonth: number,
+	opts: { startValue: number; endValue: number; variation: number }
+): ChartDataPoint[] {
+	const points: ChartDataPoint[] = [];
+	let index = 0;
+	for (let y = startYear; y <= endYear; y++) {
+		const monthStart = y === startYear ? startMonth : 1;
+		const monthEnd = y === endYear ? endMonth : 12;
+		for (let m = monthStart; m <= monthEnd; m++) {
+			index += 1;
+			const shortYear = String(y).slice(-2);
+			const label = m === 1 ? `${monthLabels[m - 1]} '${shortYear}` : monthLabels[m - 1];
+			points.push({
+				label,
+				value: 0,
+				date: `${y}-${String(m).padStart(2, '0')}-01`
+			});
+		}
+	}
+	const totalMonths = points.length;
+	points.forEach((p, i) => {
+		const t = i / Math.max(1, totalMonths - 1);
+		const trend = opts.startValue + t * (opts.endValue - opts.startValue);
+		const wave = Math.sin((i / 12) * Math.PI * 2) * opts.variation;
+		p.value = Math.round(trend + wave);
+	});
+	return points;
+}
+
+export const bookingTrendsData: ChartDataPoint[] = buildMonthlyChartData(
+	2024, 1, 2026, 1,
+	{ startValue: 45, endValue: 95, variation: 8 }
+);
+
+export const revenueOverviewData: ChartDataPoint[] = buildMonthlyChartData(
+	2024, 1, 2026, 1,
+	{ startValue: 11000, endValue: 35000, variation: 2000 }
+);
+
+export const chartsConfig = {
+	bookingTrends: {
+		title: 'Booking Trends',
+		color: '#3b82f6',
+		height: 300,
+		baseYear: 2024
+	},
+	revenueOverview: {
+		title: 'Revenue Overview',
+		color: '#9333ea',
+		height: 300,
+		baseYear: 2024
+	}
+} as const;
+
+export type NotificationType = 'success' | 'warning' | 'info';
+
+export interface NotificationData {
+	type: NotificationType;
+	title: string;
+	message: string;
+	timestamp: string;
+	iconKey: string;
+}
+
+export const notificationsData: NotificationData[] = [
+	{
+		type: 'success',
+		title: 'New Event Registration',
+		message: 'Tech Conference 2024 has 150 new registrations',
+		timestamp: '2 hours ago',
+		iconKey: 'CheckFilled'
+	},
+	{
+		type: 'warning',
+		title: 'Low Ticket Availability',
+		message: 'Summer Music Festival has only 20 tickets left',
+		timestamp: '5 hours ago',
+		iconKey: 'WarningIcon'
+	},
+	{
+		type: 'info',
+		title: 'Event Starting Soon',
+		message: 'Marketing Workshop begins in 2 days',
+		timestamp: '1 day ago',
+		iconKey: 'InfoIcon'
+	}
+];
+
+export const notificationsSectionTitle = 'Recent Notifications';
+export interface NavItemData {
+	label: string;
+	href: string;
+	iconKey: string;
+}
+
+export const appTitle = 'Event Manager';
+export const logoutLabel = 'Logout';
+export const toggleMenuAriaLabel = 'Toggle menu';
+
+export const navItemsData: NavItemData[] = [
+	{ label: 'Home', href: '/', iconKey: 'Home' },
+	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Dashboard' },
+	{ label: 'Settings', href: '/settings', iconKey: 'SettingIcon' },
+	{ label: 'Profile', href: '/profile', iconKey: 'Profile' }
+];
+
+export const eventsDashboardPage = {
+	title: 'Dashboard',
+	subtitle: 'Overview of your events and activities',
+	addEventButtonText: 'Add Event',
+	allEventsTitle: 'All Events',
+	upcomingTitle: 'Upcoming Events',
+	emptyStateText: 'No events found',
+	noUpcomingText: 'No upcoming events',
+	itemsCountText: 'events'
+} as const;
+
+export const eventsStatsLabels = {
+	totalEvents: 'Total Events',
+	active: 'Active',
+	pending: 'Pending',
+	completed: 'Completed'
+} as const;
+
+export const tableUi = {
+	searchPlaceholder: 'Search...',
+	filterCategoryLabel: 'Category',
+	filterStatusLabel: 'Status',
+	clearFiltersText: 'Clear filters'
+} as const;
+
+export const dateRangeUi = {
+	periodPlaceholder: 'Period',
+	startDateAriaLabel: 'Start date',
+	endDateAriaLabel: 'End date',
+	last3Months: 'Last 3 months',
+	last6Months: 'Last 6 months'
+} as const;
+
+export const dateRangePresetOptions = [
+	dateRangeUi.last3Months,
+	dateRangeUi.last6Months
+] as const;
+
+export const profilePage = {
+	title: 'Profile',
+	comingSoonText: 'Profile page coming soon...'
+} as const;
+
+export const settingsPage = {
+	title: 'Settings',
+	comingSoonText: 'Settings page coming soon...'
+} as const;
+
 export type Status = 'Active' | 'Pending' | 'Completed';
 
 export type TableAction = 'edit' | 'delete';
