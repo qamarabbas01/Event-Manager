@@ -13,9 +13,10 @@
 		height?: number;
 		color?: string;
 		baseYear?: number;
+		showDatePicker?: boolean;
 	}
 
-	let { title, data, height = 200, color = '#3b82f6', baseYear = 2024 }: Props = $props();
+	let { title, data, height = 200, color = '#3b82f6', baseYear = 2024, showDatePicker = true }: Props = $props();
 
 	let startDate = $state('');
 	let endDate = $state('');
@@ -95,7 +96,9 @@
 <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
 	<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
 		<h3 class="text-lg font-semibold text-gray-900">{title}</h3>
-		<DateRangePicker bind:startDate bind:endDate />
+		{#if showDatePicker}
+			<DateRangePicker bind:startDate bind:endDate />
+		{/if}
 	</div>
 	<div class="w-full" bind:this={containerEl}>
 		<svg
