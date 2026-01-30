@@ -163,7 +163,7 @@ export const toggleMenuAriaLabel = 'Toggle menu';
 export const navItemsData: NavItemData[] = [
 	{ label: 'Home', href: '/', iconKey: 'Home' },
 	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Dashboard' },
-	{ label: 'Settings', href: '/settings', iconKey: 'SettingIcon' },
+	{ label: 'Attendee Insights', href: '/attendee-insights', iconKey: 'Users' },
 	{ label: 'Profile', href: '/profile', iconKey: 'Profile' }
 ];
 
@@ -210,9 +210,58 @@ export const profilePage = {
 	comingSoonText: 'Profile page coming soon...'
 } as const;
 
-export const settingsPage = {
-	title: 'Settings',
-	comingSoonText: 'Settings page coming soon...'
+export const attendeeInsightsPage = {
+	title: 'Attendee Insights',
+	subtitle: 'Understand your audience demographics and engagement',
+	charts: {
+		ageDistribution: 'Age Distribution',
+		topLocations: 'Top Locations',
+		engagementTrends: 'Engagement Trends',
+		interestCategories: 'Interest Categories'
+	}
+} as const;
+
+export interface PieChartDataPoint {
+	label: string;
+	value: number;
+}
+
+export const ageDistributionData: PieChartDataPoint[] = [
+	{ label: '18-24', value: 17 },
+	{ label: '25-34', value: 30 },
+	{ label: '35-44', value: 25 },
+	{ label: '45-54', value: 19 },
+	{ label: '55+', value: 10 }
+];
+
+export const topLocationsData: { label: string; value: number }[] = [
+	{ label: 'San Francisco', value: 420 },
+	{ label: 'New York', value: 380 },
+	{ label: 'Austin', value: 310 },
+	{ label: 'Chicago', value: 280 },
+	{ label: 'Seattle', value: 250 }
+];
+
+export const engagementTrendsData: { label: string; value: number }[] = [
+	{ label: 'Jan', value: 65 },
+	{ label: 'Feb', value: 70 },
+	{ label: 'Mar', value: 78 },
+	{ label: 'Apr', value: 73 },
+	{ label: 'May', value: 80 },
+	{ label: 'Jun', value: 88 }
+];
+
+export const interestCategoriesData: PieChartDataPoint[] = [
+	{ label: 'Technology', value: 35 },
+	{ label: 'Business', value: 25 },
+	{ label: 'Music', value: 20 },
+	{ label: 'Food', value: 12 },
+	{ label: 'Art', value: 8 }
+];
+
+export const attendeeInsightsChartColors = {
+	ageDistribution: ['#3b82f6', '#9333ea', '#ec4899', '#f97316', '#22c55e'],
+	interestCategories: ['#3b82f6', '#9333ea', '#ec4899', '#f97316', '#22c55e']
 } as const;
 
 export type Status = 'Active' | 'Pending' | 'Completed';
