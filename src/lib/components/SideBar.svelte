@@ -1,26 +1,26 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import HomeIcon from './ui/icons/HomeIcon.svelte';
-	import Profile from './ui/icons/Profile.svelte';
+	import HouseOutline from './ui/icons/HouseOutline.svelte';
+	import PersonOutline from './ui/icons/PersonOutline.svelte';
 	import DoorIcon from './ui/icons/DoorIcon.svelte';
 	import MenuToggleIcon from './ui/icons/MenuToggleIcon.svelte';
 	import { navItemsData, appTitle, logoutLabel, toggleMenuAriaLabel } from '$lib/data/dashboard';
 	import type { IconComponent } from '$lib/types/icons';
-	import Dashboard from './ui/icons/Dashboard.svelte';
-	import Users from './ui/icons/Users.svelte';
+	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
+	import Revenue from './ui/icons/Revenue.svelte';
 
 	const iconMap: Record<string, IconComponent> = {
-		HomeIcon,
-		Dashboard,
-		Profile,
-		Users
+		Home: HouseOutline,
+		Calendar: CalendarIcon,
+		Chart: Revenue,
+		Profile: PersonOutline
 	};
 
 	const navItems = $derived(
 		navItemsData.map((item) => ({
 			...item,
-			icon: iconMap[item.iconKey] ?? HomeIcon
+			icon: iconMap[item.iconKey] ?? HouseOutline
 		}))
 	);
 
