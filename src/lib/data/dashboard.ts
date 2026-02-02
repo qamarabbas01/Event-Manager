@@ -207,7 +207,7 @@ export const dateRangePresetOptions = [
 
 export const profilePage = {
 	title: 'Profile',
-	comingSoonText: 'Profile page coming soon...'
+	comingSoonText: 'Profile page is under development...'
 } as const;
 
 export const attendeeInsightsPage = {
