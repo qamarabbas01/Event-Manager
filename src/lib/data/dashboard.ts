@@ -162,8 +162,8 @@ export const toggleMenuAriaLabel = 'Toggle menu';
 
 export const navItemsData: NavItemData[] = [
 	{ label: 'Home', href: '/', iconKey: 'Home' },
-	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Dashboard' },
-	{ label: 'Attendee Insights', href: '/attendee-insights', iconKey: 'Users' },
+	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Calendar' },
+	{ label: 'Attendee Insights', href: '/attendee-insights', iconKey: 'Chart' },
 	{ label: 'Profile', href: '/profile', iconKey: 'Profile' }
 ];
 
@@ -207,7 +207,7 @@ export const dateRangePresetOptions = [
 
 export const profilePage = {
 	title: 'Profile',
-	comingSoonText: 'Profile page coming soon...'
+	comingSoonText: 'Profile page is under development...'
 } as const;
 
 export const attendeeInsightsPage = {
