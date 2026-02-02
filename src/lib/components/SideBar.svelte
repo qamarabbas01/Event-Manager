@@ -2,19 +2,19 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import HomeIcon from './ui/icons/HomeIcon.svelte';
-	import SettingIcon from './ui/icons/SettingIcon.svelte';
 	import Profile from './ui/icons/Profile.svelte';
 	import DoorIcon from './ui/icons/DoorIcon.svelte';
 	import MenuToggleIcon from './ui/icons/MenuToggleIcon.svelte';
 	import { navItemsData, appTitle, logoutLabel, toggleMenuAriaLabel } from '$lib/data/dashboard';
 	import type { IconComponent } from '$lib/types/icons';
 	import Dashboard from './ui/icons/Dashboard.svelte';
+	import Users from './ui/icons/Users.svelte';
 
 	const iconMap: Record<string, IconComponent> = {
 		HomeIcon,
 		Dashboard,
-		SettingIcon,
-		Profile
+		Profile,
+		Users
 	};
 
 	const navItems = $derived(
@@ -78,7 +78,7 @@
 							size={18}
 							class={isActive ? 'text-[#2C2C2C] shrink-0' : 'text-[#6B7280] shrink-0'}
 						/>
-						<span class="flex-1 text-sm font-normal">{item.label}</span>
+						<span class="flex-1 text-base font-normal">{item.label}</span>
 						{#if isActive}
 							<div class="w-[3px] h-5 bg-[#bb9b9b] rounded-full shrink-0" aria-hidden="true"></div>
 						{/if}
