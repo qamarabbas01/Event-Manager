@@ -13,10 +13,10 @@
 	let { label, value, icon: Icon, valueColor = 'text-[#59452B]', iconBg = 'bg-[#59452B1A]', iconColor = 'text-[#59452B]' }: Props = $props();
 </script>
 
-<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
 	<div class="flex items-center justify-between">
 		<div>
-			<p class="text-sm text-[#ADA295] mb-1">{label}</p>
+			<p class="text-sm text-[#ADA295] dark:text-gray-400 mb-1">{label}</p>
 			<p class="text-3xl font-bold {valueColor}">{value}</p>
 		</div>
 		<div class="p-3 {iconBg} rounded-full">

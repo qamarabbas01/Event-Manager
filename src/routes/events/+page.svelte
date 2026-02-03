@@ -6,6 +6,7 @@
 	import MagnifyingGlass from '$lib/components/ui/icons/MagnifyingGlass.svelte';
 	import FilterIcon from '$lib/components/ui/icons/FilterIcon.svelte';
 	import { browseEvents } from '$lib/data/events';
+	import { browseEventsPage } from '$lib/data/dashboard';
 
 	let searchQuery = $state('');
 	const filteredEvents = $derived(
@@ -24,24 +25,24 @@
 	}
 </script>
 
-<div class="min-h-screen bg-[#F8FAFC] p-4 md:p-6">
+<div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
 	<div class="max-w-full space-y-6">
 		<header>
-			<h1 class="text-3xl font-bold text-gray-800">Browse Events</h1>
-			<p class="text-gray-500 mt-1">Discover and manage all your events</p>
+			<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{browseEventsPage.title}</h1>
+			<p class="text-gray-500 dark:text-gray-400 mt-1">{browseEventsPage.subtitle}</p>
 		</header>
 
 		<div class="flex flex-col sm:flex-row gap-3">
 			<div class="flex-1 max-w-xl">
 				<Input
 					bind:value={searchQuery}
-					placeholder="Search events..."
+					placeholder={browseEventsPage.searchPlaceholder}
 					leftIcon={MagnifyingGlass}
 					class="w-full rounded-lg border-gray-300"
 				/>
 			</div>
 			<Button
-				text="Filters"
+				text={browseEventsPage.filtersButtonText}
 				type="button"
 				variant="default"
 				size="default"
@@ -58,7 +59,7 @@
 		</div>
 
 		{#if filteredEvents.length === 0}
-			<p class="text-center text-gray-500 py-12">No events match your search.</p>
+			<p class="text-center text-gray-500 dark:text-gray-400 py-12">{browseEventsPage.noResultsText}</p>
 		{/if}
 	</div>
 </div>

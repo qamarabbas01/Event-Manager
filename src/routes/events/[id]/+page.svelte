@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { getEventById } from '$lib/data/events';
+	import { eventDetailPage } from '$lib/data/dashboard';
 	import LineChart from '$lib/components/ui/LineChart.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
 	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
@@ -27,7 +28,7 @@
 	}
 </script>
 
-<div class="min-h-screen bg-[#F8FAFC] p-4 md:p-6">
+<div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
 	<div class="space-y-6">
 		<a
 			href="/events"
@@ -35,28 +36,28 @@
 				e.preventDefault();
 				backToEvents();
 			}}
-			class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 text-sm font-medium mb-4"
+			class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-sm font-medium mb-4 transition-colors"
 		>
 			<Arrowleft size={18} />
-			Back to Events
+			{eventDetailPage.backLink}
 		</a>
 
 		{#if !event}
-			<div class="bg-white rounded-2xl p-12 border border-gray-200 shadow-sm text-center">
-				<p class="text-gray-500 mb-4">Event not found.</p>
+			<div class="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 shadow-sm text-center transition-colors">
+				<p class="text-gray-500 dark:text-gray-400 mb-4">{eventDetailPage.notFoundMessage}</p>
 				<a
 					href="/events"
 					onclick={(e) => {
 						e.preventDefault();
 						backToEvents();
 					}}
-					class="text-blue-600 hover:underline font-medium"
+					class="text-blue-600 dark:text-blue-400 hover:underline font-medium"
 				>
-					Return to Browse Events
+					{eventDetailPage.returnToBrowse}
 				</a>
 			</div>
 		{:else}
-			<section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+			<section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden transition-colors">
 				<div class="aspect-21/9 md:aspect-3/1 relative">
 					<img
 						src={event.image}
@@ -66,49 +67,49 @@
 				</div>
 				<div class="p-6 md:p-8">
 					<span
-						class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3"
+						class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 mb-3"
 					>
 						{event.category}
 					</span>
-					<h1 class="text-3xl font-bold text-gray-800 mb-4">{event.title}</h1>
-					<div class="flex flex-wrap gap-6 text-gray-600 mb-6">
+					<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">{event.title}</h1>
+					<div class="flex flex-wrap gap-6 text-gray-600 dark:text-gray-400 mb-6">
 						<div class="flex items-center gap-2">
-							<CalendarIcon size={20} class="text-gray-400 shrink-0" />
+							<CalendarIcon size={20} class="text-gray-400 dark:text-gray-500 shrink-0" />
 							<span>{formatEventDate(event.date)}</span>
 						</div>
 						<div class="flex items-center gap-2">
-							<MapPin size={20} class="text-gray-400 shrink-0" />
+							<MapPin size={20} class="text-gray-400 dark:text-gray-500 shrink-0" />
 							<span>{event.venue}</span>
 						</div>
 					</div>
-					<p class="text-gray-600 leading-relaxed">{event.description}</p>
+					<p class="text-gray-600 dark:text-gray-400 leading-relaxed">{event.description}</p>
 				</div>
 			</section>
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				<MetricCard
-					label="Attendees"
+					label={eventDetailPage.metrics.attendees}
 					value={event.attendees.toLocaleString()}
 					icon={Users}
 					iconBgColor="bg-blue-100"
 					iconColor="text-blue-600"
 				/>
 				<MetricCard
-					label="Tickets Sold"
+					label={eventDetailPage.metrics.ticketsSold}
 					value={`${event.attendees.toLocaleString()}/${event.capacity.toLocaleString()}`}
 					icon={CalendarIcon}
 					iconBgColor="bg-green-100"
 					iconColor="text-green-600"
 				/>
 				<MetricCard
-					label="Revenue"
+					label={eventDetailPage.metrics.revenue}
 					value={event.revenue}
 					icon={Revenue}
 					iconBgColor="bg-purple-100"
 					iconColor="text-purple-600"
 				/>
 				<MetricCard
-					label="Availability"
+					label={eventDetailPage.metrics.availability}
 					value={`${event.availabilityPercent}%`}
 					icon={Attendance}
 					iconBgColor="bg-orange-100"
@@ -117,7 +118,7 @@
 			</div>
 
 			<LineChart
-				title="Ticket Sales Trend"
+				title={eventDetailPage.ticketSalesTrendTitle}
 				data={event.ticketSalesTrend}
 				height={280}
 				color="#3b82f6"

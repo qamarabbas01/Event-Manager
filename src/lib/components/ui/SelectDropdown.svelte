@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DropdownItem } from './Dropdown.svelte';
+	import type { DropdownItem } from '$lib/types/components';
 	import ArrowDown from './icons/ArrowDown.svelte';
 
 	interface Props {
@@ -65,18 +65,18 @@
 		bind:this={triggerRef}
 		type="button"
 		onclick={toggleDropdown}
-		class="flex items-center justify-between gap-2 border border-gray-300 px-3 py-2 rounded text-sm bg-white min-w-[120px] w-full md:w-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent hover:border-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed {className}"
+		class="flex items-center justify-between gap-2 border border-gray-300 dark:border-gray-500 px-3 py-2 rounded text-sm bg-white dark:bg-white dark:text-gray-900 min-w-[120px] w-full md:w-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-amber-500/50 focus:border-transparent hover:border-gray-400 dark:hover:border-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-200 disabled:cursor-not-allowed {className}"
 		aria-expanded={isOpen}
 		aria-haspopup="listbox"
 		aria-label={placeholder}
 	>
-		<span class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400' : ''}">{displayValue}</span>
+		<span class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400 dark:text-gray-500' : ''}">{displayValue}</span>
 		<ArrowDown size={10} class="shrink-0 ml-1 transition-transform {isOpen ? 'rotate-180' : ''}" />
 	</button>
 
 	{#if isOpen}
 		<div bind:this={dropdownRef} class="absolute top-full left-0 mt-1 z-50 w-full min-w-[120px]">
-			<div class="rounded border border-gray-200 bg-white shadow-md py-1">
+			<div class="rounded border border-gray-200 dark:border-gray-500 bg-white dark:bg-white shadow-md py-1">
 				<ul class="flex flex-col gap-1 p-2" role="menu">
 					{#each dropdownItems as item, index (index)}
 						<li role="menuitem" class="list-none">
@@ -88,7 +88,7 @@
 									item.onclick?.();
 									isOpen = false;
 								}}
-								class="flex w-full items-center gap-3 text-sm font-normal text-gray-800 hover:bg-gray-50 cursor-pointer py-2 px-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1 rounded"
+								class="flex w-full items-center gap-3 text-sm font-normal text-gray-800 dark:text-gray-900 hover:bg-gray-50 dark:hover:bg-gray-100 cursor-pointer py-2 px-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-amber-500/50 focus:ring-offset-1 rounded"
 								aria-disabled={item.disabled}
 							>
 								{#if item.icon}

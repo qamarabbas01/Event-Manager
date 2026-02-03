@@ -4,6 +4,7 @@
 	import MapPin from '$lib/components/ui/icons/MapPin.svelte';
 	import Users from '$lib/components/ui/icons/Users.svelte';
 	import type { BrowseEvent } from '$lib/data/events';
+	import { eventCardUi } from '$lib/data/dashboard';
 
 	interface Props {
 		event: BrowseEvent;
@@ -24,7 +25,7 @@
 </script>
 
 <article
-	class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col"
+	class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col transition-colors"
 >
 	<div class="relative aspect-16/10 shrink-0">
 		<img
@@ -33,14 +34,14 @@
 			class="w-full h-full object-cover"
 		/>
 		<span
-			class="absolute top-3 right-3 px-2.5 py-1.5 rounded-full text-xs font-medium bg-gray-200 text-blck"
+			class="absolute top-3 right-3 px-2.5 py-1.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-600 text-black dark:text-gray-100"
 		>
 			{event.category}
 		</span>
 	</div>
 	<div class="p-4 flex flex-col flex-1">
-		<h2 class="text-lg font-bold text-gray-800 mb-3">{event.title}</h2>
-		<div class="space-y-2 text-sm text-gray-500 mb-4">
+		<h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">{event.title}</h2>
+		<div class="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
 			<div class="flex items-center gap-2">
 				<CalendarIcon size={16} class="text-gray-400 shrink-0" />
 				<span>{formatDate(event.date)}</span>
@@ -51,14 +52,14 @@
 			</div>
 			<div class="flex items-center gap-2">
 				<Users size={16} class="text-gray-400 shrink-0" />
-				<span>{event.attendees.toLocaleString()} / {event.capacity.toLocaleString()} attendees</span>
+				<span>{event.attendees.toLocaleString()} / {event.capacity.toLocaleString()} {eventCardUi.attendeesSuffix}</span>
 			</div>
 		</div>
 		<div class="mt-auto space-y-3">
 			<div>
-				<div class="flex items-center justify-between text-xs text-gray-500 mb-1">
-					<span>Availability</span>
-					<span class="font-medium text-gray-700">{availability}%</span>
+				<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+					<span>{eventCardUi.availabilityLabel}</span>
+					<span class="font-medium text-gray-700 dark:text-gray-300">{availability}%</span>
 				</div>
 				<div class="h-2 bg-gray-200 rounded-full overflow-hidden">
 					<div
@@ -69,7 +70,7 @@
 			</div>
 			{#if onViewDetails}
 				<Button
-					text="View details"
+					text={eventCardUi.viewDetailsButtonText}
 					type="button"
 					variant="primary-blue"
 					size="sm"

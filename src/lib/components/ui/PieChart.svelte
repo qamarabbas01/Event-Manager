@@ -88,8 +88,8 @@
 	}
 </script>
 
-<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-	<h3 class="text-lg font-semibold text-gray-900 mb-4">{title}</h3>
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+	<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{title}</h3>
 
 	<div class="flex flex-col items-center">
 		<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} class="shrink-0 overflow-visible">
@@ -110,7 +110,7 @@
 					y={pos.y}
 					text-anchor={pos.anchor}
 					dominant-baseline="middle"
-					class="text-xs font-semibold fill-black"
+					class="text-xs font-semibold fill-black dark:fill-gray-200"
 				>
 					{Math.round(seg.percent)}%
 				</text>
@@ -125,7 +125,7 @@
 							class="shrink-0 w-2.5 h-2.5 rounded-full"
 							style="background-color: {seg.color}"
 						></span>
-						<span class="text-xs text-gray-600">{seg.label}</span>
+						<span class="text-xs text-gray-600 dark:text-gray-400">{seg.label}</span>
 					</div>
 				{/each}
 			</div>

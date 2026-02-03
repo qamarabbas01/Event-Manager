@@ -5,7 +5,16 @@
 	import PersonOutline from './ui/icons/PersonOutline.svelte';
 	import DoorIcon from './ui/icons/DoorIcon.svelte';
 	import MenuToggleIcon from './ui/icons/MenuToggleIcon.svelte';
-	import { navItemsData, appTitle, logoutLabel, toggleMenuAriaLabel } from '$lib/data/dashboard';
+	import {
+		navItemsData,
+		appTitle,
+		logoutLabel,
+		toggleMenuAriaLabel,
+		themeLightLabel,
+		themeDarkLabel,
+		themeToggleAriaLabel
+	} from '$lib/data/dashboard';
+	import { theme } from '$lib/stores/theme';
 	import type { IconComponent } from '$lib/types/icons';
 	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
 	import Revenue from './ui/icons/Revenue.svelte';
@@ -39,28 +48,28 @@
 		isMobileMenuOpen = !isMobileMenuOpen;
 	}
 
-	$effect(() => {
-		isMobileMenuOpen = false;
-	});
+	function toggleTheme() {
+		theme.set($theme === 'dark' ? 'light' : 'dark');
+	}
 </script>
 
 <div class="relative">
 	<button
 		onclick={toggleMobileMenu}
-		class="md:hidden fixed top-4 right-4 z-50 p-2 rounded-lg bg-white border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
+		class="md:hidden fixed top-4 right-4 z-50 p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
 		aria-label={toggleMenuAriaLabel}
 	>
 		<MenuToggleIcon size={24} open={isMobileMenuOpen} />
 	</button>
 
 	<aside
-		class="fixed left-0 top-0 h-full bg-white border-r border-gray-200 transition-all duration-300 z-40 {isMobileMenuOpen
+		class="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 z-40 {isMobileMenuOpen
 			? 'translate-x-0'
 			: '-translate-x-full md:translate-x-0'} w-64 shrink-0"
 	>
 		<div class="flex flex-col h-full min-h-screen overflow-y-auto">
-			<div class="p-6 border-b border-gray-200">
-				<h1 class="text-2xl font-semibold text-[#2C2C2C]">{appTitle}</h1>
+			<div class="p-6 border-b border-gray-200 dark:border-gray-800">
+				<h1 class="text-2xl font-semibold text-[#2C2C2C] dark:text-gray-100">{appTitle}</h1>
 			</div>
 
 			<nav class="flex-1 px-4 py-6 space-y-2">
@@ -69,29 +78,48 @@
 					<button
 						onclick={() => handleNavClick(item.href)}
 						class="w-full flex items-center gap-3 px-4 cursor-pointer py-3 rounded-lg text-left transition-all duration-200 {isActive
-							? 'bg-[#F5F5F5] text-[#2C2C2C] font-medium'
-							: 'text-[#6B7280] hover:bg-gray-50 hover:text-[#2C2C2C]'}"
+							? 'bg-[#F5F5F5] dark:bg-gray-800 text-[#2C2C2C] dark:text-gray-100 font-medium'
+							: 'text-[#6B7280] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-[#2C2C2C] dark:hover:text-gray-100'}"
 					>
 						<!-- svelte-ignore svelte_component_deprecated -->
 						<svelte:component
 							this={item.icon}
 							size={18}
-							class={isActive ? 'text-[#2C2C2C] shrink-0' : 'text-[#6B7280] shrink-0'}
+							class="{isActive ? 'text-[#2C2C2C] dark:text-gray-100' : 'text-[#6B7280] dark:text-gray-400'} shrink-0"
 						/>
 						<span class="flex-1 text-base font-normal">{item.label}</span>
 						{#if isActive}
-							<div class="w-[3px] h-5 bg-[#bb9b9b] rounded-full shrink-0" aria-hidden="true"></div>
+							<div class="w-[3px] h-5 bg-[#bb9b9b] dark:bg-gray-500 rounded-full shrink-0" aria-hidden="true"></div>
 						{/if}
 					</button>
 				{/each}
 			</nav>
 
-			<div class="px-4 py-2 border-t border-gray-200">
+			<div class="px-4 py-2 space-y-1 border-t border-gray-200 dark:border-gray-800">
+				<button
+					onclick={toggleTheme}
+					class="w-full flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+					aria-label={themeToggleAriaLabel}
+					title={$theme === 'dark' ? themeLightLabel : themeDarkLabel}
+				>
+					{#if $theme === 'dark'}
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+							<circle cx="12" cy="12" r="4"/>
+							<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+						</svg>
+						<span class="flex-1">{themeLightLabel}</span>
+					{:else}
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
+							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+						</svg>
+						<span class="flex-1">{themeDarkLabel}</span>
+					{/if}
+				</button>
 				<button
 					onclick={handleLogout}
-					class="w-full flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg text-left text-red-600 hover:bg-red-50 transition-all duration-200"
+					class="w-full flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
 				>
-					<DoorIcon size={20} class="text-red-600 shrink-0" />
+					<DoorIcon size={20} class="text-red-600 dark:text-red-400 shrink-0" />
 					<span class="flex-1">{logoutLabel}</span>
 				</button>
 			</div>

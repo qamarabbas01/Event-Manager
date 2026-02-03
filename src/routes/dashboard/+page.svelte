@@ -153,12 +153,12 @@
 	}
 </script>
 
-<div class="bg-gray-50 min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0">
+<div class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors">
 	<div class="max-w-full mx-auto space-y-6">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 			<div>
-				<h1 class="text-3xl font-bold">{eventsDashboardPage.title}</h1>
-				<p class="text-gray-600 mt-1">{eventsDashboardPage.subtitle}</p>
+				<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{eventsDashboardPage.title}</h1>
+				<p class="text-gray-600 dark:text-gray-400 mt-1">{eventsDashboardPage.subtitle}</p>
 			</div>
 			<Button
 				text={eventsDashboardPage.addEventButtonText}
@@ -206,16 +206,16 @@
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 			<div class="lg:col-span-2">
-				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+				<div class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors">
 					<div class="flex items-center justify-between mb-4">
-						<h2 class="text-xl font-semibold">
+						<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
 							{eventsDashboardPage.allEventsTitle}
 						</h2>
 						<a
 							href="/events"
-							class="text-sm text-[#7B6242] hover:text-[#59452B] underline underline-offset-2 cursor-pointer"
+							class="text-sm text-[#7B6242] dark:text-amber-200 hover:text-[#59452B] dark:hover:text-amber-100 underline underline-offset-2 cursor-pointer"
 						>
-							View All Events
+							{eventsDashboardPage.viewBrowseEventsText}
 						</a>
 					</div>
 					<Table
@@ -233,27 +233,27 @@
 			</div>
 
 			<div class="lg:col-span-1">
-				<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-					<h2 class="text-xl font-semibold mb-4">
+				<div class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors">
+					<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
 						{eventsDashboardPage.upcomingTitle}
 					</h2>
 					{#if upcomingEvents.length === 0}
-						<p class="text-[#ADA295] text-sm">{eventsDashboardPage.noUpcomingText}</p>
+						<p class="text-[#ADA295] dark:text-gray-500 text-sm">{eventsDashboardPage.noUpcomingText}</p>
 					{:else}
 						<div class="space-y-3">
 							{#each upcomingEvents as event}
 								<div
-									class="p-4 rounded-lg border border-gray-200 hover:border-[#59452B] transition-colors"
+									class="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#59452B] dark:hover:border-amber-600 transition-colors"
 								>
 									<div class="flex items-start justify-between gap-2">
 										<div class="flex-1 min-w-0">
-											<h3 class="font-medium text-[#59452B] truncate">{event.title}</h3>
-											<p class="text-sm text-[#7B6242] mt-1">{formatDate(event.date)}</p>
+											<h3 class="font-medium text-[#59452B] dark:text-amber-200 truncate">{event.title}</h3>
+											<p class="text-sm text-[#7B6242] dark:text-gray-400 mt-1">{formatDate(event.date)}</p>
 											<div class="flex items-center gap-2 mt-2">
 												<span class="text-xs px-2 py-1 rounded-full {getStatusColor(event.status)}">
 													{event.status}
 												</span>
-												<span class="text-xs text-[#ADA295]">{event.category}</span>
+												<span class="text-xs text-[#ADA295] dark:text-gray-500">{event.category}</span>
 											</div>
 										</div>
 									</div>
