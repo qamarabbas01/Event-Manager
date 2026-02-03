@@ -1,3 +1,3 @@
-import type { Component, ComponentProps } from 'svelte';
+import type { Component } from 'svelte';
 
-export type IconComponent = Component<ComponentProps<any>>;
+export type IconComponent = Component<{ size?: number; class?: string }>;

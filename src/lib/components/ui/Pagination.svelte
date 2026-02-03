@@ -83,7 +83,7 @@
 			<span class="text-[0.9375rem] leading-[150%] font-semibold text-[#59452B]">{backText}</span>
 		</button>
 		<div class="flex items-center gap-2">
-			{#each pageNumbers as pageNum}
+			{#each pageNumbers as pageNum (pageNum)}
 				<button
 					class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-base font-normal transition-colors {pageNum ===
 					currentPage

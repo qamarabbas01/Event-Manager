@@ -29,7 +29,6 @@
 		disabled?: boolean;
 		class?: string;
 		rounded?: rounded;
-		href?: string;
 		customIcon?: IconComponent;
 		customIconPosition?: 'left' | 'right';
 		iconSize?: number;
@@ -45,7 +44,6 @@
 		disabled = false,
 		class: className = '',
 		rounded = 'full',
-		href,
 		customIcon,
 		customIconPosition = 'left',
 		iconSize,
@@ -81,7 +79,8 @@
 	let variantClasses = $derived(
 		{
 			default: {
-				default: 'bg-white text-black border-gray-200 hover:bg-gray-100 hover:border-gray-200 cursor-pointer',
+				default:
+					'bg-white text-black border-gray-200 hover:bg-gray-100 hover:border-gray-200 cursor-pointer',
 				hover: 'bg-gray-100 text-black border-gray-200',
 				focused: 'bg-white text-black border-white border-2',
 				disabled: 'bg-white text-gray-400 border-gray-200 cursor-not-allowed'
@@ -157,8 +156,7 @@
 				disabled: 'bg-[#80808026] text-gray-400 border-[#FFB145] cursor-not-allowed'
 			},
 			transparent: {
-				default:
-					'bg-transparent text-white border-transparent hover:bg-gray-100 cursor-pointer',
+				default: 'bg-transparent text-white border-transparent hover:bg-gray-100 cursor-pointer',
 				hover: 'bg-gray-100 text-white border-transparent',
 				focused: 'bg-transparent text-white border-transparent border-2',
 				disabled: 'bg-transparent text-gray-400 border-transparent cursor-not-allowed'
@@ -185,30 +183,15 @@
 	);
 </script>
 
-{#if href}
-	<a {href} class={allClasses}>
-		{#if customIconPosition === 'right'}
-			<span>{text}</span>
-		{/if}
-		{#if customIcon}
-			{@const Icon = customIcon}
-			<Icon size={iconSize ?? (size === 'sm' ? 10 : size === 'lg' ? 16 : 16)} />
-		{/if}
-		{#if customIconPosition === 'left'}
-			<span>{text}</span>
-		{/if}
-	</a>
-{:else}
-	<button type={buttonType} class={allClasses} disabled={isDisabled} onclick={onClick}>
-		{#if customIconPosition === 'right'}
-			<span>{text}</span>
-		{/if}
-		{#if customIcon}
-			{@const Icon = customIcon}
-			<Icon size={iconSize ?? (size === 'sm' ? 10 : size === 'lg' ? 16 : 16)} />
-		{/if}
-		{#if customIconPosition === 'left'}
-			<span>{text}</span>
-		{/if}
-	</button>
-{/if}
+<button type={buttonType} class={allClasses} disabled={isDisabled} onclick={onClick}>
+	{#if customIconPosition === 'right'}
+		<span>{text}</span>
+	{/if}
+	{#if customIcon}
+		{@const Icon = customIcon}
+		<Icon size={iconSize ?? (size === 'sm' ? 10 : size === 'lg' ? 16 : 16)} />
+	{/if}
+	{#if customIconPosition === 'left'}
+		<span>{text}</span>
+	{/if}
+</button>

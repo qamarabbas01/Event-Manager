@@ -76,7 +76,9 @@
 			onclick={(e) => e.stopPropagation()}
 			onkeydown={(e) => e.stopPropagation()}
 		>
-			<div class="flex items-center justify-between shrink-0 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+			<div
+				class="flex items-center justify-between shrink-0 px-6 py-4 border-b border-gray-200 dark:border-gray-700"
+			>
 				<h2 id="modal-title" class="text-xl font-semibold text-[#59452B] dark:text-amber-200">
 					{title}
 				</h2>

@@ -74,10 +74,7 @@
 
 	function getLabelPosition(startAngle: number, endAngle: number) {
 		const midAngle = (startAngle + endAngle) / 2;
-		const labelRadius =
-			labelPosition === 'inside'
-				? radius
-				: radius + thickness + 12;
+		const labelRadius = labelPosition === 'inside' ? radius : radius + thickness + 12;
 		const pos = polarToCartesian(cx, cy, labelRadius, midAngle);
 
 		return {
@@ -88,12 +85,19 @@
 	}
 </script>
 
-<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+<div
+	class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+>
 	<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{title}</h3>
 
 	<div class="flex flex-col items-center">
-		<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} class="shrink-0 overflow-visible">
-			{#each segmentAngles as seg}
+		<svg
+			width={size}
+			height={size}
+			viewBox={`0 0 ${size} ${size}`}
+			class="shrink-0 overflow-visible"
+		>
+			{#each segmentAngles as seg (seg.label)}
 				{@const path = describeArc(seg.startAngle, seg.endAngle)}
 				{@const pos = getLabelPosition(seg.startAngle, seg.endAngle)}
 
@@ -119,11 +123,9 @@
 
 		{#if showLegend}
 			<div class="flex flex-wrap justify-center gap-x-4 gap-y-1.5 mt-4">
-				{#each segmentAngles as seg}
+				{#each segmentAngles as seg (seg.label)}
 					<div class="flex items-center gap-2">
-						<span
-							class="shrink-0 w-2.5 h-2.5 rounded-full"
-							style="background-color: {seg.color}"
+						<span class="shrink-0 w-2.5 h-2.5 rounded-full" style="background-color: {seg.color}"
 						></span>
 						<span class="text-xs text-gray-600 dark:text-gray-400">{seg.label}</span>
 					</div>

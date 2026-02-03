@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Component, ComponentProps } from 'svelte';
+	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {
 		label: string;
@@ -8,7 +8,7 @@
 			value: string;
 			isPositive: boolean;
 		};
-		icon: Component<ComponentProps<any>>;
+		icon: IconComponent;
 		iconBgColor?: string;
 		iconColor?: string;
 	}
@@ -23,7 +23,9 @@
 	}: Props = $props();
 </script>
 
-<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+<div
+	class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+>
 	<div class="flex items-center justify-between">
 		<div>
 			<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">{label}</p>
