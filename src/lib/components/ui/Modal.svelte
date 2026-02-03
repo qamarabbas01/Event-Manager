@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Close from './icons/Close.svelte';
+	import { modalCloseAriaLabel } from '$lib/data/dashboard';
 
 	interface Props {
 		open?: boolean;
@@ -71,19 +72,19 @@
 		<div
 			bind:this={dialogRef}
 			role="document"
-			class="bg-white rounded-2xl border border-gray-200 shadow-xl max-h-[90vh] w-full max-w-lg flex flex-col {className}"
+			class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl max-h-[90vh] w-full max-w-lg flex flex-col transition-colors {className}"
 			onclick={(e) => e.stopPropagation()}
 			onkeydown={(e) => e.stopPropagation()}
 		>
-			<div class="flex items-center justify-between shrink-0 px-6 py-4 border-b border-gray-200">
-				<h2 id="modal-title" class="text-xl font-semibold text-[#59452B]">
+			<div class="flex items-center justify-between shrink-0 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+				<h2 id="modal-title" class="text-xl font-semibold text-[#59452B] dark:text-amber-200">
 					{title}
 				</h2>
 				<button
 					type="button"
 					onclick={close}
-					class="p-2 rounded-full cursor-pointer text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
-					aria-label="Close"
+					class="p-2 rounded-full cursor-pointer text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
+					aria-label={modalCloseAriaLabel}
 				>
 					<Close size={12} />
 				</button>

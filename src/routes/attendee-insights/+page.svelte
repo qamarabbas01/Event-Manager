@@ -12,11 +12,11 @@
 	} from '$lib/data/dashboard';
 </script>
 
-<div class="min-h-screen bg-[#F8FAFC] p-4 md:p-6">
+<div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
 	<div class="max-w-full flex flex-col gap-6">
 		<header>
-			<h1 class="text-3xl font-bold text-gray-800">{attendeeInsightsPage.title}</h1>
-			<p class="text-gray-600 mt-1">{attendeeInsightsPage.subtitle}</p>
+			<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{attendeeInsightsPage.title}</h1>
+			<p class="text-gray-600 dark:text-gray-400 mt-1">{attendeeInsightsPage.subtitle}</p>
 		</header>
 
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

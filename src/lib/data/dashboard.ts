@@ -160,6 +160,10 @@ export const appTitle = 'Event Manager';
 export const logoutLabel = 'Logout';
 export const toggleMenuAriaLabel = 'Toggle menu';
 
+export const themeLightLabel = 'Light';
+export const themeDarkLabel = 'Dark';
+export const themeToggleAriaLabel = 'Toggle light or dark theme';
+
 export const navItemsData: NavItemData[] = [
 	{ label: 'Home', href: '/', iconKey: 'Home' },
 	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Calendar' },
@@ -173,10 +177,54 @@ export const eventsDashboardPage = {
 	addEventButtonText: 'Add Event',
 	allEventsTitle: 'All Events',
 	upcomingTitle: 'Upcoming Events',
+	viewBrowseEventsText: 'View browse events',
 	emptyStateText: 'No events found',
 	noUpcomingText: 'No upcoming events',
 	itemsCountText: 'events'
 } as const;
+
+export const browseEventsPage = {
+	title: 'Browse Events',
+	subtitle: 'Discover and manage all your events',
+	searchPlaceholder: 'Search events...',
+	filtersButtonText: 'Filters',
+	noResultsText: 'No events match your search.'
+} as const;
+
+export const eventDetailPage = {
+	backLink: 'Back to Events',
+	notFoundMessage: 'Event not found.',
+	returnToBrowse: 'Return to Browse Events',
+	metrics: {
+		attendees: 'Attendees',
+		ticketsSold: 'Tickets Sold',
+		revenue: 'Revenue',
+		availability: 'Availability'
+	},
+	ticketSalesTrendTitle: 'Ticket Sales Trend'
+} as const;
+
+export const eventCardUi = {
+	viewDetailsButtonText: 'View details',
+	availabilityLabel: 'Availability',
+	attendeesSuffix: 'attendees'  
+} as const;
+
+export const addEventModal = {
+	titleLabel: 'Title',
+	dateLabel: 'Date',
+	eventTitlePlaceholder: 'Event title',
+	categoryLabel: 'Category',
+	statusLabel: 'Status',
+	selectCategoryPlaceholder: 'Select category',
+	selectStatusPlaceholder: 'Select status',
+	cancelButtonText: 'Cancel',
+	addEventText: 'Add Event',
+	editEventText: 'Edit Event',
+	saveButtonText: 'Save'
+} as const;
+
+export const modalCloseAriaLabel = 'Close';
 
 export const eventsStatsLabels = {
 	totalEvents: 'Total Events',
@@ -205,9 +253,58 @@ export const dateRangePresetOptions = [
 	dateRangeUi.last6Months
 ] as const;
 
+export type UserRole = 'admin' | 'user';
+
 export const profilePage = {
 	title: 'Profile',
-	comingSoonText: 'Profile page is under development...'
+	subtitle: 'Manage your account and preferences',
+	personalInfo: {
+		sectionTitle: 'Personal Information',
+		nameLabel: 'Full name',
+		namePlaceholder: 'Enter your name',
+		emailLabel: 'Email',
+		emailPlaceholder: 'you@example.com',
+		phoneLabel: 'Phone',
+		phonePlaceholder: '+49 123 456 7890'
+	},
+	account: {
+		sectionTitle: 'Account',
+		memberSinceLabel: 'Member since',
+		editButtonText: 'Edit profile',
+		saveButtonText: 'Save changes'
+	},
+	admin: {
+		sectionTitle: 'Manage users',
+		sectionDescription: 'Add new users to the platform. Only visible to admins.',
+		addUsersButtonText: 'Add user',
+		editUserButtonText: 'Edit',
+		deleteUserButtonText: 'Delete',
+		emptyUsersText: 'No users added yet. Use "Add user" to invite someone.'
+	}
+} as const;
+
+export const addUserModal = {
+	title: 'Add user',
+	editUserTitle: 'Edit user',
+	nameLabel: 'Full name',
+	namePlaceholder: 'Enter full name',
+	emailLabel: 'Email',
+	emailPlaceholder: 'user@example.com',
+	roleLabel: 'Role',
+	selectRolePlaceholder: 'Select role',
+	cancelButtonText: 'Cancel',
+	addButtonText: 'Add user',
+	saveButtonText: 'Save',
+	roleAdmin: 'Admin',
+	roleUser: 'User'
+} as const;
+
+export const profilePlaceholder = {
+	name: 'John Doe',
+	email: 'john.doe@example.com',
+	phone: '+49 123 456 7890',
+	memberSince: 'January 2026',
+	role: 'admin' as UserRole
 } as const;
 
 export const attendeeInsightsPage = {

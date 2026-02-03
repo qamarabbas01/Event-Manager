@@ -126,7 +126,7 @@
 				<button
 					type="button"
 					onclick={clearFilters}
-					class="text-sm text-[#7B6242] hover:text-[#59452B] underline underline-offset-2 cursor-pointer shrink-0"
+					class="text-sm text-[#7B6242] dark:text-amber-200 hover:text-[#59452B] dark:hover:text-amber-100 underline underline-offset-2 cursor-pointer shrink-0"
 				>
 					{clearFiltersText}
 				</button>
@@ -134,19 +134,19 @@
 		</div>
 	</div>
 
-	<div class="overflow-hidden rounded-3xl bg-[#59452B1A] p-px">
-		<div class="rounded-3xl bg-white px-3 sm:px-6 py-2">
+		<div class="overflow-hidden rounded-3xl bg-[#59452B1A] dark:bg-gray-700 p-px">
+		<div class="rounded-3xl bg-white dark:bg-gray-800 px-3 sm:px-6 py-2 transition-colors">
 			{#if totalItems === 0}
-				<div class="py-10 text-center text-[#BDB8B4]">
+				<div class="py-10 text-center text-[#BDB8B4] dark:text-gray-500">
 					{emptyStateText}
 				</div>
 			{:else}
 				<div class="block sm:hidden">
 					{#each paginatedData as row (row.id)}
-						<div class="border-b py-4 space-y-2">
+						<div class="border-b border-gray-200 dark:border-gray-700 py-4 space-y-2">
 							{#each sortedColumns as col}
 								<div>
-									<span class="text-xs text-[#7B6242]">{col.label}</span>
+									<span class="text-xs text-[#7B6242] dark:text-gray-400">{col.label}</span>
 									<div>
 										{#if col.render}
 											{@html col.render(row)}
@@ -165,7 +165,7 @@
 						<thead>
 							<tr class="h-16 text-left">
 								{#each sortedColumns as col}
-									<th class="px-4 text-sm font-medium border-b border-gray-200 text-[#7B6242]">
+									<th class="px-4 text-sm font-medium border-b border-gray-200 dark:border-gray-700 text-[#7B6242] dark:text-gray-400">
 										{col.label}
 									</th>
 								{/each}
@@ -175,11 +175,11 @@
 						<tbody>
 							{#each paginatedData as row (row.id)}
 								<tr
-									class="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+									class="border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
 									onclick={() => onRowClick?.(row)}
 								>
 									{#each sortedColumns as col}
-										<td class="px-4 py-4">
+										<td class="px-4 py-4 text-gray-900 dark:text-gray-100">
 											{#if col.render}
 												{@html col.render(row)}
 											{:else if col.key !== 'actions'}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import SideBar from '$lib/components/SideBar.svelte';
-	import "./app.css";
+	import './app.css';
 
 	let { children } = $props();
 </script>
@@ -10,7 +10,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="flex min-h-screen">
+<div class="flex min-h-screen bg-white dark:bg-[#1D232A] text-gray-900 dark:text-gray-100 transition-colors">
 	<SideBar />
 	<main class="flex-1 min-w-0 md:ml-64">
 		{@render children()}

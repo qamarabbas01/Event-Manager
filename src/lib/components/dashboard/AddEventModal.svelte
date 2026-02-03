@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
 	import SelectDropdown from '$lib/components/ui/SelectDropdown.svelte';
-	import type { Category, Status } from '$lib/data/dashboard';
+	import { addEventModal, type Category, type Status } from '$lib/data/dashboard';
 	import type { Event } from '$lib/data/dashboard';
 
 	const categoryOptions = ['Work', 'Business', 'Personal'] as const;
@@ -32,8 +32,8 @@
 	let status = $state<Status>('Pending');
 
 	const isEditMode = $derived(open && eventToEdit != null);
-	const modalTitle = $derived(isEditMode ? 'Edit Event' : 'Add Event');
-	const submitButtonText = $derived(isEditMode ? 'Save' : 'Add Event');
+	const modalTitle = $derived(isEditMode ? addEventModal.editEventText : addEventModal.addEventText);
+	const submitButtonText = $derived(isEditMode ? addEventModal.saveButtonText : addEventModal.addEventText);
 
 	function resetForm() {
 		title = '';
@@ -89,13 +89,13 @@
 	>
 		<div>
 			<label for="add-event-title" class="block text-sm font-medium text-[#59452B] mb-1">
-				Title
+				{addEventModal.titleLabel}
 			</label>
-			<Input id="add-event-title" bind:value={title} placeholder="Event title" class="w-full" />
+			<Input id="add-event-title" bind:value={title} placeholder={addEventModal.eventTitlePlaceholder} class="w-full" />
 		</div>
 		<div>
 			<label for="add-event-date" class="block text-sm font-medium text-[#59452B] mb-1">
-				Date
+				{addEventModal.dateLabel}
 			</label>
 			<input
 				id="add-event-date"
@@ -106,29 +106,29 @@
 		</div>
 		<div role="group" aria-labelledby="add-event-category-label" class="w-full">
 			<span id="add-event-category-label" class="block text-sm font-medium text-[#59452B] mb-1"
-				>Category</span
+				>{addEventModal.categoryLabel}</span
 			>
 			<SelectDropdown
 				options={[...categoryOptions]}
 				bind:value={category}
-				placeholder="Select category"
+				placeholder={addEventModal.selectCategoryPlaceholder}
 				class="w-full md:w-full!"
 			/>
 		</div>
 		<div role="group" aria-labelledby="add-event-status-label" class="w-full">
 			<span id="add-event-status-label" class="block text-sm font-medium text-[#59452B] mb-1"
-				>Status</span
+				>{addEventModal.statusLabel}</span
 			>
 			<SelectDropdown
 				options={[...statusOptions]}
 				bind:value={status}
-				placeholder="Select status"
+				placeholder={addEventModal.selectStatusPlaceholder}
 				class="w-full md:w-full!"
 			/>
 		</div>
 		<div class="flex gap-3 justify-end pt-2">
 			<Button
-				text="Cancel"
+				text={addEventModal.cancelButtonText}
 				variant="light-gray"
 				size="default"
 				onClick={handleClose}

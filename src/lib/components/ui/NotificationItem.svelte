@@ -13,17 +13,17 @@
 
 	const typeStyles = {
 		success: {
-			bg: 'bg-green-50',
+			bg: 'bg-green-50 dark:bg-green-900/20',
 			iconBg: 'bg-green-500',
 			iconColor: 'text-white'
 		},
 		warning: {
-			bg: 'bg-orange-50',
+			bg: 'bg-orange-50 dark:bg-orange-900/20',
 			iconBg: 'bg-orange-500',
 			iconColor: 'text-white'
 		},
 		info: {
-			bg: 'bg-blue-50',
+			bg: 'bg-blue-50 dark:bg-blue-900/20',
 			iconBg: 'bg-blue-500',
 			iconColor: 'text-white'
 		}
@@ -32,15 +32,15 @@
 	const styles = typeStyles[type];
 </script>
 
-<div class="p-4 rounded-lg {styles.bg} border border-transparent hover:border-gray-300 transition-colors">
+<div class="p-4 rounded-lg {styles.bg} border border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
 	<div class="flex items-start gap-3">
 		<div class="p-2 {styles.iconBg} rounded-full shrink-0">
 			<svelte:component this={Icon} size={16} class={styles.iconColor} />
 		</div>
 		<div class="flex-1 min-w-0">
-			<h4 class="font-semibold text-gray-900 mb-1">{title}</h4>
-			<p class="text-sm text-gray-600 mb-2">{message}</p>
-			<p class="text-xs text-gray-500">{timestamp}</p>
+			<h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">{title}</h4>
+			<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{message}</p>
+			<p class="text-xs text-gray-500 dark:text-gray-500">{timestamp}</p>
 		</div>
 	</div>
 </div>

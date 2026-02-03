@@ -42,7 +42,7 @@
 		bind:value
 		{placeholder}
 		{disabled}
-		class="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed {showIcons &&
+		class="w-full border border-gray-300 dark:border-gray-500 rounded px-3 py-2 text-sm bg-white dark:bg-white dark:text-gray-900 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-amber-500/50 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-200 disabled:cursor-not-allowed {showIcons &&
 		leftIcon
 			? 'pl-10'
 			: ''} {className}"

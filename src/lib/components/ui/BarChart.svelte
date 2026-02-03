@@ -90,9 +90,9 @@
 
 </script>
 
-<div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
 	<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-		<h3 class="text-lg font-semibold text-gray-900">{title}</h3>
+		<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
 		{#if showDatePicker}
 			<DateRangePicker bind:startDate bind:endDate />
 		{/if}
