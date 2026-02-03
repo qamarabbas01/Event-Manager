@@ -40,7 +40,9 @@
 
 	const isEditMode = $derived(open && userToEdit != null);
 	const modalTitle = $derived(isEditMode ? addUserModal.editUserTitle : addUserModal.title);
-	const submitButtonText = $derived(isEditMode ? addUserModal.saveButtonText : addUserModal.addButtonText);
+	const submitButtonText = $derived(
+		isEditMode ? addUserModal.saveButtonText : addUserModal.addButtonText
+	);
 
 	function resetForm() {
 		name = '';
@@ -89,7 +91,10 @@
 		class="space-y-4"
 	>
 		<div>
-			<label for="add-user-name" class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1">
+			<label
+				for="add-user-name"
+				class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1"
+			>
 				{addUserModal.nameLabel}
 			</label>
 			<Input
@@ -100,7 +105,10 @@
 			/>
 		</div>
 		<div>
-			<label for="add-user-email" class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1">
+			<label
+				for="add-user-email"
+				class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1"
+			>
 				{addUserModal.emailLabel}
 			</label>
 			<Input
@@ -112,7 +120,10 @@
 			/>
 		</div>
 		<div role="group" aria-labelledby="add-user-role-label" class="w-full">
-			<span id="add-user-role-label" class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1">
+			<span
+				id="add-user-role-label"
+				class="block text-sm font-medium text-[#59452B] dark:text-amber-200 mb-1"
+			>
 				{addUserModal.roleLabel}
 			</span>
 			<SelectDropdown

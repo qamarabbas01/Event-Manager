@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import HouseOutline from './ui/icons/HouseOutline.svelte';
 	import PersonOutline from './ui/icons/PersonOutline.svelte';
 	import DoorIcon from './ui/icons/DoorIcon.svelte';
@@ -35,8 +36,10 @@
 
 	let isMobileMenuOpen = $state(false);
 
-	function handleNavClick(href: string) {
-		goto(href);
+	type NavHref = (typeof navItemsData)[number]['href'];
+
+	function handleNavClick(href: NavHref) {
+		goto(resolve(href));
 		isMobileMenuOpen = false;
 	}
 
@@ -73,7 +76,7 @@
 			</div>
 
 			<nav class="flex-1 px-4 py-6 space-y-2">
-				{#each navItems as item}
+				{#each navItems as item (item.href)}
 					{@const isActive = $page.url.pathname === item.href}
 					<button
 						onclick={() => handleNavClick(item.href)}
@@ -85,11 +88,16 @@
 						<svelte:component
 							this={item.icon}
 							size={18}
-							class="{isActive ? 'text-[#2C2C2C] dark:text-gray-100' : 'text-[#6B7280] dark:text-gray-400'} shrink-0"
+							class="{isActive
+								? 'text-[#2C2C2C] dark:text-gray-100'
+								: 'text-[#6B7280] dark:text-gray-400'} shrink-0"
 						/>
 						<span class="flex-1 text-base font-normal">{item.label}</span>
 						{#if isActive}
-							<div class="w-[3px] h-5 bg-[#bb9b9b] dark:bg-gray-500 rounded-full shrink-0" aria-hidden="true"></div>
+							<div
+								class="w-[3px] h-5 bg-[#bb9b9b] dark:bg-gray-500 rounded-full shrink-0"
+								aria-hidden="true"
+							></div>
 						{/if}
 					</button>
 				{/each}
@@ -103,14 +111,40 @@
 					title={$theme === 'dark' ? themeLightLabel : themeDarkLabel}
 				>
 					{#if $theme === 'dark'}
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
-							<circle cx="12" cy="12" r="4"/>
-							<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="shrink-0"
+							aria-hidden="true"
+						>
+							<circle cx="12" cy="12" r="4" />
+							<path
+								d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+							/>
 						</svg>
 						<span class="flex-1">{themeLightLabel}</span>
 					{:else}
-						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0" aria-hidden="true">
-							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="shrink-0"
+							aria-hidden="true"
+						>
+							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
 						</svg>
 						<span class="flex-1">{themeDarkLabel}</span>
 					{/if}

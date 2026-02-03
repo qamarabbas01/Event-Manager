@@ -15,5 +15,10 @@
 	fill="currentColor"
 	class={className}
 >
-	<path d="M4 0.5V7.5M0.5 4H7.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+	<path
+		d="M4 0.5V7.5M0.5 4H7.5"
+		stroke="currentColor"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	/>
 </svg>

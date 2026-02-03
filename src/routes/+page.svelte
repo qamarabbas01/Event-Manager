@@ -51,10 +51,14 @@
 	);
 </script>
 
-<div class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors">
+<div
+	class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors"
+>
 	<div class="max-w-full mx-auto space-y-6">
 		<div>
-			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{dashboardPage.title}</h1>
+			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+				{dashboardPage.title}
+			</h1>
 			<p class="text-gray-600 dark:text-gray-400">{dashboardPage.subtitle}</p>
 		</div>
 
@@ -111,10 +115,14 @@
 			/>
 		</div>
 
-		<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
-			<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{notificationsSectionTitle}</h2>
+		<div
+			class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+		>
+			<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+				{notificationsSectionTitle}
+			</h2>
 			<div class="space-y-3">
-				{#each notifications as notification}
+				{#each notifications as notification, i (i)}
 					<NotificationItem
 						type={notification.type}
 						title={notification.title}

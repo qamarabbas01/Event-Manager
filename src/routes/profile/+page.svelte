@@ -227,7 +227,7 @@
 
 	<AddUserModal
 		bind:open={addUserModalOpen}
-		userToEdit={userToEdit}
+		{userToEdit}
 		onAdd={handleAddUser}
 		onEdit={handleEditUser}
 		onClose={closeUserModal}

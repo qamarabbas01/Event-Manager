@@ -30,4 +30,3 @@
 		stroke-linejoin="round"
 	/>
 </svg>
-

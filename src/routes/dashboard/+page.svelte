@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Plus from '$lib/components/ui/icons/Plus.svelte';
 	import Table from '$lib/components/ui/Table.svelte';
@@ -17,6 +18,7 @@
 		statuses,
 		type Event,
 		type DashboardTableRow,
+		type TableAction,
 		type Status
 	} from '$lib/data/dashboard';
 
@@ -82,6 +84,13 @@
 		events = events.filter((e) => e.id !== id);
 	}
 
+	function handleTableAction(action: TableAction, row: DashboardTableRow) {
+		const eventId = Number(row.id);
+		if (isNaN(eventId)) return;
+		if (action === 'edit') handleEdit(eventId);
+		if (action === 'delete') handleDelete(eventId);
+	}
+
 	const tableData: DashboardTableRow[] = $derived(
 		events.map((event) => ({
 			id: event.id,
@@ -105,35 +114,6 @@
 			.slice(0, 5)
 	);
 
-	$effect(() => {
-		function handleTableAction(e: MouseEvent) {
-			const target = e.target as HTMLElement;
-			const button = target.closest('button[data-action]') as HTMLButtonElement;
-			if (!button) return;
-
-			const action = button.getAttribute('data-action');
-			const eventIdStr = button.getAttribute('data-event-id');
-			if (!action || !eventIdStr) return;
-
-			const eventId = parseInt(eventIdStr, 10);
-			if (isNaN(eventId)) return;
-
-			e.stopPropagation();
-			e.preventDefault();
-
-			if (action === 'edit') {
-				handleEdit(eventId);
-			} else if (action === 'delete') {
-				handleDelete(eventId);
-			}
-		}
-
-		document.addEventListener('click', handleTableAction as EventListener);
-		return () => {
-			document.removeEventListener('click', handleTableAction as EventListener);
-		};
-	});
-
 	function formatDate(dateString: string): string {
 		const date = new Date(dateString);
 		return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -153,11 +133,15 @@
 	}
 </script>
 
-<div class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors">
+<div
+	class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors"
+>
 	<div class="max-w-full mx-auto space-y-6">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
 			<div>
-				<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">{eventsDashboardPage.title}</h1>
+				<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+					{eventsDashboardPage.title}
+				</h1>
 				<p class="text-gray-600 dark:text-gray-400 mt-1">{eventsDashboardPage.subtitle}</p>
 			</div>
 			<Button
@@ -206,13 +190,15 @@
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 			<div class="lg:col-span-2">
-				<div class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors">
+				<div
+					class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors"
+				>
 					<div class="flex items-center justify-between mb-4">
 						<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
 							{eventsDashboardPage.allEventsTitle}
 						</h2>
 						<a
-							href="/events"
+							href={resolve('/events')}
 							class="text-sm text-[#7B6242] dark:text-amber-200 hover:text-[#59452B] dark:hover:text-amber-100 underline underline-offset-2 cursor-pointer"
 						>
 							{eventsDashboardPage.viewBrowseEventsText}
@@ -223,6 +209,7 @@
 						columns={tableColumns}
 						emptyStateText={eventsDashboardPage.emptyStateText}
 						searchPlaceholder={tableUi.searchPlaceholder}
+						onAction={handleTableAction}
 						filterableColumns={[
 							{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
 							{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
@@ -233,27 +220,37 @@
 			</div>
 
 			<div class="lg:col-span-1">
-				<div class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors">
+				<div
+					class="bg-white dark:bg-[#212932] rounded-2xl p-6 border border-gray-200 dark:border-gray-700/50 shadow-sm transition-colors"
+				>
 					<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
 						{eventsDashboardPage.upcomingTitle}
 					</h2>
 					{#if upcomingEvents.length === 0}
-						<p class="text-[#ADA295] dark:text-gray-500 text-sm">{eventsDashboardPage.noUpcomingText}</p>
+						<p class="text-[#ADA295] dark:text-gray-500 text-sm">
+							{eventsDashboardPage.noUpcomingText}
+						</p>
 					{:else}
 						<div class="space-y-3">
-							{#each upcomingEvents as event}
+							{#each upcomingEvents as event (event.id)}
 								<div
 									class="p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#59452B] dark:hover:border-amber-600 transition-colors"
 								>
 									<div class="flex items-start justify-between gap-2">
 										<div class="flex-1 min-w-0">
-											<h3 class="font-medium text-[#59452B] dark:text-amber-200 truncate">{event.title}</h3>
-											<p class="text-sm text-[#7B6242] dark:text-gray-400 mt-1">{formatDate(event.date)}</p>
+											<h3 class="font-medium text-[#59452B] dark:text-amber-200 truncate">
+												{event.title}
+											</h3>
+											<p class="text-sm text-[#7B6242] dark:text-gray-400 mt-1">
+												{formatDate(event.date)}
+											</p>
 											<div class="flex items-center gap-2 mt-2">
 												<span class="text-xs px-2 py-1 rounded-full {getStatusColor(event.status)}">
 													{event.status}
 												</span>
-												<span class="text-xs text-[#ADA295] dark:text-gray-500">{event.category}</span>
+												<span class="text-xs text-[#ADA295] dark:text-gray-500"
+													>{event.category}</span
+												>
 											</div>
 										</div>
 									</div>

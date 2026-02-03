@@ -32,8 +32,12 @@
 	let status = $state<Status>('Pending');
 
 	const isEditMode = $derived(open && eventToEdit != null);
-	const modalTitle = $derived(isEditMode ? addEventModal.editEventText : addEventModal.addEventText);
-	const submitButtonText = $derived(isEditMode ? addEventModal.saveButtonText : addEventModal.addEventText);
+	const modalTitle = $derived(
+		isEditMode ? addEventModal.editEventText : addEventModal.addEventText
+	);
+	const submitButtonText = $derived(
+		isEditMode ? addEventModal.saveButtonText : addEventModal.addEventText
+	);
 
 	function resetForm() {
 		title = '';
@@ -91,7 +95,12 @@
 			<label for="add-event-title" class="block text-sm font-medium text-[#59452B] mb-1">
 				{addEventModal.titleLabel}
 			</label>
-			<Input id="add-event-title" bind:value={title} placeholder={addEventModal.eventTitlePlaceholder} class="w-full" />
+			<Input
+				id="add-event-title"
+				bind:value={title}
+				placeholder={addEventModal.eventTitlePlaceholder}
+				class="w-full"
+			/>
 		</div>
 		<div>
 			<label for="add-event-date" class="block text-sm font-medium text-[#59452B] mb-1">

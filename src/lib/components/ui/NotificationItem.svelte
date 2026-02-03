@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Component, ComponentProps } from 'svelte';
+	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {
 		type: 'success' | 'warning' | 'info';
 		title: string;
 		message: string;
 		timestamp: string;
-		icon: Component<ComponentProps<any>>;
+		icon: IconComponent;
 	}
 
 	let { type, title, message, timestamp, icon: Icon }: Props = $props();
@@ -29,13 +29,15 @@
 		}
 	};
 
-	const styles = typeStyles[type];
+	const styles = $derived(typeStyles[type]);
 </script>
 
-<div class="p-4 rounded-lg {styles.bg} border border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
+<div
+	class="p-4 rounded-lg {styles.bg} border border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+>
 	<div class="flex items-start gap-3">
 		<div class="p-2 {styles.iconBg} rounded-full shrink-0">
-			<svelte:component this={Icon} size={16} class={styles.iconColor} />
+			<Icon size={16} class={styles.iconColor} />
 		</div>
 		<div class="flex-1 min-w-0">
 			<h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-1">{title}</h4>

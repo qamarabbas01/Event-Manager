@@ -20,6 +20,3 @@
 		fill="currentColor"
 	/>
 </svg>
-
-
-

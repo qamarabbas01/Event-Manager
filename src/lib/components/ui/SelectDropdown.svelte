@@ -70,13 +70,18 @@
 		aria-haspopup="listbox"
 		aria-label={placeholder}
 	>
-		<span class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400 dark:text-gray-500' : ''}">{displayValue}</span>
+		<span
+			class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400 dark:text-gray-500' : ''}"
+			>{displayValue}</span
+		>
 		<ArrowDown size={10} class="shrink-0 ml-1 transition-transform {isOpen ? 'rotate-180' : ''}" />
 	</button>
 
 	{#if isOpen}
 		<div bind:this={dropdownRef} class="absolute top-full left-0 mt-1 z-50 w-full min-w-[120px]">
-			<div class="rounded border border-gray-200 dark:border-gray-500 bg-white dark:bg-white shadow-md py-1">
+			<div
+				class="rounded border border-gray-200 dark:border-gray-500 bg-white dark:bg-white shadow-md py-1"
+			>
 				<ul class="flex flex-col gap-1 p-2" role="menu">
 					{#each dropdownItems as item, index (index)}
 						<li role="menuitem" class="list-none">

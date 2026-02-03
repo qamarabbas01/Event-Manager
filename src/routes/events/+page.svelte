@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
@@ -21,7 +22,7 @@
 	);
 
 	function viewDetails(id: string) {
-		goto(`/events/${id}`);
+		goto(resolve(`/events/${id}`));
 	}
 </script>
 
@@ -53,13 +54,15 @@
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-			{#each filteredEvents as event}
+			{#each filteredEvents as event (event.id)}
 				<EventCard {event} onViewDetails={viewDetails} />
 			{/each}
 		</div>
 
 		{#if filteredEvents.length === 0}
-			<p class="text-center text-gray-500 dark:text-gray-400 py-12">{browseEventsPage.noResultsText}</p>
+			<p class="text-center text-gray-500 dark:text-gray-400 py-12">
+				{browseEventsPage.noResultsText}
+			</p>
 		{/if}
 	</div>
 </div>

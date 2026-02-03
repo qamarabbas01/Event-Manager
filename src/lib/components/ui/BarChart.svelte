@@ -17,7 +17,15 @@
 		showDatePicker?: boolean;
 	}
 
-	let { title, data, height = 200, color = '#9333ea', baseYear = 2024, valuePrefix = '', showDatePicker = true }: Props = $props();
+	let {
+		title,
+		data,
+		height = 200,
+		color = '#9333ea',
+		baseYear = 2024,
+		valuePrefix = '',
+		showDatePicker = true
+	}: Props = $props();
 
 	let startDate = $state('');
 	let endDate = $state('');
@@ -34,12 +42,12 @@
 		if (filteredData.length === 0) return [];
 		const hasDates = filteredData.every((p) => p.date);
 		if (!hasDates) return filteredData;
-		const byYear = new Map<string, number>();
+		const byYear: Record<string, number> = {};
 		for (const p of filteredData) {
 			const year = p.date!.slice(0, 4);
-			byYear.set(year, (byYear.get(year) ?? 0) + p.value);
+			byYear[year] = (byYear[year] ?? 0) + p.value;
 		}
-		return [...byYear.entries()]
+		return Object.entries(byYear)
 			.sort(([a], [b]) => a.localeCompare(b))
 			.map(([label, value]) => ({ label, value }));
 	});
@@ -58,6 +66,7 @@
 	});
 
 	const padding = { top: 20, right: 20, bottom: 44, left: 58 };
+	const gridLineIndices = [0, 1, 2, 3, 4] as const;
 	const chartHeight = $derived(height);
 
 	const maxValue = $derived(Math.max(...chartData.map((d) => d.value), 0));
@@ -87,10 +96,11 @@
 		const s = value >= 1000 ? value.toLocaleString() : String(value);
 		return valuePrefix ? valuePrefix + s : s;
 	}
-
 </script>
 
-<div class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors">
+<div
+	class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+>
 	<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
 		<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
 		{#if showDatePicker}
@@ -105,7 +115,7 @@
 			viewBox="0 0 {chartWidth} {chartHeight}"
 			preserveAspectRatio="xMidYMid meet"
 		>
-			{#each Array(5) as _, i}
+			{#each gridLineIndices as i (i)}
 				{@const y = padding.top + (i / 4) * (chartHeight - padding.top - padding.bottom)}
 				<line
 					x1={padding.left}
@@ -121,7 +131,7 @@
 				</text>
 			{/each}
 
-			{#each chartData as point, i}
+			{#each chartData as point, i (i)}
 				{@const x = xScale(i, chartWidth)}
 				{@const y = yScale(point.value)}
 				{@const barH = barHeight(point.value)}
@@ -129,7 +139,7 @@
 				<rect {x} {y} width={barW} height={barH} fill={color} rx="4" />
 			{/each}
 
-			{#each chartData as point, i}
+			{#each chartData as point, i (i)}
 				{@const barW = getBarWidth(chartWidth)}
 				{@const x = xScale(i, chartWidth) + barW / 2}
 				<text

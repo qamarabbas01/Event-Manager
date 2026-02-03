@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { getEventById } from '$lib/data/events';
 	import { eventDetailPage } from '$lib/data/dashboard';
 	import LineChart from '$lib/components/ui/LineChart.svelte';
@@ -14,6 +15,7 @@
 
 	const eventId = $derived($page.params.id ?? '');
 	const event = $derived(getEventById(eventId));
+	const eventsHref = resolve('/events');
 
 	function formatEventDate(dateStr: string): string {
 		return new Date(dateStr).toLocaleDateString('en-US', {
@@ -24,14 +26,14 @@
 	}
 
 	function backToEvents() {
-		goto('/events');
+		goto(eventsHref);
 	}
 </script>
 
 <div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
 	<div class="space-y-6">
 		<a
-			href="/events"
+			href={eventsHref}
 			onclick={(e) => {
 				e.preventDefault();
 				backToEvents();
@@ -43,10 +45,12 @@
 		</a>
 
 		{#if !event}
-			<div class="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 shadow-sm text-center transition-colors">
+			<div
+				class="bg-white dark:bg-gray-800 rounded-2xl p-12 border border-gray-200 dark:border-gray-700 shadow-sm text-center transition-colors"
+			>
 				<p class="text-gray-500 dark:text-gray-400 mb-4">{eventDetailPage.notFoundMessage}</p>
 				<a
-					href="/events"
+					href={eventsHref}
 					onclick={(e) => {
 						e.preventDefault();
 						backToEvents();
@@ -57,13 +61,11 @@
 				</a>
 			</div>
 		{:else}
-			<section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden transition-colors">
+			<section
+				class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden transition-colors"
+			>
 				<div class="aspect-21/9 md:aspect-3/1 relative">
-					<img
-						src={event.image}
-						alt={event.title}
-						class="w-full h-full object-cover"
-					/>
+					<img src={event.image} alt={event.title} class="w-full h-full object-cover" />
 				</div>
 				<div class="p-6 md:p-8">
 					<span

@@ -10,7 +10,8 @@
 		categories,
 		statuses,
 		type Event,
-		type DashboardTableRow
+		type DashboardTableRow,
+		type TableAction
 	} from '$lib/data/dashboard';
 
 	let events = $state<Event[]>([...initialEvents]);
@@ -27,6 +28,13 @@
 		events = events.filter((e) => e.id !== id);
 	}
 
+	function handleTableAction(action: TableAction, row: DashboardTableRow) {
+		const eventId = Number(row.id);
+		if (isNaN(eventId)) return;
+		if (action === 'edit') handleEdit(eventId);
+		if (action === 'delete') handleDelete(eventId);
+	}
+
 	const tableData: DashboardTableRow[] = $derived(
 		events.map((event) => ({
 			id: event.id,
@@ -37,35 +45,6 @@
 			actions: ''
 		}))
 	);
-
-	$effect(() => {
-		function handleTableAction(e: MouseEvent) {
-			const target = e.target as HTMLElement;
-			const button = target.closest('button[data-action]') as HTMLButtonElement;
-			if (!button) return;
-
-			const action = button.getAttribute('data-action');
-			const eventIdStr = button.getAttribute('data-event-id');
-			if (!action || !eventIdStr) return;
-
-			const eventId = parseInt(eventIdStr, 10);
-			if (isNaN(eventId)) return;
-
-			e.stopPropagation();
-			e.preventDefault();
-
-			if (action === 'edit') {
-				handleEdit(eventId);
-			} else if (action === 'delete') {
-				handleDelete(eventId);
-			}
-		}
-
-		document.addEventListener('click', handleTableAction as EventListener);
-		return () => {
-			document.removeEventListener('click', handleTableAction as EventListener);
-		};
-	});
 </script>
 
 <div class="bg-white min-h-screen p-3 md:p-5 max-w-full mx-auto md:mx-0">
@@ -84,6 +63,7 @@
 		columns={tableColumns}
 		emptyStateText={eventsDashboardPage.emptyStateText}
 		searchPlaceholder={tableUi.searchPlaceholder}
+		onAction={handleTableAction}
 		filterableColumns={[
 			{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
 			{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
