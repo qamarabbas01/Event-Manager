@@ -8,6 +8,7 @@
 	import FilterIcon from '$lib/components/ui/icons/FilterIcon.svelte';
 	import { browseEvents } from '$lib/data/events';
 	import { browseEventsPage } from '$lib/data/dashboard';
+	import Arrowleft from '$lib/components/ui/icons/Arrowleft.svelte';
 
 	let searchQuery = $state('');
 	const filteredEvents = $derived(
@@ -28,9 +29,19 @@
 
 <div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
 	<div class="max-w-full space-y-6">
-		<header>
-			<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{browseEventsPage.title}</h1>
-			<p class="text-gray-500 dark:text-gray-400 mt-1">{browseEventsPage.subtitle}</p>
+		<header class="flex flex-col sm:flex-row justify-between gap-4">
+			<div class="flex flex-col gap-2">
+				<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">
+					{browseEventsPage.title}
+				</h1>
+				<p class="text-gray-500 dark:text-gray-400">{browseEventsPage.subtitle}</p>
+			</div>
+			<div class="flex gap-2 md:hidden">
+				<a href="/dashboard" class="text-sm items-center flex gap-2 text-black dark:text-white cursor-pointer">
+					<Arrowleft size={16} class="text-black dark:text-white shrink-0" />
+					Back to Dashboard
+				</a>
+			</div>
 		</header>
 
 		<div class="flex flex-col sm:flex-row gap-3">
@@ -48,8 +59,9 @@
 				variant="default"
 				size="default"
 				customIcon={FilterIcon}
+				iconSize={24}
 				rounded="lg"
-				class="shrink-0 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
+				class="shrink-0 border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700"
 			/>
 		</div>
 

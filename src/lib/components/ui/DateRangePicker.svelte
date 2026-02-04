@@ -25,7 +25,7 @@
 	});
 
 	const inputClass =
-		'rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500';
+		'rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700 dark:text-gray-100 px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500';
 </script>
 
 <div class="flex flex-wrap items-center gap-2 {className}">
@@ -36,7 +36,7 @@
 			class={inputClass}
 			aria-label={dateRangeUi.startDateAriaLabel}
 		/>
-		<span class="text-gray-400 text-sm">–</span>
+		<span class="text-gray-400 dark:text-gray-500 text-sm">–</span>
 		<input
 			type="date"
 			bind:value={endDate}

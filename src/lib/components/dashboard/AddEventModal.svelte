@@ -92,29 +92,37 @@
 		class="space-y-4"
 	>
 		<div>
-			<label for="add-event-title" class="block text-sm font-medium text-[#59452B] mb-1">
+			<label
+				for="add-event-title"
+				class="block text-sm font-medium text-[#59452B] dark:text-white mb-1"
+			>
 				{addEventModal.titleLabel}
 			</label>
 			<Input
 				id="add-event-title"
 				bind:value={title}
 				placeholder={addEventModal.eventTitlePlaceholder}
-				class="w-full"
+				class="w-full dark:bg-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
 			/>
 		</div>
 		<div>
-			<label for="add-event-date" class="block text-sm font-medium text-[#59452B] mb-1">
+			<label
+				for="add-event-date"
+				class="block text-sm font-medium text-[#59452B] dark:text-white mb-1"
+			>
 				{addEventModal.dateLabel}
 			</label>
 			<input
 				id="add-event-date"
 				type="date"
 				bind:value={date}
-				class="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
+				class="w-full border border-gray-300 dark:border-gray-500 rounded px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-amber-500/50 focus:border-transparent"
 			/>
 		</div>
 		<div role="group" aria-labelledby="add-event-category-label" class="w-full">
-			<span id="add-event-category-label" class="block text-sm font-medium text-[#59452B] mb-1"
+			<span
+				id="add-event-category-label"
+				class="block text-sm font-medium text-[#59452B] dark:text-white mb-1"
 				>{addEventModal.categoryLabel}</span
 			>
 			<SelectDropdown
@@ -125,7 +133,9 @@
 			/>
 		</div>
 		<div role="group" aria-labelledby="add-event-status-label" class="w-full">
-			<span id="add-event-status-label" class="block text-sm font-medium text-[#59452B] mb-1"
+			<span
+				id="add-event-status-label"
+				class="block text-sm font-medium text-[#59452B] dark:text-white mb-1"
 				>{addEventModal.statusLabel}</span
 			>
 			<SelectDropdown

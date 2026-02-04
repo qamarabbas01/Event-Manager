@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/Button.svelte';
 	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
 	import MapPin from '$lib/components/ui/icons/MapPin.svelte';
 	import Users from '$lib/components/ui/icons/Users.svelte';
@@ -24,8 +23,11 @@
 	const availability = $derived(availabilityPercent(event.attendees, event.capacity));
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <article
-	class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col transition-colors"
+	class="bg-white dark:bg-gray-800 cursor-pointer rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col transition-colors"
+	onclick={() => onViewDetails?.(event.id)}
 >
 	<div class="relative aspect-16/10 shrink-0">
 		<img src={event.image} alt={event.title} class="w-full h-full object-cover" />
@@ -69,17 +71,6 @@
 					></div>
 				</div>
 			</div>
-			{#if onViewDetails}
-				<Button
-					text={eventCardUi.viewDetailsButtonText}
-					type="button"
-					variant="primary-blue"
-					size="sm"
-					rounded="lg"
-					class="w-full"
-					onClick={() => onViewDetails(event.id)}
-				/>
-			{/if}
 		</div>
 	</div>
 </article>
