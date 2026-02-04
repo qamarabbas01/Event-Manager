@@ -178,6 +178,7 @@
 					size="default"
 					rounded="lg"
 					onClick={() => (addUserModalOpen = true)}
+					class="bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 border dark:border-gray-500 border-gray-200"
 				/>
 				{#if addedUsers.length === 0}
 					<p class="mt-4 text-sm text-gray-500 dark:text-gray-400">

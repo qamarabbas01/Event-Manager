@@ -17,14 +17,14 @@
 >
 	<path
 		d="M14.674 7.52457L1.12484 7.52457"
-		stroke="#59452B"
+		stroke="currentColor"
 		stroke-width="1.5"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 	/>
 	<path
 		d="M6.77473 14.2991L1.41436 8.93867C0.633318 8.15762 0.633329 6.89129 1.41438 6.11025L6.77473 0.749989"
-		stroke="#59452B"
+		stroke="currentColor"
 		stroke-width="1.5"
 		stroke-linecap="round"
 		stroke-linejoin="round"

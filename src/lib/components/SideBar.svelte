@@ -19,6 +19,8 @@
 	import type { IconComponent } from '$lib/types/icons';
 	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
 	import Revenue from './ui/icons/Revenue.svelte';
+	import LightIcon from './ui/icons/Light.svelte';
+	import MoonIcon from './ui/icons/MoonIcon.svelte';
 
 	const iconMap: Record<string, IconComponent> = {
 		Home: HouseOutline,
@@ -59,7 +61,7 @@
 <div class="relative">
 	<button
 		onclick={toggleMobileMenu}
-		class="md:hidden fixed top-4 right-4 z-50 p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+		class="md:hidden fixed top-4 right-4 z-50 p-2 cursor-pointer rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
 		aria-label={toggleMenuAriaLabel}
 	>
 		<MenuToggleIcon size={24} open={isMobileMenuOpen} />
@@ -111,41 +113,10 @@
 					title={$theme === 'dark' ? themeLightLabel : themeDarkLabel}
 				>
 					{#if $theme === 'dark'}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="shrink-0"
-							aria-hidden="true"
-						>
-							<circle cx="12" cy="12" r="4" />
-							<path
-								d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-							/>
-						</svg>
+						<LightIcon size={20} class="shrink-0" />
 						<span class="flex-1">{themeLightLabel}</span>
 					{:else}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							class="shrink-0"
-							aria-hidden="true"
-						>
-							<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-						</svg>
+						<MoonIcon size={20} class="shrink-0" />
 						<span class="flex-1">{themeDarkLabel}</span>
 					{/if}
 				</button>

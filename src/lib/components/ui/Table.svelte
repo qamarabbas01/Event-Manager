@@ -5,6 +5,8 @@
 	import SelectDropdown from './SelectDropdown.svelte';
 	import { categories, statuses, tableUi } from '$lib/data/dashboard';
 	import type { DashboardTableColumn, DashboardTableRow, TableAction } from '$lib/data/dashboard';
+	import DeleteIcon from './icons/DeleteIcon.svelte';
+	import Editicon from './icons/Editicon.svelte';
 
 	interface Props {
 		data: DashboardTableRow[];
@@ -48,12 +50,28 @@
 	let lastSearchQuery = $state('');
 	let lastFilterValuesKey = $state('');
 
-	$effect(() => {
-		filterableColumns.forEach((filter) => {
-			if (filterValues[filter.key] === undefined || filterValues[filter.key] === '') {
-				filterValues = { ...filterValues, [filter.key]: filter.options[0] || 'All' };
+	$effect.pre(() => {
+		const defaults = Object.fromEntries(
+			filterableColumns.map((f) => [f.key, f.options[0] || 'All'])
+		) as Record<string, string>;
+
+		const next = { ...filterValues };
+		let changed = false;
+
+		for (const [key, defaultValue] of Object.entries(defaults)) {
+			if (next[key] === undefined || next[key] === '') {
+				next[key] = defaultValue;
+				changed = true;
 			}
-		});
+		}
+
+		const isEmpty = Object.keys(next).length === 0;
+		if (isEmpty) {
+			filterValues = defaults;
+			return;
+		}
+
+		if (changed) filterValues = next;
 	});
 
 	$effect(() => {
@@ -68,17 +86,19 @@
 		lastFilterValuesKey = nextFilterValuesKey;
 	});
 
+	function getCellText(row: DashboardTableRow, key: string): string {
+		const value = row[key];
+		if (value === null || value === undefined) return '';
+		return String(value);
+	}
+
 	const filteredData = $derived.by(() => {
 		let result = [...data];
 
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
 			result = result.filter((row) =>
-				searchableColumns.some((key) =>
-					String(row[key] || '')
-						.toLowerCase()
-						.includes(query)
-				)
+				searchableColumns.some((key) => getCellText(row, key).toLowerCase().includes(query))
 			);
 		}
 
@@ -108,6 +128,8 @@
 		const rest = columns.filter((c) => c.key !== 'actions');
 		return actions ? [...rest, actions] : columns;
 	});
+
+	const dataColumns = $derived(sortedColumns.filter((c) => c.key !== 'actions'));
 
 	function handlePageChange(page: number) {
 		currentPage = page;
@@ -162,90 +184,77 @@
 					{emptyStateText}
 				</div>
 			{:else}
-				<div class="block sm:hidden">
+				<div class="block sm:hidden space-y-3 py-2">
 					{#each paginatedData as row (row.id)}
-						<div class="border-b border-gray-200 dark:border-gray-700 py-4 space-y-2">
-							{#each sortedColumns as col (col.key)}
-								<div>
-									<span class="text-xs text-[#7B6242] dark:text-gray-400">{col.label}</span>
-									<div>
-										{#if col.key === 'actions'}
-											{#if onAction}
-												<div class="flex gap-3 flex-col md:flex-row">
-													<button
-														type="button"
-														class="rounded text-xs cursor-pointer"
-														aria-label={`edit row ${row.id}`}
-														onclick={(e) => {
-															e.stopPropagation();
-															onAction?.('edit', row);
-														}}
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="18"
-															height="18"
-															viewBox="0 0 24 24"
-															fill="none"
-															stroke="currentColor"
-															stroke-width="2"
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															class="text-gray-900 dark:text-gray-100"
-															aria-hidden="true"
-														>
-															<path d="M12 20h9" />
-															<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-														</svg>
-													</button>
-													<button
-														type="button"
-														class="rounded text-xs cursor-pointer"
-														aria-label={`delete row ${row.id}`}
-														onclick={(e) => {
-															e.stopPropagation();
-															onAction?.('delete', row);
-														}}
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="18"
-															height="18"
-															viewBox="0 0 24 24"
-															fill="none"
-															stroke="currentColor"
-															stroke-width="2"
-															stroke-linecap="round"
-															stroke-linejoin="round"
-															class="text-red-600 dark:text-red-400"
-															aria-hidden="true"
-														>
-															<polyline points="3 6 5 6 21 6" />
-															<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-															<path d="M10 11v6" />
-															<path d="M14 11v6" />
-															<path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-														</svg>
-													</button>
-												</div>
-											{/if}
-										{:else}
-											{row[col.key]}
-										{/if}
-									</div>
+						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						<div
+							class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm transition-colors"
+							role={onRowClick ? 'button' : undefined}
+							tabindex={onRowClick ? 0 : undefined}
+							onclick={() => onRowClick?.(row)}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') onRowClick?.(row);
+							}}
+						>
+							<div class="flex items-start justify-between gap-3">
+								<div class="min-w-0">
+									<p class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+										{getCellText(row, dataColumns[0]?.key ?? 'id') || `Row ${row.id}`}
+									</p>
 								</div>
-							{/each}
+
+								{#if onAction}
+									<div class="flex items-center gap-2 shrink-0">
+										<button
+											type="button"
+											class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors"
+											aria-label={`Edit row ${row.id}`}
+											onclick={(e) => {
+												e.stopPropagation();
+												onAction?.('edit', row);
+											}}
+										>
+											<Editicon size={18} class="text-gray-900 dark:text-gray-100" />
+										</button>
+										<button
+											type="button"
+											class="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+											aria-label={`Delete row ${row.id}`}
+											onclick={(e) => {
+												e.stopPropagation();
+												onAction?.('delete', row);
+											}}
+										>
+											<DeleteIcon size={18} class="text-red-600 dark:text-red-400" />
+										</button>
+									</div>
+								{/if}
+							</div>
+
+							<div class="mt-3 grid grid-cols-2 gap-x-4 gap-y-3">
+								{#each dataColumns as col (col.key)}
+									<div class="min-w-0">
+										<p class="text-[11px] font-medium text-[#7B6242] dark:text-gray-400">
+											{col.label}
+										</p>
+										<p class="text-sm text-gray-900 dark:text-gray-100 truncate">
+											{getCellText(row, col.key)}
+										</p>
+									</div>
+								{/each}
+							</div>
 						</div>
 					{/each}
 				</div>
 
-				<div class="hidden sm:block overflow-x-auto">
-					<table class="w-full border-collapse">
+				<div class="hidden sm:block overflow-x-auto -mx-3 sm:mx-0">
+					<table class="min-w-176 w-full border-collapse">
 						<thead>
 							<tr class="h-16 text-left">
 								{#each sortedColumns as col (col.key)}
 									<th
-										class="px-4 text-sm font-medium border-b border-gray-200 dark:border-gray-700 text-[#7B6242] dark:text-gray-400"
+										class="px-4 text-sm font-medium border-b border-gray-200 dark:border-gray-700 text-[#7B6242] dark:text-gray-400 whitespace-nowrap {col.class ??
+											''}"
 									>
 										{col.label}
 									</th>
@@ -260,10 +269,10 @@
 									onclick={() => onRowClick?.(row)}
 								>
 									{#each sortedColumns as col (col.key)}
-										<td class="px-4 py-4 text-gray-900 dark:text-gray-100">
+										<td class="px-4 py-4 text-gray-900 dark:text-gray-100 {col.class ?? ''}">
 											{#if col.key === 'actions'}
 												{#if onAction}
-													<div class="flex gap-3 flex-col md:flex-row">
+													<div class="flex gap-3">
 														<button
 															type="button"
 															class="rounded text-xs cursor-pointer"
@@ -273,22 +282,7 @@
 																onAction?.('edit', row);
 															}}
 														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width="18"
-																height="18"
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																stroke-width="2"
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																class="text-gray-900 dark:text-gray-100"
-																aria-hidden="true"
-															>
-																<path d="M12 20h9" />
-																<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-															</svg>
+															<Editicon size={18} class="text-gray-900 dark:text-gray-100" />
 														</button>
 														<button
 															type="button"
@@ -299,30 +293,12 @@
 																onAction?.('delete', row);
 															}}
 														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width="18"
-																height="18"
-																viewBox="0 0 24 24"
-																fill="none"
-																stroke="currentColor"
-																stroke-width="2"
-																stroke-linecap="round"
-																stroke-linejoin="round"
-																class="text-red-600 dark:text-red-400"
-																aria-hidden="true"
-															>
-																<polyline points="3 6 5 6 21 6" />
-																<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-																<path d="M10 11v6" />
-																<path d="M14 11v6" />
-																<path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-															</svg>
+															<DeleteIcon size={18} class="text-red-600 dark:text-red-400" />
 														</button>
 													</div>
 												{/if}
 											{:else}
-												{row[col.key]}
+												{getCellText(row, col.key)}
 											{/if}
 										</td>
 									{/each}
