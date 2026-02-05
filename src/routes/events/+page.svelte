@@ -37,7 +37,10 @@
 				<p class="text-gray-500 dark:text-gray-400">{browseEventsPage.subtitle}</p>
 			</div>
 			<div class="flex gap-2 md:hidden">
-				<a href="/dashboard" class="text-sm items-center flex gap-2 text-black dark:text-white cursor-pointer">
+				<a
+					href={resolve('/dashboard')}
+					class="text-sm items-center flex gap-2 text-black dark:text-white cursor-pointer"
+				>
 					<Arrowleft size={16} class="text-black dark:text-white shrink-0" />
 					Back to Dashboard
 				</a>
