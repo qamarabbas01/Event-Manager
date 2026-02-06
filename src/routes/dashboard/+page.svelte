@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Plus from '$lib/components/ui/icons/Plus.svelte';
 	import Table from '$lib/components/ui/Table.svelte';
@@ -197,12 +196,6 @@
 						<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
 							{eventsDashboardPage.allEventsTitle}
 						</h2>
-						<a
-							href={resolve('/events')}
-							class="text-sm text-[#7B6242] dark:text-amber-200 hover:text-[#59452B] dark:hover:text-amber-100 underline underline-offset-2 cursor-pointer"
-						>
-							{eventsDashboardPage.viewBrowseEventsText}
-						</a>
 					</div>
 					<Table
 						data={tableData}

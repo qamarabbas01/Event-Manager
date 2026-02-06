@@ -125,8 +125,8 @@
 					y1={y}
 					x2={chartWidth - padding.right}
 					y2={y}
-					stroke="#e5e7eb"
-					stroke-width="1"
+					stroke="#ADA295"
+					stroke-width="0.5"
 				/>
 				{@const value = maxValue - (i / 4) * valueRange}
 				<text x={padding.left - 10} y={y + 4} text-anchor="end" class="text-xs fill-gray-500">

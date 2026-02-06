@@ -1,137 +1,203 @@
 <script lang="ts">
-	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import LineChart from '$lib/components/ui/LineChart.svelte';
-	import BarChart from '$lib/components/ui/BarChart.svelte';
-	import NotificationItem from '$lib/components/ui/NotificationItem.svelte';
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
-	import Users from '$lib/components/ui/icons/Users.svelte';
-	import Revenue from '$lib/components/ui/icons/Revenue.svelte';
-	import Attendance from '$lib/components/ui/icons/Attendance.svelte';
-	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
-	import InfoIcon from '$lib/components/ui/icons/InfoIcon.svelte';
-	import WarningIcon from '$lib/components/ui/icons/WarningIcon.svelte';
-	import {
-		dashboardPage,
-		metricsData,
-		bookingTrendsData,
-		revenueOverviewData,
-		chartsConfig,
-		notificationsData,
-		notificationsSectionTitle
-	} from '$lib/data/dashboard';
-	import type { IconComponent } from '$lib/types/components';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
+	import Button from '$lib/components/ui/Button.svelte';
 
-	const iconMap: Record<string, IconComponent> = {
-		CalendarIcon,
-		Users,
-		Revenue,
-		Attendance,
-		CheckFilled,
-		InfoIcon,
-		WarningIcon
-	};
+	function goToRegister() {
+		goto(resolve('/register'));
+	}
 
-	const metrics = $derived(
-		Object.fromEntries(
-			Object.entries(metricsData).map(([key, m]) => [
-				key,
-				{
-					...m,
-					icon: iconMap[m.iconKey] ?? CalendarIcon
-				}
-			])
-		)
-	);
-
-	const notifications = $derived(
-		notificationsData.map((n) => ({
-			...n,
-			icon: iconMap[n.iconKey] ?? InfoIcon
-		}))
-	);
+	function goToEvents() {
+		goto(resolve('/events'));
+	}
 </script>
 
-<div
-	class="bg-gray-50 dark:bg-[#1D232A] min-h-screen p-4 md:p-6 max-w-full mx-auto md:mx-0 transition-colors"
->
-	<div class="max-w-full mx-auto space-y-6">
-		<div>
-			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-				{dashboardPage.title}
-			</h1>
-			<p class="text-gray-600 dark:text-gray-400">{dashboardPage.subtitle}</p>
-		</div>
+<div class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50">
+	<header class="sticky top-0 z-20 backdrop-blur bg-white/70 border-b border-gray-200">
+		<div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+			<a href={resolve('/')} class="font-semibold text-gray-900 tracking-tight">EventHub</a>
 
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-			<MetricCard
-				label={metrics.totalEvents.label}
-				value={metrics.totalEvents.value}
-				trend={metrics.totalEvents.trend}
-				icon={metrics.totalEvents.icon}
-				iconBgColor={metrics.totalEvents.iconBgColor}
-				iconColor={metrics.totalEvents.iconColor}
-			/>
-			<MetricCard
-				label={metrics.totalBookings.label}
-				value={metrics.totalBookings.value}
-				trend={metrics.totalBookings.trend}
-				icon={metrics.totalBookings.icon}
-				iconBgColor={metrics.totalBookings.iconBgColor}
-				iconColor={metrics.totalBookings.iconColor}
-			/>
-			<MetricCard
-				label={metrics.revenue.label}
-				value={metrics.revenue.value}
-				trend={metrics.revenue.trend}
-				icon={metrics.revenue.icon}
-				iconBgColor={metrics.revenue.iconBgColor}
-				iconColor={metrics.revenue.iconColor}
-			/>
-			<MetricCard
-				label={metrics.avgAttendance.label}
-				value={metrics.avgAttendance.value}
-				trend={metrics.avgAttendance.trend}
-				icon={metrics.avgAttendance.icon}
-				iconBgColor={metrics.avgAttendance.iconBgColor}
-				iconColor={metrics.avgAttendance.iconColor}
-			/>
-		</div>
+			<nav class="hidden md:flex items-center gap-6 text-sm text-gray-600">
+				<a href="#features" class="hover:text-gray-900 transition-colors">Features</a>
+				<a href="#about" class="hover:text-gray-900 transition-colors">About</a>
+				<a href={resolve('/events')} class="hover:text-gray-900 transition-colors">Events</a>
+				<a href="#insights" class="hover:text-gray-900 transition-colors">Insights</a>
+			</nav>
 
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-			<LineChart
-				title={chartsConfig.bookingTrends.title}
-				data={bookingTrendsData}
-				color={chartsConfig.bookingTrends.color}
-				height={chartsConfig.bookingTrends.height}
-				baseYear={chartsConfig.bookingTrends.baseYear}
-			/>
-			<BarChart
-				title={chartsConfig.revenueOverview.title}
-				data={revenueOverviewData}
-				color={chartsConfig.revenueOverview.color}
-				height={chartsConfig.revenueOverview.height}
-				baseYear={chartsConfig.revenueOverview.baseYear}
-				valuePrefix="$"
-			/>
-		</div>
-
-		<div
-			class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
-		>
-			<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-				{notificationsSectionTitle}
-			</h2>
-			<div class="space-y-3">
-				{#each notifications as notification, i (i)}
-					<NotificationItem
-						type={notification.type}
-						title={notification.title}
-						message={notification.message}
-						timestamp={notification.timestamp}
-						icon={notification.icon}
-					/>
-				{/each}
+			<div class="flex items-center gap-3">
+				<a
+					href={resolve('/login')}
+					class="text-sm text-gray-700 hover:text-gray-900 transition-colors"
+				>
+					Sign In
+				</a>
+				<Button text="Get Started" variant="primary-blue" rounded="lg" onClick={goToRegister} />
 			</div>
 		</div>
-	</div>
+	</header>
+
+	<main class="max-w-6xl mx-auto px-4">
+		<section class="pt-16 pb-10 text-center">
+			<h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+				Welcome to
+				<span
+					class="inline-flex align-middle mx-2 px-4 py-2 rounded-2xl text-white bg-linear-to-r from-blue-600 to-purple-600 shadow-sm"
+					>EventHub</span
+				>
+			</h1>
+			<p class="mt-5 text-gray-600 max-w-2xl mx-auto text-lg">
+				The all-in-one platform for managing events, tracking attendees, and growing your business
+				with powerful analytics.
+			</p>
+
+			<div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+				<Button
+					text="Go to Dashboard"
+					variant="primary-blue"
+					rounded="lg"
+					size="lg"
+					onClick={goToRegister}
+				/>
+				<Button
+					text="Browse Events"
+					variant="default"
+					rounded="lg"
+					size="lg"
+					class="bg-white/80"
+					onClick={goToEvents}
+				/>
+			</div>
+		</section>
+
+		<section class="py-10">
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+				<div>
+					<div class="text-3xl font-extrabold text-gray-900">10K+</div>
+					<div class="text-xs uppercase tracking-wide text-gray-500 mt-1">Events Managed</div>
+				</div>
+				<div>
+					<div class="text-3xl font-extrabold text-gray-900">500K+</div>
+					<div class="text-xs uppercase tracking-wide text-gray-500 mt-1">Happy Attendees</div>
+				</div>
+				<div>
+					<div class="text-3xl font-extrabold text-gray-900">$5M+</div>
+					<div class="text-xs uppercase tracking-wide text-gray-500 mt-1">Revenue Processed</div>
+				</div>
+				<div>
+					<div class="text-3xl font-extrabold text-gray-900">99.9%</div>
+					<div class="text-xs uppercase tracking-wide text-gray-500 mt-1">Uptime</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="features" class="py-12">
+			<h2 class="text-3xl font-bold text-gray-900 text-center">Everything you need to succeed</h2>
+			<p class="text-gray-600 text-center mt-3 max-w-2xl mx-auto">
+				Powerful features designed to help you create memorable events and grow your business.
+			</p>
+
+			<div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"
+					>
+						<span class="text-sm font-bold">📅</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Event Management</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Create, organize, and manage all your events in one centralized platform with ease.
+					</p>
+				</div>
+
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600"
+					>
+						<span class="text-sm font-bold">👥</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Attendee Insights</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Gain deep insights into your audience demographics and engagement patterns.
+					</p>
+				</div>
+
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600"
+					>
+						<span class="text-sm font-bold">📊</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Analytics Dashboard</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Track performance metrics, revenue, and booking trends with real-time analytics.
+					</p>
+				</div>
+
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600"
+					>
+						<span class="text-sm font-bold">🔔</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Smart Notifications</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Stay informed with intelligent alerts about registrations, capacity, and more.
+					</p>
+				</div>
+
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center text-pink-600"
+					>
+						<span class="text-sm font-bold">📈</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Revenue Tracking</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Monitor ticket sales and revenue streams with comprehensive financial reports.
+					</p>
+				</div>
+
+				<div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+					<div
+						class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600"
+					>
+						<span class="text-sm font-bold">✨</span>
+					</div>
+					<h3 class="mt-4 font-semibold text-gray-900">Seamless Experience</h3>
+					<p class="mt-2 text-sm text-gray-600">
+						Intuitive interface designed for event organizers to work efficiently.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section id="about" class="py-8">
+			<div class="bg-white/70 rounded-2xl border border-gray-200 p-6">
+				<h2 class="text-xl font-semibold text-gray-900">Built for real organizers</h2>
+				<p class="mt-2 text-sm text-gray-600 max-w-3xl">
+					EventHub helps you manage your own event data (add, edit, delete), monitor performance,
+					and keep everything in one place. After you register, you’ll go straight to the dashboard
+					to start managing your events.
+				</p>
+			</div>
+		</section>
+
+		<section id="insights" class="pb-16 pt-8">
+			<div class="rounded-3xl bg-linear-to-r from-blue-600 to-purple-600 text-white p-10 shadow-xl">
+				<div class="text-center">
+					<h2 class="text-3xl font-bold">Ready to transform your events?</h2>
+					<p class="mt-2 text-white/90">Join thousands of event organizers who trust EventHub.</p>
+					<div class="mt-6 flex justify-center">
+						<Button
+							text="Get Started Now"
+							variant="white"
+							rounded="lg"
+							size="lg"
+							onClick={goToRegister}
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 </div>

@@ -169,7 +169,7 @@ export interface NavItemData {
 	iconKey: string;
 }
 
-export const appTitle = 'EventFlow';
+export const appTitle = 'EventHub';
 export const logoutLabel = 'Logout';
 export const toggleMenuAriaLabel = 'Toggle menu';
 
@@ -178,8 +178,8 @@ export const themeDarkLabel = 'Dark';
 export const themeToggleAriaLabel = 'Toggle light or dark theme';
 
 export const navItemsData = [
-	{ label: 'Home', href: '/', iconKey: 'Home' },
-	{ label: 'Dashboard', href: '/dashboard', iconKey: 'Calendar' },
+	{ label: 'Overview', href: '/dashboard/overview', iconKey: 'Home' },
+	{ label: 'Events', href: '/dashboard', iconKey: 'Calendar' },
 	{ label: 'Attendee Insights', href: '/attendee-insights', iconKey: 'Chart' },
 	{ label: 'Profile', href: '/profile', iconKey: 'Profile' }
 ] as const satisfies readonly NavItemData[];
@@ -190,7 +190,6 @@ export const eventsDashboardPage = {
 	addEventButtonText: 'Add Event',
 	allEventsTitle: 'All Events',
 	upcomingTitle: 'Upcoming Events',
-	viewBrowseEventsText: 'View browse events',
 	emptyStateText: 'No events found',
 	noUpcomingText: 'No upcoming events',
 	itemsCountText: 'events'

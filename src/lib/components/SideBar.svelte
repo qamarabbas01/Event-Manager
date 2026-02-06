@@ -21,6 +21,7 @@
 	import Revenue from './ui/icons/Revenue.svelte';
 	import LightIcon from './ui/icons/Light.svelte';
 	import MoonIcon from './ui/icons/MoonIcon.svelte';
+	import { logout } from '$lib/stores/auth';
 
 	const iconMap: Record<string, IconComponent> = {
 		Home: HouseOutline,
@@ -40,13 +41,20 @@
 
 	type NavHref = (typeof navItemsData)[number]['href'];
 
+	function isNavActive(href: NavHref, pathname: string): boolean {
+		if (href === '/dashboard') return pathname === '/dashboard';
+		return pathname === href || pathname.startsWith(`${href}/`);
+	}
+
 	function handleNavClick(href: NavHref) {
 		goto(resolve(href));
 		isMobileMenuOpen = false;
 	}
 
 	function handleLogout() {
-		console.log('Logout clicked');
+		logout();
+		goto(resolve('/'));
+		isMobileMenuOpen = false;
 	}
 
 	function toggleMobileMenu() {
@@ -79,7 +87,7 @@
 
 			<nav class="flex-1 px-4 py-6 space-y-2">
 				{#each navItems as item (item.href)}
-					{@const isActive = $page.url.pathname === item.href}
+					{@const isActive = isNavActive(item.href, $page.url.pathname)}
 					<button
 						onclick={() => handleNavClick(item.href)}
 						class="w-full flex items-center gap-3 px-4 cursor-pointer py-3 rounded-lg text-left transition-all duration-200 {isActive
