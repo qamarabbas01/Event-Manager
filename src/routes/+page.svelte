@@ -10,6 +10,10 @@
 	function goToEvents() {
 		goto(resolve('/events'));
 	}
+
+	function goToDashboard() {
+		goto(resolve('/dashboard'));
+	}
 </script>
 
 <div class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50">
@@ -56,7 +60,7 @@
 					variant="primary-blue"
 					rounded="lg"
 					size="lg"
-					onClick={goToRegister}
+					onClick={goToDashboard}
 				/>
 				<Button
 					text="Browse Events"

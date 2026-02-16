@@ -1,13 +1,20 @@
 <script lang="ts">
 	import type { IconComponent } from '$lib/types/icons';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	interface Props {
 		id?: string;
+		name?: string;
 		icons?: boolean;
 		leftIcon?: IconComponent;
 		placeholder?: string;
 		value?: string;
-		type?: string;
+		type?: HTMLInputAttributes['type'];
+		autocomplete?: HTMLInputAttributes['autocomplete'];
+		inputmode?: HTMLInputAttributes['inputmode'];
+		required?: boolean;
+		ariaDescribedby?: string;
+		ariaInvalid?: boolean;
 		disabled?: boolean;
 		class?: string;
 		iconSize?: number;
@@ -15,11 +22,17 @@
 
 	let {
 		id,
+		name,
 		icons,
 		leftIcon,
 		placeholder = '',
 		value = $bindable(''),
 		type = 'text',
+		autocomplete,
+		inputmode,
+		required = false,
+		ariaDescribedby,
+		ariaInvalid,
 		disabled = false,
 		class: className = '',
 		iconSize = 20
@@ -40,9 +53,15 @@
 	{/if}
 	<input
 		{id}
+		{name}
 		{type}
 		bind:value
 		{placeholder}
+		{autocomplete}
+		{inputmode}
+		{required}
+		aria-describedby={ariaDescribedby}
+		aria-invalid={ariaInvalid}
 		{disabled}
 		class="w-full border border-gray-300 dark:border-gray-600 placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-amber-500/50 focus:border-transparent disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed {showIcons &&
 		leftIcon

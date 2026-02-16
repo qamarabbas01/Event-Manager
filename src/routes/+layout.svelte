@@ -2,6 +2,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import SideBar from '$lib/components/SideBar.svelte';
 	import { auth } from '$lib/stores/auth';
 	import './app.css';
@@ -24,12 +25,12 @@
 		if (typeof window === 'undefined') return;
 
 		if (isAppRoute && !$auth.user) {
-			goto('/login');
+			goto(resolve('/login'));
 			return;
 		}
 
 		if ((isAuthRoute || isLandingRoute) && $auth.user) {
-			goto('/dashboard');
+			goto(resolve('/dashboard'));
 		}
 	});
 </script>

@@ -21,7 +21,6 @@
 	import Revenue from './ui/icons/Revenue.svelte';
 	import LightIcon from './ui/icons/Light.svelte';
 	import MoonIcon from './ui/icons/MoonIcon.svelte';
-	import { logout } from '$lib/stores/auth';
 
 	const iconMap: Record<string, IconComponent> = {
 		Home: HouseOutline,
@@ -52,8 +51,7 @@
 	}
 
 	function handleLogout() {
-		logout();
-		goto(resolve('/'));
+		goto(resolve('/logout'));
 		isMobileMenuOpen = false;
 	}
 

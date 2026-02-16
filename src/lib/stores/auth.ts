@@ -16,7 +16,9 @@ function parseStoredAuth(raw: string | null): AuthState {
 	try {
 		const parsed = JSON.parse(raw) as Partial<AuthUser> | null;
 		if (!parsed || typeof parsed.email !== 'string') return { user: null };
-		return { user: { name: typeof parsed.name === 'string' ? parsed.name : '', email: parsed.email } };
+		return {
+			user: { name: typeof parsed.name === 'string' ? parsed.name : '', email: parsed.email }
+		};
 	} catch {
 		return { user: null };
 	}
@@ -51,4 +53,3 @@ export function login(user: AuthUser) {
 export function logout() {
 	auth.set({ user: null });
 }
-
