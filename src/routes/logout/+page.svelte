@@ -27,8 +27,10 @@
 	});
 </script>
 
-<div class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 px-4 py-16">
-	<div class="max-w-lg mx-auto">
+<div
+	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 px-4 py-16 flex items-center justify-center"
+>
+	<div class="w-full max-w-lg">
 		<div class="bg-white/80 backdrop-blur rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
 			<div
 				class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-sm"
