@@ -198,6 +198,7 @@ export const eventsDashboardPage = {
 export const browseEventsPage = {
 	title: 'Browse Events',
 	subtitle: 'Discover and manage all your events',
+	backToDashboardLink: 'Back to Dashboard',
 	searchPlaceholder: 'Search events...',
 	filtersButtonText: 'Filters',
 	noResultsText: 'No events match your search.'

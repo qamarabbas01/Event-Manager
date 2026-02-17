@@ -107,19 +107,20 @@
 	<div class="max-w-full space-y-6">
 		<header class="flex flex-col sm:flex-row justify-between gap-4">
 			<div class="flex flex-col gap-2">
+				<div class="flex flex-wrap items-center gap-3">
+					<a
+						href={resolve('/dashboard')}
+						class="text-sm items-center flex gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 cursor-pointer shrink-0"
+						aria-label={browseEventsPage.backToDashboardLink}
+					>
+						<Arrowleft size={16} class="shrink-0" />
+						<span>{browseEventsPage.backToDashboardLink}</span>
+					</a>
+				</div>
 				<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">
 					{browseEventsPage.title}
 				</h1>
 				<p class="text-gray-500 dark:text-gray-400">{browseEventsPage.subtitle}</p>
-			</div>
-			<div class="flex gap-2 md:hidden">
-				<a
-					href={resolve('/dashboard')}
-					class="text-sm items-center flex gap-2 text-black dark:text-white cursor-pointer"
-				>
-					<Arrowleft size={16} class="text-black dark:text-white shrink-0" />
-					Back to Dashboard
-				</a>
 			</div>
 		</header>
 
