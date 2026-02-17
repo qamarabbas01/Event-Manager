@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import { registerPage } from '$lib/data/register';
 	import { login } from '$lib/stores/auth';
 
 	let name = $state('');
@@ -17,12 +18,22 @@
 		return value.trim().toLowerCase();
 	}
 
-	function validateRegistration(cleanName: string, cleanEmail: string, cleanPassword: string) {
-		if (!cleanName) return 'Name is required.';
-		if (!cleanEmail) return 'Email is required.';
-		if (!cleanEmail.includes('@')) return 'Enter a valid email address.';
-		if (cleanPassword.length < 6) return 'Password must be at least 6 characters.';
-		if (cleanPassword !== confirmPassword.trim()) return 'Passwords do not match.';
+	function buildRegistrationInput() {
+		const cleanName = name.trim();
+		const cleanEmail = normalizeEmail(email);
+		const cleanPassword = password.trim();
+		const cleanConfirmPassword = confirmPassword.trim();
+
+		return { cleanName, cleanEmail, cleanPassword, cleanConfirmPassword };
+	}
+
+	function validateRegistrationInput(input: ReturnType<typeof buildRegistrationInput>) {
+		if (!input.cleanName) return registerPage.validation.nameRequired;
+		if (!input.cleanEmail) return registerPage.validation.emailRequired;
+		if (!input.cleanEmail.includes('@')) return registerPage.validation.emailInvalid;
+		if (input.cleanPassword.length < 6) return registerPage.validation.passwordTooShort;
+		if (input.cleanPassword !== input.cleanConfirmPassword)
+			return registerPage.validation.passwordMismatch;
 		return null;
 	}
 
@@ -30,11 +41,8 @@
 		error = null;
 		isSubmitting = true;
 
-		const cleanName = name.trim();
-		const cleanEmail = normalizeEmail(email);
-		const cleanPassword = password.trim();
-
-		const validationError = validateRegistration(cleanName, cleanEmail, cleanPassword);
+		const input = buildRegistrationInput();
+		const validationError = validateRegistrationInput(input);
 		if (validationError) {
 			error = validationError;
 			isSubmitting = false;
@@ -42,7 +50,7 @@
 		}
 
 		// Demo auth: persist the user locally and send them into the app.
-		login({ name: cleanName, email: cleanEmail });
+		login({ name: input.cleanName, email: input.cleanEmail });
 		goto(resolve('/dashboard'));
 	}
 </script>
@@ -57,14 +65,14 @@
 					class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-sm"
 					aria-hidden="true"
 				>
-					EH
+					{registerPage.brand.mark}
 				</span>
-				<span class="tracking-tight">EventHub</span>
+				<span class="tracking-tight">{registerPage.brand.title}</span>
 			</a>
 
 			<div class="mt-6 mb-6">
-				<h1 class="text-2xl font-bold text-gray-900">Create your account</h1>
-				<p class="text-sm text-gray-600 mt-1">Start managing events in minutes.</p>
+				<h1 class="text-2xl font-bold text-gray-900">{registerPage.header.title}</h1>
+				<p class="text-sm text-gray-600 mt-1">{registerPage.header.subtitle}</p>
 			</div>
 
 			{#if error}
@@ -85,13 +93,13 @@
 				}}
 			>
 				<label class="block" for="register-name">
-					<span class="block text-sm font-medium text-gray-700 mb-1">Full name</span>
+					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.nameLabel}</span>
 					<Input
 						id="register-name"
 						name="name"
 						bind:value={name}
 						autocomplete="name"
-						placeholder="Your name"
+						placeholder={registerPage.form.namePlaceholder}
 						class="rounded-xl"
 						required
 						ariaInvalid={Boolean(error)}
@@ -99,7 +107,7 @@
 				</label>
 
 				<label class="block" for="register-email">
-					<span class="block text-sm font-medium text-gray-700 mb-1">Email</span>
+					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.emailLabel}</span>
 					<Input
 						id="register-email"
 						name="email"
@@ -107,7 +115,7 @@
 						type="email"
 						autocomplete="email"
 						inputmode="email"
-						placeholder="you@example.com"
+						placeholder={registerPage.form.emailPlaceholder}
 						class="rounded-xl"
 						required
 						ariaInvalid={Boolean(error)}
@@ -115,30 +123,32 @@
 				</label>
 
 				<label class="block" for="register-password">
-					<span class="block text-sm font-medium text-gray-700 mb-1">Password</span>
+					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.passwordLabel}</span>
 					<Input
 						id="register-password"
 						name="password"
 						bind:value={password}
 						type={showPassword ? 'text' : 'password'}
 						autocomplete="new-password"
-						placeholder="••••••••"
+						placeholder={registerPage.form.passwordPlaceholder}
 						class="rounded-xl"
 						required
 						ariaInvalid={Boolean(error)}
 					/>
-					<span class="block text-xs text-gray-500 mt-1">Use at least 6 characters.</span>
+					<span class="block text-xs text-gray-500 mt-1">{registerPage.form.passwordHint}</span>
 				</label>
 
 				<label class="block" for="register-confirm-password">
-					<span class="block text-sm font-medium text-gray-700 mb-1">Confirm password</span>
+					<span class="block text-sm font-medium text-gray-700 mb-1">
+						{registerPage.form.confirmPasswordLabel}
+					</span>
 					<Input
 						id="register-confirm-password"
 						name="confirmPassword"
 						bind:value={confirmPassword}
 						type={showPassword ? 'text' : 'password'}
 						autocomplete="new-password"
-						placeholder="••••••••"
+						placeholder={registerPage.form.confirmPasswordPlaceholder}
 						class="rounded-xl"
 						required
 						ariaInvalid={Boolean(error)}
@@ -152,15 +162,15 @@
 							bind:checked={showPassword}
 							class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
 						/>
-						Show passwords
+						{registerPage.form.showPasswordsLabel}
 					</label>
 					<a href={resolve('/login')} class="text-sm text-blue-600 hover:text-blue-700">
-						Already have an account?
+						{registerPage.form.alreadyHaveAccountLink}
 					</a>
 				</div>
 
 				<Button
-					text={isSubmitting ? 'Creating…' : 'Create account'}
+					text={isSubmitting ? registerPage.form.submitBusyText : registerPage.form.submitIdleText}
 					type="submit"
 					variant="primary-blue"
 					rounded="lg"
@@ -171,12 +181,16 @@
 			</form>
 
 			<p class="mt-6 text-xs text-gray-500">
-				By continuing, you’re using a demo session stored locally in your browser.
+				{registerPage.footer.demoNotice}
 			</p>
 
 			<div class="mt-6 flex items-center justify-between text-sm">
-				<a href={resolve('/')} class="text-gray-600 hover:text-gray-900">Back to home</a>
-				<a href={resolve('/events')} class="text-gray-600 hover:text-gray-900">Browse events</a>
+				<a href={resolve('/')} class="text-gray-600 hover:text-gray-900">
+					{registerPage.footer.backHomeLink}
+				</a>
+				<a href={resolve('/events')} class="text-gray-600 hover:text-gray-900">
+					{registerPage.footer.browseEventsLink}
+				</a>
 			</div>
 		</div>
 	</section>
