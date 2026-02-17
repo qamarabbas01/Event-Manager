@@ -169,7 +169,7 @@ export interface NavItemData {
 	iconKey: string;
 }
 
-export const appTitle = 'EventHub';
+export { appTitle } from './app';
 export const logoutLabel = 'Logout';
 export const toggleMenuAriaLabel = 'Toggle menu';
 
