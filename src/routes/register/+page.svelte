@@ -3,8 +3,16 @@
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import LightIcon from '$lib/components/ui/icons/Light.svelte';
+	import MoonIcon from '$lib/components/ui/icons/MoonIcon.svelte';
 	import { registerPage } from '$lib/data/register';
+	import { themeToggleAriaLabel } from '$lib/data/dashboard';
+	import { theme } from '$lib/stores/theme';
 	import { login } from '$lib/stores/auth';
+
+	function toggleTheme() {
+		theme.set($theme === 'dark' ? 'light' : 'dark');
+	}
 
 	let name = $state('');
 	let email = $state('');
@@ -56,11 +64,29 @@
 </script>
 
 <div
-	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 px-4 py-16 flex items-center justify-center"
+	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-[#0f1419] dark:via-[#1D232A] dark:to-[#0f1419] px-4 py-16 flex items-center justify-center transition-colors"
 >
-	<section class="w-full max-w-md">
-		<div class="bg-white/80 backdrop-blur rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8">
-			<a href={resolve('/')} class="inline-flex items-center gap-2 font-semibold text-gray-900">
+	<section class="w-full max-w-md relative">
+		<button
+			type="button"
+			onclick={toggleTheme}
+			class="absolute -top-2 right-0 p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+			aria-label={themeToggleAriaLabel}
+			title={$theme === 'dark' ? 'Light' : 'Dark'}
+		>
+			{#if $theme === 'dark'}
+				<LightIcon size={22} />
+			{:else}
+				<MoonIcon size={22} />
+			{/if}
+		</button>
+		<div
+			class="bg-white/80 dark:bg-gray-800/90 backdrop-blur rounded-3xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8 transition-colors"
+		>
+			<a
+				href={resolve('/')}
+				class="inline-flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100"
+			>
 				<span
 					class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-sm"
 					aria-hidden="true"
@@ -71,13 +97,13 @@
 			</a>
 
 			<div class="mt-6 mb-6">
-				<h1 class="text-2xl font-bold text-gray-900">{registerPage.header.title}</h1>
-				<p class="text-sm text-gray-600 mt-1">{registerPage.header.subtitle}</p>
+				<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{registerPage.header.title}</h1>
+				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{registerPage.header.subtitle}</p>
 			</div>
 
 			{#if error}
 				<p
-					class="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl p-3"
+					class="mb-4 text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl p-3"
 					role="alert"
 				>
 					{error}
@@ -93,7 +119,7 @@
 				}}
 			>
 				<label class="block" for="register-name">
-					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.nameLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.nameLabel}</span>
 					<Input
 						id="register-name"
 						name="name"
@@ -107,7 +133,7 @@
 				</label>
 
 				<label class="block" for="register-email">
-					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.emailLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.emailLabel}</span>
 					<Input
 						id="register-email"
 						name="email"
@@ -123,7 +149,7 @@
 				</label>
 
 				<label class="block" for="register-password">
-					<span class="block text-sm font-medium text-gray-700 mb-1">{registerPage.form.passwordLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.passwordLabel}</span>
 					<Input
 						id="register-password"
 						name="password"
@@ -135,11 +161,11 @@
 						required
 						ariaInvalid={Boolean(error)}
 					/>
-					<span class="block text-xs text-gray-500 mt-1">{registerPage.form.passwordHint}</span>
+					<span class="block text-xs text-gray-500 dark:text-gray-400 mt-1">{registerPage.form.passwordHint}</span>
 				</label>
 
 				<label class="block" for="register-confirm-password">
-					<span class="block text-sm font-medium text-gray-700 mb-1">
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 						{registerPage.form.confirmPasswordLabel}
 					</span>
 					<Input
@@ -156,15 +182,18 @@
 				</label>
 
 				<div class="flex items-center justify-between gap-3">
-					<label class="inline-flex items-center gap-2 text-sm text-gray-600 select-none">
+					<label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 select-none">
 						<input
 							type="checkbox"
 							bind:checked={showPassword}
-							class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+							class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
 						/>
 						{registerPage.form.showPasswordsLabel}
 					</label>
-					<a href={resolve('/login')} class="text-sm text-blue-600 hover:text-blue-700">
+					<a
+						href={resolve('/login')}
+						class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+					>
 						{registerPage.form.alreadyHaveAccountLink}
 					</a>
 				</div>
@@ -180,15 +209,21 @@
 				/>
 			</form>
 
-			<p class="mt-6 text-xs text-gray-500">
+			<p class="mt-6 text-xs text-gray-500 dark:text-gray-400">
 				{registerPage.footer.demoNotice}
 			</p>
 
 			<div class="mt-6 flex items-center justify-between text-sm">
-				<a href={resolve('/')} class="text-gray-600 hover:text-gray-900">
+				<a
+					href={resolve('/')}
+					class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+				>
 					{registerPage.footer.backHomeLink}
 				</a>
-				<a href={resolve('/events')} class="text-gray-600 hover:text-gray-900">
+				<a
+					href={resolve('/events')}
+					class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+				>
 					{registerPage.footer.browseEventsLink}
 				</a>
 			</div>

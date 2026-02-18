@@ -5,6 +5,7 @@
 	import { resolve } from '$app/paths';
 	import SideBar from '$lib/components/SideBar.svelte';
 	import { auth } from '$lib/stores/auth';
+	import '$lib/stores/theme';
 	import './app.css';
 
 	let { children } = $props();
