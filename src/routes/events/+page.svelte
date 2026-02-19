@@ -109,7 +109,7 @@
 			<div class="flex flex-col gap-2">
 				<div class="flex flex-wrap items-center gap-3">
 					<a
-						href={resolve('/dashboard')}
+						href={resolve('/')}
 						class="text-sm items-center flex gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 cursor-pointer shrink-0"
 						aria-label={browseEventsPage.backToDashboardLink}
 					>
