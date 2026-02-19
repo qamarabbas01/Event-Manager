@@ -6,6 +6,8 @@
 	import Card from '$lib/components/ui/Card.svelte';
 	import MetricItem from '$lib/components/ui/MetricItem.svelte';
 
+	let mobileNavOpen = false;
+
 	function goToRegister() {
 		goto(resolve('/register'));
 	}
@@ -16,6 +18,14 @@
 
 	function goToDashboard() {
 		goto(resolve('/dashboard'));
+	}
+
+	function toggleMobileNav() {
+		mobileNavOpen = !mobileNavOpen;
+	}
+
+	function closeMobileNav() {
+		mobileNavOpen = false;
 	}
 </script>
 
@@ -34,7 +44,34 @@
 				<a href="#insights" class="hover:text-gray-900 transition-colors">Insights</a>
 			</nav>
 
-			<div class="flex items-center gap-3">
+			<button
+				class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+				aria-label="Open menu"
+				on:click={toggleMobileNav}
+				type="button"
+			>
+				{#if !mobileNavOpen}
+					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16M4 18h16"
+						/>
+					</svg>
+				{:else}
+					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+				{/if}
+			</button>
+
+			<div class="hidden md:flex items-center gap-3">
 				<a
 					href={resolve('/login')}
 					class="text-sm text-gray-700 hover:text-gray-900 transition-colors"
@@ -44,6 +81,51 @@
 				<Button text="Get Started" variant="primary-blue" rounded="lg" onClick={goToRegister} />
 			</div>
 		</div>
+
+		{#if mobileNavOpen}
+			<div class="md:hidden bg-white/90 border-b border-gray-200 shadow z-30">
+				<nav class="flex flex-col px-4 py-4 gap-4 text-gray-700 font-medium">
+					<a
+						href="#features"
+						class="hover:text-blue-700 transition-colors"
+						on:click={closeMobileNav}>Features</a
+					>
+					<a href="#about" class="hover:text-blue-700 transition-colors" on:click={closeMobileNav}
+						>About</a
+					>
+					<a
+						href={resolve('/events')}
+						class="hover:text-blue-700 transition-colors"
+						on:click={closeMobileNav}>Events</a
+					>
+					<a
+						href="#insights"
+						class="hover:text-blue-700 transition-colors"
+						on:click={closeMobileNav}>Insights</a
+					>
+					<Button
+						text="Sign In"
+						variant="default"
+						rounded="lg"
+						class="w-full"
+						onClick={() => {
+							closeMobileNav();
+							goToRegister();
+						}}
+					/>
+					<Button
+						text="Get Started"
+						variant="primary-blue"
+						rounded="lg"
+						class="w-full"
+						onClick={() => {
+							closeMobileNav();
+							goToRegister();
+						}}
+					/>
+				</nav>
+			</div>
+		{/if}
 	</header>
 
 	<main class="max-w-6xl mx-auto px-4">
