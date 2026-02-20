@@ -57,9 +57,8 @@
 			return;
 		}
 
-		// Demo auth: persist the user locally and send them into the app.
 		login({ name: input.cleanName, email: input.cleanEmail });
-		goto(resolve('/dashboard'));
+		goto(resolve('/dashboard/overview'));
 	}
 </script>
 

@@ -5,10 +5,15 @@
 	import SelectDropdown from '$lib/components/ui/SelectDropdown.svelte';
 	import { addUserModal, type UserRole } from '$lib/data/dashboard';
 
-	const roleDisplayOptions = [addUserModal.roleAdmin, addUserModal.roleUser] as const;
+	const roleDisplayOptions = [
+		addUserModal.roleAdmin,
+		addUserModal.roleUser,
+		addUserModal.roleTester
+	] as const;
 	const roleValueMap: Record<(typeof roleDisplayOptions)[number], UserRole> = {
 		Admin: 'admin',
-		User: 'user'
+		User: 'user',
+		Tester: 'tester'
 	};
 
 	export interface AddUserPayload {

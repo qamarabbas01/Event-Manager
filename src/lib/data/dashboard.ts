@@ -14,6 +14,13 @@ export interface MetricData {
 	iconColor: string;
 }
 
+export const navbarItemsData = [
+	{ label: 'Features', href: '#features' },
+	{ label: 'About', href: '#about' },
+	{ label: 'Events', href: '/events' },
+	{ label: 'Insights', href: '#insights' }
+];
+
 export const metricsData: Record<string, MetricData> = {
 	totalEvents: {
 		label: 'Total Events',
@@ -263,7 +270,7 @@ export const dateRangeUi = {
 
 export const dateRangePresetOptions = [dateRangeUi.last3Months, dateRangeUi.last6Months] as const;
 
-export type UserRole = 'admin' | 'user';
+export type UserRole = 'admin' | 'user' | 'tester';
 
 export const profilePage = {
 	title: 'Profile',
@@ -286,15 +293,15 @@ export const profilePage = {
 	admin: {
 		sectionTitle: 'Manage users',
 		sectionDescription: 'Add new users to the platform. Only visible to admins.',
-		addUsersButtonText: 'Add user',
+		addUsersButtonText: 'Invite user',
 		editUserButtonText: 'Edit',
 		deleteUserButtonText: 'Delete',
-		emptyUsersText: 'No users added yet. Use "Add user" to invite someone.'
+		emptyUsersText: 'No users added yet. Use "Invite user" to invite someone.'
 	}
 } as const;
 
 export const addUserModal = {
-	title: 'Add user',
+	title: 'Invite user',
 	editUserTitle: 'Edit user',
 	nameLabel: 'Full name',
 	namePlaceholder: 'Enter full name',
@@ -303,10 +310,11 @@ export const addUserModal = {
 	roleLabel: 'Role',
 	selectRolePlaceholder: 'Select role',
 	cancelButtonText: 'Cancel',
-	addButtonText: 'Add user',
+	addButtonText: 'Invite user',
 	saveButtonText: 'Save',
 	roleAdmin: 'Admin',
-	roleUser: 'User'
+	roleUser: 'User',
+	roleTester: 'Tester',
 } as const;
 
 export const profilePlaceholder = {
