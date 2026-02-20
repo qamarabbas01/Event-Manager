@@ -49,7 +49,7 @@
 		}
 
 		login(buildDemoUser(cleanEmail));
-		goto(resolve('/dashboard'));
+		goto(resolve('/dashboard/overview'));
 	}
 </script>
 

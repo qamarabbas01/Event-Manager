@@ -14,6 +14,11 @@
 	let userToEdit = $state<{ id: string; name: string; email: string; role: UserRole } | null>(null);
 	let addedUsers = $state<{ id: string; name: string; email: string; role: UserRole }[]>([]);
 
+	let profilePicFile: File | null = null;
+	let coverPicFile: File | null = null;
+	let profilePicPreview = $state<string | null>($userStore.profilePic ?? null);
+	let coverPicPreview = $state<string | null>($userStore.coverPic ?? null);
+
 	const isAdmin = $derived($userStore.role === 'admin');
 
 	function getInitials(fullName: string): string {
@@ -23,6 +28,29 @@
 			.slice(0, 2)
 			.join('')
 			.toUpperCase();
+	}
+
+	function handleProfilePicChange(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (input.files && input.files[0]) {
+			profilePicFile = input.files[0];
+			profilePicPreview = URL.createObjectURL(profilePicFile);
+		}
+	}
+
+	function handleCoverPicChange(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (input.files && input.files[0]) {
+			coverPicFile = input.files[0];
+			coverPicPreview = URL.createObjectURL(coverPicFile);
+		}
+	}
+
+	function saveProfile() {
+		if (profilePicFile) userStore.update((u) => ({ ...u, profilePic: profilePicPreview ?? undefined }));
+		if (coverPicFile) userStore.update((u) => ({ ...u, coverPic: coverPicPreview ?? undefined }));
+
+		isEditing = false;
 	}
 
 	function handleAddUser(payload: { name: string; email: string; role: UserRole }) {
@@ -60,27 +88,51 @@
 		<div
 			class="bg-white dark:bg-[#212932] rounded-2xl border border-gray-200 dark:border-gray-700/50 shadow-sm overflow-hidden transition-colors"
 		>
-			<div
-				class="h-24 bg-linear-to-r from-[#59452B]/10 to-[#59452B]/5 dark:from-amber-600/20 dark:to-transparent"
-				aria-hidden="true"
-			></div>
-			<div class="px-6 pb-6 -mt-12">
-				{#if $userStore.profilePic}
-					<img
-						src={$userStore.profilePic}
-						alt={name}
-						class="w-24 h-24 rounded-full border-2 bg-black border-white dark:border-[#212932] shadow-md shrink-0 object-cover"
-					/>
+			<div class="relative w-full h-36">
+				{#if coverPicPreview}
+					<img src={coverPicPreview} alt="Cover" class="w-full h-full object-cover" />
 				{:else}
-					<div
-						class="w-24 h-24 rounded-full bg-[#59452B] dark:bg-amber-500 text-white flex items-center justify-center text-2xl font-semibold border-4 border-white dark:border-[#212932] shadow-md shrink-0"
-					>
-						{getInitials(name)}
-					</div>
+					<div class="w-full h-full bg-gray-200 dark:bg-gray-700"></div>
 				{/if}
-				<div class="mt-4">
+				{#if isEditing}
+					<input
+						type="file"
+						accept="image/*"
+						class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+						onchange={handleCoverPicChange}
+					/>
+				{/if}
+			</div>
+
+			<div class="px-6 pb-6 -mt-12 flex flex-col gap-4">
+				<div class="relative w-24 h-24">
+					{#if profilePicPreview}
+						<img
+							src={profilePicPreview}
+							alt={name}
+							class="w-24 h-24 rounded-full border-2 border-white dark:border-[#212932] shadow-md object-cover"
+						/>
+					{:else}
+						<div
+							class="w-24 h-24 rounded-full bg-[#59452B] dark:bg-amber-500 text-white flex items-center justify-center text-2xl font-semibold border-4 border-white dark:border-[#212932] shadow-md"
+						>
+							{getInitials(name)}
+						</div>
+					{/if}
+					{#if isEditing}
+						<input
+							type="file"
+							accept="image/*"
+							class="absolute inset-0 w-full h-full opacity-0 cursor-pointer rounded-full"
+							onchange={handleProfilePicChange}
+						/>
+					{/if}
+				</div>
+
+				<div>
 					<p class="text-xl font-semibold text-gray-800 dark:text-white">{name}</p>
 					<p class="text-sm text-gray-500 dark:text-gray-400">{email}</p>
+					<p class="text-sm text-gray-500 dark:text-gray-400">admin</p>
 				</div>
 			</div>
 		</div>
@@ -96,9 +148,8 @@
 					<label
 						for="profile-name"
 						class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{profilePage.personalInfo.nameLabel}</label
 					>
-						{profilePage.personalInfo.nameLabel}
-					</label>
 					<Input
 						id="profile-name"
 						bind:value={name}
@@ -111,9 +162,8 @@
 					<label
 						for="profile-email"
 						class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{profilePage.personalInfo.emailLabel}</label
 					>
-						{profilePage.personalInfo.emailLabel}
-					</label>
 					<Input
 						id="profile-email"
 						bind:value={email}
@@ -127,9 +177,8 @@
 					<label
 						for="profile-phone"
 						class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{profilePage.personalInfo.phoneLabel}</label
 					>
-						{profilePage.personalInfo.phoneLabel}
-					</label>
 					<Input
 						id="profile-phone"
 						bind:value={phone}
@@ -147,7 +196,7 @@
 						variant="default"
 						size="default"
 						rounded="lg"
-						onClick={() => (isEditing = false)}
+						onClick={saveProfile}
 					/>
 				{:else}
 					<Button

@@ -1,13 +1,14 @@
 import { writable } from 'svelte/store';
 import type { UserRole } from '$lib/data/dashboard';
 import { profilePlaceholder } from '$lib/data/dashboard';
-import defaultProfilePic from '$lib/assets/avatar.avif';
+import defaultProfilePic from '$lib/assets/Portrait_Placeholder.png';
 
 export interface CurrentUser {
 	role: UserRole;
 	name: string;
 	email: string;
 	profilePic?: string;
+	coverPic?: string;
 }
 
 function createUserStore() {
@@ -15,7 +16,8 @@ function createUserStore() {
 		role: profilePlaceholder.role,
 		name: profilePlaceholder.name,
 		email: profilePlaceholder.email,
-		profilePic: defaultProfilePic
+		profilePic: defaultProfilePic,
+		coverPic: undefined
 	});
 
 	return {

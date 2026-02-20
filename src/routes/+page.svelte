@@ -4,7 +4,10 @@
 	import HomeBanner from '$lib/components/HomeBanner.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
+	import CloseIcon from '$lib/components/ui/icons/CloseIcon.svelte';
+	import Menu from '$lib/components/ui/icons/Menu.svelte';
 	import MetricItem from '$lib/components/ui/MetricItem.svelte';
+	import { navbarItemsData } from '$lib/data/dashboard';
 
 	let mobileNavOpen = false;
 
@@ -27,6 +30,8 @@
 	function closeMobileNav() {
 		mobileNavOpen = false;
 	}
+
+	const navbarItems = navbarItemsData;
 </script>
 
 <div class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50">
@@ -38,10 +43,9 @@
 			>
 
 			<nav class="hidden md:flex items-center gap-6 text-sm text-gray-600">
-				<a href="#features" class="hover:text-gray-900 transition-colors">Features</a>
-				<a href="#about" class="hover:text-gray-900 transition-colors">About</a>
-				<a href={resolve('/events')} class="hover:text-gray-900 transition-colors">Events</a>
-				<a href="#insights" class="hover:text-gray-900 transition-colors">Insights</a>
+				{#each navbarItems as item}
+					<a href={item.href} class="hover:text-gray-900 transition-colors">{item.label}</a>
+				{/each}
 			</nav>
 
 			<button
@@ -51,23 +55,9 @@
 				type="button"
 			>
 				{#if !mobileNavOpen}
-					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/>
-					</svg>
+					<Menu size={24} />
 				{:else}
-					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
+					<CloseIcon size={24} />
 				{/if}
 			</button>
 
@@ -85,24 +75,13 @@
 		{#if mobileNavOpen}
 			<div class="md:hidden bg-white/90 border-b border-gray-200 shadow z-30">
 				<nav class="flex flex-col px-4 py-4 gap-4 text-gray-700 font-medium">
-					<a
-						href="#features"
-						class="hover:text-blue-700 transition-colors"
-						on:click={closeMobileNav}>Features</a
-					>
-					<a href="#about" class="hover:text-blue-700 transition-colors" on:click={closeMobileNav}
-						>About</a
-					>
-					<a
-						href={resolve('/events')}
-						class="hover:text-blue-700 transition-colors"
-						on:click={closeMobileNav}>Events</a
-					>
-					<a
-						href="#insights"
-						class="hover:text-blue-700 transition-colors"
-						on:click={closeMobileNav}>Insights</a
-					>
+					{#each navbarItems as item}
+						<a
+							href={item.href}
+							class="hover:text-blue-700 transition-colors"
+							on:click={closeMobileNav}>{item.label}</a
+						>
+					{/each}
 					<Button
 						text="Sign In"
 						variant="default"

@@ -170,7 +170,6 @@ const rawBrowseEvents: BrowseEventDetail[] = [
 		ticketSalesTrendValues: [20, 25, 50, 100, 175, 100, 30]
 	}),
 
-	// New browse events
 	buildBrowseEventDetail({
 		id: '9',
 		title: 'AI Summit 2026',

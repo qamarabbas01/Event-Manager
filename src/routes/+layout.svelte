@@ -31,7 +31,7 @@
 		}
 
 		if ((isAuthRoute || isLandingRoute) && $auth.user) {
-			goto(resolve('/dashboard'));
+			goto(resolve('/dashboard/overview'));
 		}
 	});
 </script>
