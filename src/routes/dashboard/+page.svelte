@@ -196,6 +196,10 @@
 						<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
 							{eventsDashboardPage.allEventsTitle}
 						</h2>
+
+						<a href="/events" class="text-sm underline">
+							See Browse Events
+						</a>
 					</div>
 					<Table
 						data={tableData}
