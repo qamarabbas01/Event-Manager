@@ -25,14 +25,14 @@ export const metricsData: Record<string, MetricData> = {
 	totalEvents: {
 		label: 'Total Events',
 		value: '24',
-		trend: { value: '+12%', isPositive: true },
+		trend: { value: '+15%', isPositive: true },
 		iconKey: 'CalendarIcon',
 		iconBgColor: 'bg-purple-100',
 		iconColor: 'text-purple-600'
 	},
 	totalBookings: {
 		label: 'Total Bookings',
-		value: '1,847',
+		value: '1,900',
 		trend: { value: '+18%', isPositive: true },
 		iconKey: 'Users',
 		iconBgColor: 'bg-green-100',
@@ -40,7 +40,7 @@ export const metricsData: Record<string, MetricData> = {
 	},
 	revenue: {
 		label: 'Revenue',
-		value: '$89,420',
+		value: '$89,460',
 		trend: { value: '+23%', isPositive: true },
 		iconKey: 'Revenue',
 		iconBgColor: 'bg-purple-100',
@@ -48,8 +48,8 @@ export const metricsData: Record<string, MetricData> = {
 	},
 	avgAttendance: {
 		label: 'Avg Attendance',
-		value: '77',
-		trend: { value: '-5%', isPositive: false },
+		value: '99',
+		trend: { value: '+15%', isPositive: true },
 		iconKey: 'Attendance',
 		iconBgColor: 'bg-orange-100',
 		iconColor: 'text-orange-600'
