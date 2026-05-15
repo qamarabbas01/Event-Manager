@@ -77,4 +77,3 @@ export const homePage = {
 		cta: 'Get Started Now'
 	}
 } as const;
-

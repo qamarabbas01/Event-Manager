@@ -31,6 +31,12 @@
 		mobileNavOpen = false;
 	}
 
+	function scrollToSection(hash: string) {
+		const id = hash.slice(1);
+		document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+		closeMobileNav();
+	}
+
 	const navbarItems = navbarItemsData;
 </script>
 
@@ -43,15 +49,27 @@
 			>
 
 			<nav class="hidden md:flex items-center gap-6 text-sm text-gray-600">
-				{#each navbarItems as item}
-					<a href={item.href} class="hover:text-gray-900 transition-colors">{item.label}</a>
+				{#each navbarItems as item (item.label)}
+					{#if 'path' in item}
+						<a href={resolve(item.path)} class="hover:text-gray-900 transition-colors"
+							>{item.label}</a
+						>
+					{:else}
+						<button
+							type="button"
+							onclick={() => scrollToSection(item.hash)}
+							class="hover:text-gray-900 transition-colors"
+						>
+							{item.label}
+						</button>
+					{/if}
 				{/each}
 			</nav>
 
 			<button
 				class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
 				aria-label="Open menu"
-				on:click={toggleMobileNav}
+				onclick={toggleMobileNav}
 				type="button"
 			>
 				{#if !mobileNavOpen}
@@ -75,12 +93,22 @@
 		{#if mobileNavOpen}
 			<div class="md:hidden bg-white/90 border-b border-gray-200 shadow z-30">
 				<nav class="flex flex-col px-4 py-4 gap-4 text-gray-700 font-medium">
-					{#each navbarItems as item}
-						<a
-							href={item.href}
-							class="hover:text-blue-700 transition-colors"
-							on:click={closeMobileNav}>{item.label}</a
-						>
+					{#each navbarItems as item (item.label)}
+						{#if 'path' in item}
+							<a
+								href={resolve(item.path)}
+								class="hover:text-blue-700 transition-colors"
+								onclick={closeMobileNav}>{item.label}</a
+							>
+						{:else}
+							<button
+								type="button"
+								onclick={() => scrollToSection(item.hash)}
+								class="text-left hover:text-blue-700 transition-colors"
+							>
+								{item.label}
+							</button>
+						{/if}
 					{/each}
 					<Button
 						text="Sign In"

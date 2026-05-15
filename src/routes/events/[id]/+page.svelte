@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getEventById } from '$lib/data/events';
@@ -13,7 +13,7 @@
 	import Attendance from '$lib/components/ui/icons/Attendance.svelte';
 	import Arrowleft from '$lib/components/ui/icons/Arrowleft.svelte';
 
-	const eventId = $derived($page.params.id ?? '');
+	const eventId = $derived(page.params.id ?? '');
 	const event = $derived(getEventById(eventId));
 	const eventsHref = resolve('/events');
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import SideBar from '$lib/components/SideBar.svelte';
@@ -13,7 +13,7 @@
 	const appRoutePrefixes = ['/dashboard', '/attendee-insights', '/profile'] as const;
 	const authRoutes = ['/login', '/register'] as const;
 
-	const pathname = $derived($page.url.pathname);
+	const pathname = $derived(page.url.pathname);
 
 	const isAppRoute = $derived(
 		appRoutePrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))

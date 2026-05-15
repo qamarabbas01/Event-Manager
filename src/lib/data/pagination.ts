@@ -7,4 +7,3 @@ export const paginationUi = {
 	ellipsisText: '…',
 	goToPageAriaLabel: (page: number) => `Go to page ${page}`
 } as const;
-

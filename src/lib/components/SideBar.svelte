@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import HouseOutline from './ui/icons/HouseOutline.svelte';
@@ -85,7 +85,7 @@
 
 			<nav class="flex-1 px-4 py-6 space-y-2">
 				{#each navItems as item (item.href)}
-					{@const isActive = isNavActive(item.href, $page.url.pathname)}
+					{@const isActive = isNavActive(item.href, page.url.pathname)}
 					<button
 						onclick={() => handleNavClick(item.href)}
 						class="w-full flex items-center gap-3 px-4 cursor-pointer py-3 rounded-lg text-left transition-all duration-200 {isActive

@@ -88,7 +88,9 @@
 
 			<div class="mt-6 mb-6">
 				<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Welcome back</h1>
-				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sign in to access your dashboard.</p>
+				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+					Sign in to access your dashboard.
+				</p>
 			</div>
 
 			{#if error}
@@ -125,7 +127,9 @@
 				</label>
 
 				<label class="block" for="login-password">
-					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>Password</span
+					>
 					<Input
 						id="login-password"
 						name="password"
@@ -140,7 +144,9 @@
 				</label>
 
 				<div class="flex items-center justify-between gap-3">
-					<label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 select-none">
+					<label
+						class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 select-none"
+					>
 						<input
 							type="checkbox"
 							bind:checked={showPassword}

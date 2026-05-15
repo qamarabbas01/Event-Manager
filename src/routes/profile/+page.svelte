@@ -47,7 +47,8 @@
 	}
 
 	function saveProfile() {
-		if (profilePicFile) userStore.update((u) => ({ ...u, profilePic: profilePicPreview ?? undefined }));
+		if (profilePicFile)
+			userStore.update((u) => ({ ...u, profilePic: profilePicPreview ?? undefined }));
 		if (coverPicFile) userStore.update((u) => ({ ...u, coverPic: coverPicPreview ?? undefined }));
 
 		isEditing = false;

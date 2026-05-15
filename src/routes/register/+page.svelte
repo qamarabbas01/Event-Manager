@@ -96,7 +96,9 @@
 			</a>
 
 			<div class="mt-6 mb-6">
-				<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{registerPage.header.title}</h1>
+				<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+					{registerPage.header.title}
+				</h1>
 				<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{registerPage.header.subtitle}</p>
 			</div>
 
@@ -118,7 +120,9 @@
 				}}
 			>
 				<label class="block" for="register-name">
-					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.nameLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{registerPage.form.nameLabel}</span
+					>
 					<Input
 						id="register-name"
 						name="name"
@@ -132,7 +136,9 @@
 				</label>
 
 				<label class="block" for="register-email">
-					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.emailLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{registerPage.form.emailLabel}</span
+					>
 					<Input
 						id="register-email"
 						name="email"
@@ -148,7 +154,9 @@
 				</label>
 
 				<label class="block" for="register-password">
-					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{registerPage.form.passwordLabel}</span>
+					<span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+						>{registerPage.form.passwordLabel}</span
+					>
 					<Input
 						id="register-password"
 						name="password"
@@ -160,7 +168,9 @@
 						required
 						ariaInvalid={Boolean(error)}
 					/>
-					<span class="block text-xs text-gray-500 dark:text-gray-400 mt-1">{registerPage.form.passwordHint}</span>
+					<span class="block text-xs text-gray-500 dark:text-gray-400 mt-1"
+						>{registerPage.form.passwordHint}</span
+					>
 				</label>
 
 				<label class="block" for="register-confirm-password">
@@ -181,7 +191,9 @@
 				</label>
 
 				<div class="flex items-center justify-between gap-3">
-					<label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 select-none">
+					<label
+						class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 select-none"
+					>
 						<input
 							type="checkbox"
 							bind:checked={showPassword}

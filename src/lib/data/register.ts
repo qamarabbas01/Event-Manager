@@ -30,4 +30,3 @@ export const registerPage = {
 		passwordMismatch: 'Passwords do not match.'
 	}
 } as const;
-

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Plus from '$lib/components/ui/icons/Plus.svelte';
 	import Table from '$lib/components/ui/Table.svelte';
@@ -197,9 +198,7 @@
 							{eventsDashboardPage.allEventsTitle}
 						</h2>
 
-						<a href="/events" class="text-sm underline">
-							See Browse Events
-						</a>
+						<a href={resolve('/events')} class="text-sm underline"> See Browse Events </a>
 					</div>
 					<Table
 						data={tableData}

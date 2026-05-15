@@ -26,4 +26,3 @@ export const loginPage = {
 		defaultName: 'User'
 	}
 } as const;
-

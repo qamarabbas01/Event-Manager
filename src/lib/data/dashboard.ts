@@ -14,11 +14,13 @@ export interface MetricData {
 	iconColor: string;
 }
 
-export const navbarItemsData = [
-	{ label: 'Features', href: '#features' },
-	{ label: 'About', href: '#about' },
-	{ label: 'Events', href: '/events' },
-	{ label: 'Insights', href: '#insights' }
+export type NavbarItem = { label: string; hash: string } | { label: string; path: '/events' };
+
+export const navbarItemsData: NavbarItem[] = [
+	{ label: 'Features', hash: '#features' },
+	{ label: 'About', hash: '#about' },
+	{ label: 'Events', path: '/events' },
+	{ label: 'Insights', hash: '#insights' }
 ];
 
 export const metricsData: Record<string, MetricData> = {
@@ -314,7 +316,7 @@ export const addUserModal = {
 	saveButtonText: 'Save',
 	roleAdmin: 'Admin',
 	roleUser: 'User',
-	roleTester: 'Tester',
+	roleTester: 'Tester'
 } as const;
 
 export const profilePlaceholder = {
