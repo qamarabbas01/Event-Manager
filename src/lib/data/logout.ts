@@ -14,4 +14,3 @@ export const logoutPage = {
 		backHome: 'Back to home'
 	}
 } as const;
-

@@ -10,4 +10,3 @@ export const authFooter = {
 	backHomeLink: 'Back to home',
 	browseEventsLink: 'Browse events'
 } as const;
-
