@@ -19,6 +19,7 @@
 	import type { IconComponent } from '$lib/types/icons';
 	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
 	import Revenue from './ui/icons/Revenue.svelte';
+	import BellIcon from './ui/icons/BellIcon.svelte';
 	import LightIcon from './ui/icons/Light.svelte';
 	import MoonIcon from './ui/icons/MoonIcon.svelte';
 
@@ -26,6 +27,7 @@
 		Home: HouseOutline,
 		Calendar: CalendarIcon,
 		Chart: Revenue,
+		Bell: BellIcon,
 		Profile: PersonOutline
 	};
 

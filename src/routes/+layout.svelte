@@ -10,7 +10,7 @@
 
 	let { children } = $props();
 
-	const appRoutePrefixes = ['/dashboard', '/attendee-insights', '/profile'] as const;
+	const appRoutePrefixes = ['/dashboard', '/attendee-insights', '/notifications', '/profile'] as const;
 	const authRoutes = ['/login', '/register'] as const;
 
 	const pathname = $derived(page.url.pathname);
