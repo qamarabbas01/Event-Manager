@@ -172,6 +172,63 @@ export const notificationsData: NotificationData[] = [
 ];
 
 export const notificationsSectionTitle = 'Recent Notifications';
+
+export const notificationsPage = {
+	title: 'Notifications',
+	subtitle: 'Stay on top of registrations, capacity alerts, and upcoming events',
+	markAllReadText: 'Mark all as read',
+	filters: {
+		all: 'All',
+		success: 'Success',
+		warning: 'Warning',
+		info: 'Info'
+	},
+	stats: {
+		unread: 'Unread',
+		today: 'Today',
+		thisWeek: 'This week'
+	},
+	emptyText: 'No notifications match this filter.'
+} as const;
+
+export const notificationsInboxData: NotificationData[] = [
+	...notificationsData,
+	{
+		type: 'success',
+		title: 'Payment received',
+		message: 'Startup Pitch Night — $2,400 in ticket sales confirmed',
+		timestamp: '3 hours ago',
+		iconKey: 'CheckFilled'
+	},
+	{
+		type: 'info',
+		title: 'New attendee question',
+		message: '3 people asked about parking for Food & Wine Expo',
+		timestamp: '6 hours ago',
+		iconKey: 'InfoIcon'
+	},
+	{
+		type: 'warning',
+		title: 'Capacity at 90%',
+		message: 'Art Gallery Opening is nearly sold out — 12 spots remaining',
+		timestamp: 'Yesterday',
+		iconKey: 'WarningIcon'
+	},
+	{
+		type: 'success',
+		title: 'Event published',
+		message: 'Community Yoga Session is now live on the events page',
+		timestamp: '2 days ago',
+		iconKey: 'CheckFilled'
+	},
+	{
+		type: 'info',
+		title: 'Weekly summary ready',
+		message: 'Your organizer report for May 5–11 is available to view',
+		timestamp: '3 days ago',
+		iconKey: 'InfoIcon'
+	}
+];
 export interface NavItemData {
 	label: string;
 	href: string;
@@ -190,6 +247,7 @@ export const navItemsData = [
 	{ label: 'Overview', href: '/dashboard/overview', iconKey: 'Home' },
 	{ label: 'Events', href: '/dashboard', iconKey: 'Calendar' },
 	{ label: 'Attendee Insights', href: '/attendee-insights', iconKey: 'Chart' },
+	{ label: 'Notifications', href: '/notifications', iconKey: 'Bell' },
 	{ label: 'Profile', href: '/profile', iconKey: 'Profile' }
 ] as const satisfies readonly NavItemData[];
 
