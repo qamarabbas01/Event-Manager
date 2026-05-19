@@ -7,9 +7,10 @@
 		message: string;
 		timestamp: string;
 		icon: IconComponent;
+		compact?: boolean;
 	}
 
-	let { type, title, message, timestamp, icon: Icon }: Props = $props();
+	let { type, title, message, timestamp, icon: Icon, compact = false }: Props = $props();
 
 	const typeStyles = {
 		success: {
@@ -33,7 +34,9 @@
 </script>
 
 <div
-	class="p-4 rounded-lg {styles.bg} border border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+	class="{compact
+		? 'py-0'
+		: `p-4 rounded-lg ${styles.bg} border border-transparent hover:border-gray-300 dark:hover:border-gray-600`} transition-colors"
 >
 	<div class="flex items-start gap-3">
 		<div class="p-2 {styles.iconBg} rounded-full shrink-0">
