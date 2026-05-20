@@ -63,22 +63,22 @@
 </script>
 
 <div
-	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-[#0f1419] dark:via-[#1D232A] dark:to-[#0f1419] px-4 py-16 flex items-center justify-center transition-colors"
+	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-[#0f1419] dark:via-[#1D232A] dark:to-[#0f1419] px-4 py-16 flex items-center justify-center transition-colors relative"
 >
-	<section class="w-full max-w-md relative">
-		<button
-			type="button"
-			onclick={toggleTheme}
-			class="absolute -top-2 right-0 p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-			aria-label={themeToggleAriaLabel}
-			title={$theme === 'dark' ? 'Light' : 'Dark'}
-		>
-			{#if $theme === 'dark'}
-				<LightIcon size={22} />
-			{:else}
-				<MoonIcon size={22} />
-			{/if}
-		</button>
+	<button
+		type="button"
+		onclick={toggleTheme}
+		class="fixed top-4 right-4 z-50 p-2.5 rounded-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur border border-gray-200 dark:border-gray-700 shadow-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+		aria-label={themeToggleAriaLabel}
+		title={$theme === 'dark' ? 'Light mode' : 'Dark mode'}
+	>
+		{#if $theme === 'dark'}
+			<LightIcon size={22} />
+		{:else}
+			<MoonIcon size={22} />
+		{/if}
+	</button>
+	<section class="w-full max-w-md">
 		<div
 			class="bg-white/80 dark:bg-gray-800/90 backdrop-blur rounded-3xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8 transition-colors"
 		>
