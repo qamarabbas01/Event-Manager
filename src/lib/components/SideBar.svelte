@@ -16,6 +16,7 @@
 		themeToggleAriaLabel
 	} from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';
+	import { logout } from '$lib/stores/auth';
 	import type { IconComponent } from '$lib/types/icons';
 	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
 	import Revenue from './ui/icons/Revenue.svelte';
@@ -53,7 +54,8 @@
 	}
 
 	function handleLogout() {
-		goto(resolve('/logout'));
+		logout();
+		goto(resolve('/login'));
 		isMobileMenuOpen = false;
 	}
 
