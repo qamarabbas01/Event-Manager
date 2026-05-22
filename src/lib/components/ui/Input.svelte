@@ -42,12 +42,12 @@
 
 <div class="relative inline-flex items-center w-full">
 	{#if showIcons && leftIcon}
+		{@const LeftIcon = leftIcon}
 		{#key leftIcon}
 			<div
 				class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none z-10 flex items-center justify-center"
 			>
-				<!-- svelte-ignore svelte_component_deprecated -->
-				<svelte:component this={leftIcon} size={iconSize} class="text-gray-400 shrink-0" />
+				<LeftIcon size={iconSize} class="text-gray-400 shrink-0" />
 			</div>
 		{/key}
 	{/if}

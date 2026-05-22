@@ -1,24 +1,30 @@
-import { appTitle } from './app';
+import { appMark, appTitle } from './app';
+
+export type HomeNavItem = { label: string; hash: string } | { label: string; path: '/events' };
 
 export const homePage = {
 	header: {
 		brandTitle: appTitle,
+		brandMark: appMark,
 		nav: [
-			{ label: 'Features', href: '#features' },
-			{ label: 'About', href: '#about' },
-			{ label: 'Events', href: '/events' },
-			{ label: 'Insights', href: '#insights' }
-		],
+			{ label: 'Features', hash: '#features' },
+			{ label: 'About', hash: '#about' },
+			{ label: 'Events', path: '/events' },
+			{ label: 'Insights', hash: '#insights' }
+		] satisfies HomeNavItem[],
 		signInLink: 'Sign In',
-		getStartedButton: 'Get Started'
+		getStartedButton: 'Get Started',
+		menuAriaLabel: 'Open menu'
 	},
 	hero: {
-		welcomePrefix: 'Welcome to',
-		highlightTitle: appTitle,
+		badge: 'All-in-one event platform',
+		welcomePrefix: 'Plan events that',
+		highlightTitle: 'people remember',
 		subtitle:
-			'The all-in-one platform for managing events, tracking attendees, and growing your business with powerful analytics.',
+			'Create events, track attendees, monitor revenue, and get smart alerts — everything organizers need in one beautiful dashboard.',
 		primaryCta: 'Go to Dashboard',
-		secondaryCta: 'Browse Events'
+		secondaryCta: 'Browse Events',
+		trustLine: 'Trusted by organizers worldwide'
 	},
 	stats: [
 		{ value: '10K+', label: 'Events Managed' },
@@ -69,11 +75,22 @@ export const homePage = {
 	},
 	about: {
 		title: 'Built for real organizers',
-		description: `${appTitle} helps you manage your own event data (add, edit, delete), monitor performance, and keep everything in one place. After you register, you’ll go straight to the dashboard to start managing your events.`
+		description: `${appTitle} helps you manage your own event data (add, edit, delete), monitor performance, and keep everything in one place.`,
+		highlights: [
+			'Add, edit, and delete events from one dashboard',
+			'Real-time metrics for bookings and revenue',
+			'Attendee insights and notification center',
+			'Dark mode and mobile-friendly layout'
+		],
+		cta: 'Create your free account'
 	},
 	insights: {
 		title: 'Ready to transform your events?',
 		subtitle: `Join thousands of event organizers who trust ${appTitle}.`,
 		cta: 'Get Started Now'
+	},
+	footer: {
+		tagline: `${appTitle} — modern event management for teams of every size.`,
+		copyright: `© ${new Date().getFullYear()} ${appTitle}. All rights reserved.`
 	}
 } as const;

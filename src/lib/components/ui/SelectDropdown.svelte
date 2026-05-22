@@ -102,14 +102,10 @@
 								aria-disabled={item.disabled}
 							>
 								{#if item.icon}
+									{@const OptionIcon = item.icon}
 									{#key item.icon}
 										<div class="shrink-0">
-											<!-- svelte-ignore svelte_component_deprecated -->
-											<svelte:component
-												this={item.icon}
-												size={20}
-												class="text-gray-600 dark:text-gray-400"
-											/>
+											<OptionIcon size={20} class="text-gray-600 dark:text-gray-400" />
 										</div>
 									{/key}
 								{/if}
