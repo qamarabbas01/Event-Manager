@@ -87,8 +87,7 @@
 			{/if}
 		</div>
 		<div class="p-3 {iconBgColor} rounded-full">
-			<!-- svelte-ignore svelte_component_deprecated -->
-			<svelte:component this={Icon} size={24} class={iconColor} />
+			<Icon size={24} class={iconColor} />
 		</div>
 	</div>
 </div>

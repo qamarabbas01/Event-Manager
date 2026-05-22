@@ -90,15 +90,14 @@
 			<nav class="flex-1 px-4 py-6 space-y-2">
 				{#each navItems as item (item.href)}
 					{@const isActive = isNavActive(item.href, page.url.pathname)}
+					{@const NavIcon = item.icon}
 					<button
 						onclick={() => handleNavClick(item.href)}
 						class="w-full flex items-center gap-3 px-4 cursor-pointer py-3 rounded-lg text-left transition-all duration-200 {isActive
 							? 'bg-[#F5F5F5] dark:bg-gray-800 text-[#2C2C2C] dark:text-gray-100 font-medium'
 							: 'text-[#6B7280] dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-[#2C2C2C] dark:hover:text-gray-100'}"
 					>
-						<!-- svelte-ignore svelte_component_deprecated -->
-						<svelte:component
-							this={item.icon}
+						<NavIcon
 							size={18}
 							class="{isActive
 								? 'text-[#2C2C2C] dark:text-gray-100'

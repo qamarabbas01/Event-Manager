@@ -8,9 +8,12 @@
 	import LightIcon from '$lib/components/ui/icons/Light.svelte';
 	import Menu from '$lib/components/ui/icons/Menu.svelte';
 	import MoonIcon from '$lib/components/ui/icons/MoonIcon.svelte';
-	import MetricItem from '$lib/components/ui/MetricItem.svelte';
-	import { navbarItemsData, themeToggleAriaLabel } from '$lib/data/dashboard';
+	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
+	import { homePage } from '$lib/data/home';
+	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';
+
+	const { header, hero, stats, features, about, footer } = homePage;
 
 	let mobileNavOpen = false;
 
@@ -47,37 +50,52 @@
 		document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 		closeMobileNav();
 	}
-
-	const navbarItems = navbarItemsData;
 </script>
 
 <div
-	class="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-[#0f1419] dark:via-[#1D232A] dark:to-[#0f1419] transition-colors text-gray-900 dark:text-gray-100"
+	class="relative min-h-screen overflow-x-hidden bg-linear-to-br from-blue-50 via-white to-purple-50 dark:from-[#0a0e14] dark:via-[#1D232A] dark:to-[#121820] transition-colors text-gray-900 dark:text-gray-100"
 >
+	<!-- Ambient background -->
+	<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+		<div
+			class="absolute -top-40 right-0 h-96 w-96 rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-3xl"
+		></div>
+		<div
+			class="absolute top-1/3 -left-32 h-80 w-80 rounded-full bg-purple-400/15 dark:bg-purple-600/10 blur-3xl"
+		></div>
+	</div>
+
 	<header
-		class="sticky top-0 z-20 backdrop-blur bg-white/70 dark:bg-[#1D232A]/85 border-b border-gray-200 dark:border-gray-700 transition-colors"
+		class="sticky top-0 z-30 border-b border-gray-200/80 dark:border-gray-700/60 bg-white/75 dark:bg-[#1D232A]/80 backdrop-blur-md transition-colors"
 	>
-		<div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+		<div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
 			<a
 				href={resolve('/')}
-				class="font-semibold text-gray-900 dark:text-gray-100 cursor-pointer text-2xl tracking-tight shrink-0"
-				>EventHub</a
+				class="inline-flex items-center gap-2.5 font-semibold text-gray-900 dark:text-gray-100 shrink-0"
 			>
+				<span
+					class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 text-sm font-bold text-white shadow-md"
+					aria-hidden="true"
+				>
+					{header.brandMark}
+				</span>
+				<span class="text-xl tracking-tight">{header.brandTitle}</span>
+			</a>
 
 			<nav
-				class="hidden md:flex flex-1 justify-center items-center gap-6 text-sm text-gray-600 dark:text-gray-400"
+				class="hidden md:flex flex-1 justify-center items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-400"
 			>
-				{#each navbarItems as item (item.label)}
+				{#each header.nav as item (item.label)}
 					{#if 'path' in item}
 						<a
-							href={resolve(item.path)}
-							class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors">{item.label}</a
+							href={resolve('/events')}
+							class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{item.label}</a
 						>
 					{:else}
 						<button
 							type="button"
 							onclick={() => scrollToSection(item.hash)}
-							class="hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+							class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
 						>
 							{item.label}
 						</button>
@@ -85,11 +103,11 @@
 				{/each}
 			</nav>
 
-			<div class="flex items-center gap-1 sm:gap-2 shrink-0">
+			<div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
 				<button
 					type="button"
 					onclick={toggleTheme}
-					class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+					class="inline-flex items-center justify-center p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-gray-800 transition-colors"
 					aria-label={themeToggleAriaLabel}
 					title={$theme === 'dark' ? 'Light mode' : 'Dark mode'}
 				>
@@ -102,15 +120,20 @@
 				<div class="hidden md:flex items-center gap-3">
 					<a
 						href={resolve('/login')}
-						class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+						class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
 					>
-						Sign In
+						{header.signInLink}
 					</a>
-					<Button text="Get Started" variant="primary-blue" rounded="lg" onClick={goToRegister} />
+					<Button
+						text={header.getStartedButton}
+						variant="primary-blue"
+						rounded="lg"
+						onClick={goToRegister}
+					/>
 				</div>
 				<button
-					class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-					aria-label="Open menu"
+					class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+					aria-label={header.menuAriaLabel}
 					onclick={toggleMobileNav}
 					type="button"
 				>
@@ -125,157 +148,199 @@
 
 		{#if mobileNavOpen}
 			<div
-				class="md:hidden bg-white/90 dark:bg-[#1D232A]/95 border-b border-gray-200 dark:border-gray-700 shadow z-30 transition-colors"
+				class="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-[#1D232A]/95 backdrop-blur-sm"
 			>
-				<nav class="flex flex-col px-4 py-4 gap-4 text-gray-700 dark:text-gray-300 font-medium">
-					{#each navbarItems as item (item.label)}
+				<nav class="flex flex-col px-4 py-5 gap-1 text-gray-700 dark:text-gray-300 font-medium">
+					{#each header.nav as item (item.label)}
 						{#if 'path' in item}
 							<a
-								href={resolve(item.path)}
-								class="hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
+								href={resolve('/events')}
+								class="px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 								onclick={closeMobileNav}>{item.label}</a
 							>
 						{:else}
 							<button
 								type="button"
 								onclick={() => scrollToSection(item.hash)}
-								class="text-left hover:text-blue-700 dark:hover:text-blue-400 transition-colors"
+								class="text-left px-3 py-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors w-full"
 							>
 								{item.label}
 							</button>
 						{/if}
 					{/each}
-					<Button
-						text="Sign In"
-						variant="default"
-						rounded="lg"
-						class="w-full"
-						onClick={() => {
-							closeMobileNav();
-							goToLogin();
-						}}
-					/>
-					<Button
-						text="Get Started"
-						variant="primary-blue"
-						rounded="lg"
-						class="w-full"
-						onClick={() => {
-							closeMobileNav();
-							goToRegister();
-						}}
-					/>
+					<div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
+						<Button
+							text={header.signInLink}
+							variant="default"
+							rounded="lg"
+							class="w-full"
+							onClick={() => {
+								closeMobileNav();
+								goToLogin();
+							}}
+						/>
+						<Button
+							text={header.getStartedButton}
+							variant="primary-blue"
+							rounded="lg"
+							class="w-full"
+							onClick={() => {
+								closeMobileNav();
+								goToRegister();
+							}}
+						/>
+					</div>
 				</nav>
 			</div>
 		{/if}
 	</header>
 
-	<main class="max-w-6xl mx-auto px-4">
-		<section class="pt-16 pb-10 text-center">
-			<h1
-				class="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight"
+	<main class="relative max-w-6xl mx-auto px-4 sm:px-6">
+		<!-- Hero -->
+		<section class="pt-14 sm:pt-20 pb-16 sm:pb-20 text-center">
+			<p
+				class="inline-flex items-center gap-2 rounded-full border border-blue-200/80 dark:border-blue-800/60 bg-white/60 dark:bg-gray-800/50 px-4 py-1.5 text-sm font-medium text-blue-700 dark:text-blue-300 shadow-sm backdrop-blur-sm"
 			>
-				Welcome to
-				<span
-					class="inline-flex align-middle mx-2 px-4 py-1 rounded-lg text-white bg-linear-to-r from-blue-600 to-purple-600 shadow-sm"
-					>EventHub</span
-				>
-			</h1>
-			<p class="mt-5 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
-				The all-in-one platform for managing events, tracking attendees, and growing your business
-				with powerful analytics.
+				<span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" aria-hidden="true"></span>
+				{hero.badge}
 			</p>
 
-			<div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+			<h1
+				class="mt-8 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100 leading-[1.1] max-w-4xl mx-auto"
+			>
+				{hero.welcomePrefix}
+				<span
+					class="block mt-2 bg-linear-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent"
+				>
+					{hero.highlightTitle}
+				</span>
+			</h1>
+
+			<p
+				class="mt-6 text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+			>
+				{hero.subtitle}
+			</p>
+
+			<div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
 				<Button
-					text="Go to Dashboard"
+					text={hero.primaryCta}
 					variant="primary-blue"
 					rounded="lg"
 					size="lg"
 					onClick={goToDashboard}
 				/>
 				<Button
-					text="Browse Events"
+					text={hero.secondaryCta}
 					variant="default"
 					rounded="lg"
 					size="lg"
-					class="bg-white/80 dark:bg-gray-800/80 dark:text-gray-100"
+					class="bg-white/90 dark:bg-gray-800/90 dark:text-gray-100 border border-gray-200 dark:border-gray-600 shadow-sm"
 					onClick={goToEvents}
 				/>
 			</div>
-		</section>
 
-		<section class="py-10">
-			<div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-				<MetricItem value="10K+" label="Events Managed" />
-				<MetricItem value="500K+" label="Happy Attendees" />
-				<MetricItem value="$5M+" label="Revenue Processed" />
-				<MetricItem value="99.9%" label="Uptime" />
-			</div>
-		</section>
-
-		<section id="features" class="py-12">
-			<h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 text-center">
-				Everything you need to succeed
-			</h2>
-			<p class="text-gray-600 dark:text-gray-400 text-center mt-3 max-w-2xl mx-auto">
-				Powerful features designed to help you create memorable events and grow your business.
-			</p>
-
-			<div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-				<Card
-					title="Event Management"
-					description="Create, organize, and manage all your events in one centralized platform with ease."
-					icon="📅"
-				/>
-
-				<Card
-					title="Attendee Insights"
-					description="Gain deep insights into your audience demographics and engagement patterns."
-					icon="👥"
-				/>
-
-				<Card
-					title="Analytics Dashboard"
-					description="Track performance metrics, revenue, and booking trends with real-time analytics."
-					icon="📊"
-				/>
-
-				<Card
-					title="Smart Notifications"
-					description="Stay informed with intelligent alerts about registrations, capacity, and more."
-					icon="🔔"
-				/>
-
-				<Card
-					title="Revenue Tracking"
-					description="Monitor ticket sales and revenue streams with comprehensive financial reports."
-					icon="📈"
-				/>
-
-				<Card
-					title="Seamless Experience"
-					description="Intuitive interface designed for event organizers to work efficiently."
-					icon="✨"
-				/>
-			</div>
-		</section>
-
-		<section id="about" class="py-8">
-			<div
-				class="bg-white/70 dark:bg-gray-800/60 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 transition-colors"
+			<p
+				class="mt-10 text-xs sm:text-sm uppercase tracking-widest text-gray-400 dark:text-gray-500"
 			>
-				<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
-					Built for real organizers
+				{hero.trustLine}
+			</p>
+		</section>
+
+		<!-- Stats -->
+		<section class="pb-16 sm:pb-20">
+			<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+				{#each stats as stat (stat.label)}
+					<div
+						class="rounded-2xl border border-gray-200/80 dark:border-gray-700/60 bg-white/70 dark:bg-gray-800/50 backdrop-blur-sm p-5 sm:p-6 text-center shadow-sm transition-colors"
+					>
+						<p class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-gray-100">
+							{stat.value}
+						</p>
+						<p
+							class="mt-1 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide"
+						>
+							{stat.label}
+						</p>
+					</div>
+				{/each}
+			</div>
+		</section>
+
+		<!-- Features -->
+		<section id="features" class="py-16 sm:py-20">
+			<div class="text-center max-w-2xl mx-auto">
+				<h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
+					{features.title}
 				</h2>
-				<p class="mt-2 text-sm text-gray-600 dark:text-gray-400 max-w-3xl">
-					EventHub helps you manage your own event data (add, edit, delete), monitor performance,
-					and keep everything in one place. After you register, you’ll go straight to the dashboard
-					to start managing your events.
+				<p class="mt-4 text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+					{features.subtitle}
 				</p>
+			</div>
+
+			<div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+				{#each features.cards as card (card.title)}
+					<Card title={card.title} description={card.description} icon={card.icon} />
+				{/each}
+			</div>
+		</section>
+
+		<!-- About -->
+		<section id="about" class="py-16 sm:py-20">
+			<div
+				class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center rounded-3xl border border-gray-200 dark:border-gray-700/60 bg-white/60 dark:bg-gray-800/40 backdrop-blur-sm p-8 sm:p-10 shadow-sm"
+			>
+				<div>
+					<h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">
+						{about.title}
+					</h2>
+					<p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+						{about.description}
+					</p>
+					<div class="mt-8">
+						<Button
+							text={about.cta}
+							variant="primary-blue"
+							rounded="lg"
+							size="lg"
+							onClick={goToRegister}
+						/>
+					</div>
+				</div>
+				<ul class="space-y-4">
+					{#each about.highlights as highlight (highlight)}
+						<li class="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+							<span
+								class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40"
+							>
+								<CheckFilled size={14} class="text-green-600 dark:text-green-400" />
+							</span>
+							<span class="text-sm sm:text-base leading-relaxed">{highlight}</span>
+						</li>
+					{/each}
+				</ul>
 			</div>
 		</section>
 
 		<HomeBanner />
 	</main>
+
+	<footer
+		class="relative border-t border-gray-200 dark:border-gray-700/60 bg-white/50 dark:bg-[#151a22]/80 backdrop-blur-sm"
+	>
+		<div
+			class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+		>
+			<div class="flex items-center gap-2">
+				<span
+					class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-purple-600 text-xs font-bold text-white"
+					aria-hidden="true"
+				>
+					{header.brandMark}
+				</span>
+				<p class="text-sm text-gray-500 dark:text-gray-400">{footer.tagline}</p>
+			</div>
+			<p class="text-xs text-gray-400 dark:text-gray-500">{footer.copyright}</p>
+		</div>
+	</footer>
 </div>
