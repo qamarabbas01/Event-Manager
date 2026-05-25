@@ -335,20 +335,32 @@ export type UserRole = 'admin' | 'user' | 'tester';
 export const profilePage = {
 	title: 'Profile',
 	subtitle: 'Manage your account and preferences',
+	hero: {
+		editCoverText: 'Edit cover',
+		editPhotoText: 'Edit photo',
+		activeStatusTitle: 'Active',
+		displayNameFallback: 'User',
+		coverAlt: 'Cover'
+	},
 	personalInfo: {
 		sectionTitle: 'Personal Information',
+		editingSubtitle: 'Update your details below',
+		viewSubtitle: 'Your account contact information',
+		editingBadge: 'Editing',
 		nameLabel: 'Full name',
 		namePlaceholder: 'Enter your name',
 		emailLabel: 'Email',
 		emailPlaceholder: 'you@example.com',
 		phoneLabel: 'Phone',
-		phonePlaceholder: '+49 123 456 7890'
+		phonePlaceholder: '+49 123 456 7890',
+		emptyValue: '—'
 	},
 	account: {
 		sectionTitle: 'Account',
 		memberSinceLabel: 'Member since',
 		editButtonText: 'Edit profile',
-		saveButtonText: 'Save changes'
+		saveButtonText: 'Save changes',
+		cancelButtonText: 'Cancel'
 	},
 	admin: {
 		sectionTitle: 'Manage users',
@@ -356,6 +368,7 @@ export const profilePage = {
 		addUsersButtonText: 'Invite user',
 		editUserButtonText: 'Edit',
 		deleteUserButtonText: 'Delete',
+		emptyTeamTitle: 'No team members yet',
 		emptyUsersText: 'No users added yet. Use "Invite user" to invite someone.'
 	}
 } as const;
