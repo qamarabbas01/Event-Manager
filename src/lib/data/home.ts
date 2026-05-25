@@ -2,16 +2,20 @@ import { appMark, appTitle } from './app';
 
 export type HomeNavItem = { label: string; hash: string } | { label: string; path: '/events' };
 
+const homeNav: HomeNavItem[] = [
+	{ label: 'Features', hash: '#features' },
+	{ label: 'About', hash: '#about' },
+	{ label: 'Events', path: '/events' },
+	{ label: 'Insights', hash: '#insights' }
+];
+
+const footerYear = new Date().getFullYear();
+
 export const homePage = {
 	header: {
 		brandTitle: appTitle,
 		brandMark: appMark,
-		nav: [
-			{ label: 'Features', hash: '#features' },
-			{ label: 'About', hash: '#about' },
-			{ label: 'Events', path: '/events' },
-			{ label: 'Insights', hash: '#insights' }
-		] satisfies HomeNavItem[],
+		nav: homeNav,
 		signInLink: 'Sign In',
 		getStartedButton: 'Get Started',
 		menuAriaLabel: 'Open menu'
@@ -91,6 +95,8 @@ export const homePage = {
 	},
 	footer: {
 		tagline: `${appTitle} — modern event management for teams of every size.`,
-		copyright: `© ${new Date().getFullYear()} ${appTitle}. All rights reserved.`
+		copyright: `© ${footerYear} ${appTitle}. All rights reserved.`
 	}
 } as const;
+
+export type HomePage = typeof homePage;

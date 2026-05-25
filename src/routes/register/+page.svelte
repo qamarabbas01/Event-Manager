@@ -9,6 +9,7 @@
 	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';
 	import { login } from '$lib/stores/auth';
+	import { userStore } from '$lib/stores/user';
 
 	function toggleTheme() {
 		theme.set($theme === 'dark' ? 'light' : 'dark');
@@ -57,7 +58,9 @@
 			return;
 		}
 
-		login({ name: input.cleanName, email: input.cleanEmail });
+		const user = { name: input.cleanName, email: input.cleanEmail };
+		login(user);
+		userStore.syncFromAuth(user);
 		goto(resolve('/dashboard/overview'));
 	}
 </script>
