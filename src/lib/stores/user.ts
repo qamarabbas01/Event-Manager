@@ -25,13 +25,23 @@ const defaultUser: CurrentUser = {
 	coverPic: undefined
 };
 
+function stripEphemeralImageUrls(user: CurrentUser): CurrentUser {
+	const data = { ...user };
+	if (data.profilePic?.startsWith('blob:')) data.profilePic = undefined;
+	if (data.coverPic?.startsWith('blob:')) data.coverPic = undefined;
+	return data;
+}
+
 function loadUser(): CurrentUser {
 	if (typeof window === 'undefined') return defaultUser;
 	try {
 		const raw = localStorage.getItem(STORAGE_KEY);
 		if (!raw) return defaultUser;
-		const parsed = JSON.parse(raw) as Partial<CurrentUser>;
+		const parsed = JSON.parse(raw) as Partial<CurrentUser> | null;
+		if (!parsed || typeof parsed !== 'object') return defaultUser;
 		if (parsed.profilePic?.includes('Portrait_Placeholder')) parsed.profilePic = undefined;
+		if (parsed.profilePic?.startsWith('blob:')) parsed.profilePic = undefined;
+		if (parsed.coverPic?.startsWith('blob:')) parsed.coverPic = undefined;
 		return { ...defaultUser, ...parsed };
 	} catch {
 		return defaultUser;
@@ -40,7 +50,7 @@ function loadUser(): CurrentUser {
 
 function saveUser(user: CurrentUser) {
 	if (typeof window === 'undefined') return;
-	localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+	localStorage.setItem(STORAGE_KEY, JSON.stringify(stripEphemeralImageUrls(user)));
 }
 
 function createUserStore() {

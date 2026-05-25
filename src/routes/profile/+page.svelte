@@ -33,7 +33,10 @@
 	);
 
 	const displayName = $derived(
-		name.trim() || $userStore.name.trim() || email.split('@')[0] || 'User'
+		name.trim() ||
+			$userStore.name.trim() ||
+			email.split('@')[0] ||
+			profilePage.hero.displayNameFallback
 	);
 
 	const hasCustomAvatar = $derived(
@@ -56,6 +59,10 @@
 		if (!isEditing) syncFormFromStore();
 	});
 
+	function revokeBlobUrl(url: string | null | undefined) {
+		if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
+	}
+
 	function getInitials(fullName: string): string {
 		return (
 			fullName
@@ -71,6 +78,7 @@
 	function handleProfilePicChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 		if (input.files?.[0]) {
+			revokeBlobUrl(profilePicPreview);
 			profilePicFile = input.files[0];
 			profilePicPreview = URL.createObjectURL(profilePicFile);
 		}
@@ -79,6 +87,7 @@
 	function handleCoverPicChange(event: Event) {
 		const input = event.target as HTMLInputElement;
 		if (input.files?.[0]) {
+			revokeBlobUrl(coverPicPreview);
 			coverPicFile = input.files[0];
 			coverPicPreview = URL.createObjectURL(coverPicFile);
 		}
@@ -90,6 +99,8 @@
 	}
 
 	function cancelEditing() {
+		revokeBlobUrl(profilePicPreview);
+		revokeBlobUrl(coverPicPreview);
 		name = snapshot.name;
 		email = snapshot.email;
 		phone = snapshot.phone;
@@ -118,10 +129,21 @@
 			});
 		}
 
+		revokeBlobUrl(profilePicPreview);
+		revokeBlobUrl(coverPicPreview);
 		profilePicFile = null;
 		coverPicFile = null;
 		isEditing = false;
 	}
+
+	$effect(() => {
+		const profile = profilePicPreview;
+		const cover = coverPicPreview;
+		return () => {
+			revokeBlobUrl(profile);
+			revokeBlobUrl(cover);
+		};
+	});
 
 	function handleAddUser(payload: { name: string; email: string; role: UserRole }) {
 		addedUsers = [...addedUsers, { id: crypto.randomUUID(), ...payload }];
@@ -178,7 +200,7 @@
 				{#if coverPicPreview}
 					<img
 						src={coverPicPreview}
-						alt="Cover"
+						alt={profilePage.hero.coverAlt}
 						class="absolute inset-0 w-full h-full object-cover"
 					/>
 				{:else}
@@ -218,43 +240,47 @@
 						>
 							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
 						</svg>
-						Edit cover
+						{profilePage.hero.editCoverText}
 						<input type="file" accept="image/*" class="sr-only" onchange={handleCoverPicChange} />
 					</label>
 				{/if}
 			</div>
 
-			<!-- Identity on cover -->
-			<div class="relative px-5 sm:px-8 pb-6 sm:pb-8">
-				<div class="flex flex-col sm:flex-row sm:items-end gap-5 -mt-14 sm:-mt-16">
-					<div class="relative shrink-0">
+			<!-- Identity -->
+			<div
+				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-0 bg-linear-to-b from-[#1e2430] via-[#212932] to-[#212932] dark:from-[#151a22] dark:via-[#212932] dark:to-[#212932] sm:bg-transparent"
+			>
+				<div
+					class="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-4 sm:gap-5"
+				>
+					<div class="relative w-fit shrink-0">
 						<div
-							class="rounded-full p-1 bg-linear-to-br from-blue-500 to-purple-600 shadow-lg ring-4 ring-white/90"
+							class="inline-flex rounded-full p-1 bg-linear-to-br from-blue-500 to-purple-600 shadow-lg ring-4 ring-white/90 dark:ring-[#212932]"
 						>
 							{#if hasCustomAvatar && profilePicPreview}
 								<img
 									src={profilePicPreview}
 									alt={displayName}
-									class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover"
+									class="block w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover"
 								/>
 							{:else}
 								<div
-									class="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-2xl sm:text-3xl font-bold"
+									class="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-xl sm:text-3xl font-bold"
 								>
 									{getInitials(displayName)}
 								</div>
 							{/if}
 						</div>
 						<span
-							class="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-white"
-							title="Active"
+							class="absolute bottom-0.5 right-0.5 sm:bottom-1 sm:right-1 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded-full bg-emerald-500 border-2 border-white dark:border-[#212932]"
+							title={profilePage.hero.activeStatusTitle}
 							aria-hidden="true"
 						></span>
 						{#if isEditing}
 							<label
-								class="absolute inset-1 flex items-center justify-center rounded-full bg-black/50 cursor-pointer text-white text-xs font-medium opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity"
+								class="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 cursor-pointer text-white text-xs font-medium"
 							>
-								Edit photo
+								{profilePage.hero.editPhotoText}
 								<input
 									type="file"
 									accept="image/*"
@@ -265,20 +291,32 @@
 						{/if}
 					</div>
 
-					<div class="min-w-0 flex-1 text-white pt-1 sm:pb-1">
-						<h2 class="text-2xl sm:text-3xl font-bold truncate drop-shadow-sm">{displayName}</h2>
-						<p class="mt-1 text-sm sm:text-base text-white/85 truncate">{email}</p>
+					<div
+						class="min-w-0 w-full sm:flex-1 pt-0 sm:pt-1 sm:pb-1 text-gray-900 dark:text-white sm:text-white"
+					>
+						<h2
+							class="text-xl sm:text-3xl font-bold truncate text-gray-900 dark:text-white sm:drop-shadow-sm"
+						>
+							{displayName}
+						</h2>
+						<p
+							class="mt-1 text-sm sm:text-base truncate text-gray-600 dark:text-gray-300 sm:text-white/85"
+						>
+							{email}
+						</p>
 						{#if phone}
-							<p class="mt-0.5 text-sm text-white/70 truncate">{phone}</p>
+							<p class="mt-0.5 text-sm truncate text-gray-500 dark:text-gray-400 sm:text-white/70">
+								{phone}
+							</p>
 						{/if}
-						<div class="mt-3 flex flex-wrap items-center gap-2">
+						<div class="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
 							<span
-								class="inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/25"
+								class="inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200 border border-purple-200/60 dark:border-purple-700/50 sm:bg-white/20 sm:text-white sm:border-white/25 sm:backdrop-blur-sm"
 							>
 								{roleLabel}
 							</span>
 							<span
-								class="inline-flex items-center gap-1.5 text-xs text-white/90 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full"
+								class="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80 px-3 py-1 rounded-full sm:text-white/90 sm:bg-black/20 sm:backdrop-blur-sm"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -320,14 +358,16 @@
 							{profilePage.personalInfo.sectionTitle}
 						</h2>
 						<p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-							{isEditing ? 'Update your details below' : 'Your account contact information'}
+							{isEditing
+								? profilePage.personalInfo.editingSubtitle
+								: profilePage.personalInfo.viewSubtitle}
 						</p>
 					</div>
 					{#if isEditing}
 						<span
 							class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 self-start"
 						>
-							Editing
+							{profilePage.personalInfo.editingBadge}
 						</span>
 					{/if}
 				</div>
@@ -386,7 +426,12 @@
 								rounded="lg"
 								onClick={saveProfile}
 							/>
-							<Button text="Cancel" variant="default" rounded="lg" onClick={cancelEditing} />
+							<Button
+								text={profilePage.account.cancelButtonText}
+								variant="default"
+								rounded="lg"
+								onClick={cancelEditing}
+							/>
 						</div>
 					{:else}
 						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -399,9 +444,9 @@
 									{profilePage.personalInfo.nameLabel}
 								</p>
 								<p
-									class="mt-2 text-base font-semibold text-gray-900 dark:text-gray-100 break-words"
+									class="mt-2 text-base font-semibold text-gray-900 dark:text-gray-100 wrap-break-word"
 								>
-									{name || '—'}
+									{name || profilePage.personalInfo.emptyValue}
 								</p>
 							</div>
 							<div
@@ -413,7 +458,7 @@
 									{profilePage.personalInfo.emailLabel}
 								</p>
 								<p class="mt-2 text-base font-semibold text-gray-900 dark:text-gray-100 break-all">
-									{email || '—'}
+									{email || profilePage.personalInfo.emptyValue}
 								</p>
 							</div>
 							<div
@@ -425,7 +470,7 @@
 									{profilePage.personalInfo.phoneLabel}
 								</p>
 								<p class="mt-2 text-base font-semibold text-gray-900 dark:text-gray-100">
-									{phone || '—'}
+									{phone || profilePage.personalInfo.emptyValue}
 								</p>
 							</div>
 						</div>
@@ -481,7 +526,7 @@
 									</svg>
 								</div>
 								<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-									No team members yet
+									{profilePage.admin.emptyTeamTitle}
 								</p>
 								<p class="mt-1 text-xs text-gray-500 dark:text-gray-400 max-w-[220px]">
 									{profilePage.admin.emptyUsersText}
