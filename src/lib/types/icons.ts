@@ -1,3 +1,4 @@
-import type { Component } from 'svelte';
+import type { Plus } from 'lucide-svelte';
 
-export type IconComponent = Component<{ size?: number; class?: string }>;
+/** Lucide icon Svelte component constructor (lucide-svelte). */
+export type IconComponent = typeof Plus;

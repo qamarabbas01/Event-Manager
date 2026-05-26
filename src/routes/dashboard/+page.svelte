@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
-	import { Plus, Calendar, CircleCheck, CirclePause } from '@lucide/svelte';
+	import { Plus, Calendar, CircleCheck, CirclePause } from 'lucide-svelte';
 	import Table from '$lib/components/ui/Table.svelte';
 	import AddEventModal from '$lib/components/dashboard/AddEventModal.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';

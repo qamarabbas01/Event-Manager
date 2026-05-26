@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { Component } from 'svelte';
+	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {
 		label: string;
 		value: string | number;
-		icon: Component<{ size?: number; class?: string }>;
+		icon: IconComponent;
 		valueColor?: string;
 		iconBg?: string;
 		iconColor?: string;

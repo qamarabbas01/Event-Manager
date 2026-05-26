@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import { Sun, Moon } from '@lucide/svelte';
+	import { Sun, Moon } from 'lucide-svelte';
 	import { registerPage } from '$lib/data/register';
 	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';

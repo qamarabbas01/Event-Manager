@@ -4,7 +4,7 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
-	import { Search, ListFilter, ArrowLeft } from '@lucide/svelte';
+	import { Search, ListFilter, ArrowLeft } from 'lucide-svelte';
 	import { browseEvents } from '$lib/data/events';
 	import { browseEventsPage } from '$lib/data/dashboard';
 

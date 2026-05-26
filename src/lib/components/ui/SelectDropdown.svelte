@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DropdownItem } from '$lib/types/components';
-	import { ChevronDown } from '@lucide/svelte';
+	import { ChevronDown } from 'lucide-svelte';
 
 	interface Props {
 		options: readonly string[];

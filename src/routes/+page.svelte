@@ -4,7 +4,7 @@
 	import HomeBanner from '$lib/components/HomeBanner.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import { X, Sun, Menu, Moon, CircleCheck } from '@lucide/svelte';
+	import { X, Sun, Menu, Moon, CircleCheck } from 'lucide-svelte';
 	import { homePage } from '$lib/data/home';
 	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';

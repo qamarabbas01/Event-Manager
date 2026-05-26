@@ -6,7 +6,7 @@
 	import { eventDetailPage } from '$lib/data/dashboard';
 	import LineChart from '$lib/components/ui/LineChart.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import { Calendar, MapPin, Users, TrendingUp, UserCheck, ArrowLeft } from '@lucide/svelte';
+	import { Calendar, MapPin, Users, TrendingUp, UserCheck, ArrowLeft } from 'lucide-svelte';
 
 	const eventId = $derived(page.params.id ?? '');
 	const event = $derived(getEventById(eventId));

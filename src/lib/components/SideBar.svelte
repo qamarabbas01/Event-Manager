@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { Home, User, LogOut, Menu, X, Calendar, TrendingUp, Bell, Sun, Moon } from '@lucide/svelte';
+	import { Home, User, LogOut, Menu, X, Calendar, TrendingUp, Bell, Sun, Moon } from 'lucide-svelte';
 	import {
 		navItemsData,
 		appTitle,

@@ -2,7 +2,7 @@
 	import NotificationItem from '$lib/components/ui/NotificationItem.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import { CircleCheck, Info, TriangleAlert, Bell, Calendar } from '@lucide/svelte';
+	import { CircleCheck, Info, TriangleAlert, Bell, Calendar } from 'lucide-svelte';
 	import {
 		notificationsPage,
 		notificationsInboxData,

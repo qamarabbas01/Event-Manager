@@ -11,7 +11,7 @@
 		CircleCheck,
 		Info,
 		TriangleAlert
-	} from '@lucide/svelte';
+	} from 'lucide-svelte';
 	import {
 		dashboardPage,
 		metricsData,

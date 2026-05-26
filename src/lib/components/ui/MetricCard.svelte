@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { TrendingUp, TrendingDown } from '@lucide/svelte';
+	import { TrendingUp, TrendingDown } from 'lucide-svelte';
 	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {

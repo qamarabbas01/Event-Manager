@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Search, Trash2, Pencil } from '@lucide/svelte';
+	import { Search, Trash2, Pencil } from 'lucide-svelte';
 	import Pagination from './Pagination.svelte';
 	import Input from './Input.svelte';
 	import SelectDropdown from './SelectDropdown.svelte';

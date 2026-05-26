@@ -5,7 +5,7 @@
 	import { auth } from '$lib/stores/auth';
 	import { userStore } from '$lib/stores/user';
 	import { profilePage, addUserModal } from '$lib/data/dashboard';
-	import { Upload, Calendar, UserPlus } from '@lucide/svelte';
+	import { Upload, Calendar, UserPlus } from 'lucide-svelte';
 	import type { UserRole } from '$lib/data/dashboard';
 
 	let name = $state('');

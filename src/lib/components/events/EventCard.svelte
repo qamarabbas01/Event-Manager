@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Calendar, MapPin, Users } from '@lucide/svelte';
+	import { Calendar, MapPin, Users } from 'lucide-svelte';
 	import type { BrowseEvent } from '$lib/data/events';
 	import { eventCardUi } from '$lib/data/dashboard';
 
