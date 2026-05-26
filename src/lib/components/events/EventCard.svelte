@@ -1,7 +1,5 @@
 <script lang="ts">
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
-	import MapPin from '$lib/components/ui/icons/MapPin.svelte';
-	import Users from '$lib/components/ui/icons/Users.svelte';
+	import { Calendar, MapPin, Users } from '@lucide/svelte';
 	import type { BrowseEvent } from '$lib/data/events';
 	import { eventCardUi } from '$lib/data/dashboard';
 
@@ -41,7 +39,7 @@
 		<h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">{event.title}</h2>
 		<div class="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
 			<div class="flex items-center gap-2">
-				<CalendarIcon size={16} class="text-gray-400 shrink-0" />
+				<Calendar size={16} class="text-gray-400 shrink-0" />
 				<span>{formatDate(event.date)}</span>
 			</div>
 			<div class="flex items-center gap-2">

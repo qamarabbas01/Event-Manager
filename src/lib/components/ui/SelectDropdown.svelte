@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DropdownItem } from '$lib/types/components';
-	import ArrowDown from './icons/ArrowDown.svelte';
+	import { ChevronDown } from '@lucide/svelte';
 
 	interface Props {
 		options: readonly string[];
@@ -74,7 +74,7 @@
 			class="flex-1 text-left truncate {isPlaceholder ? 'text-gray-400 dark:text-gray-100' : ''}"
 			>{displayValue}</span
 		>
-		<ArrowDown
+		<ChevronDown
 			size={10}
 			class="shrink-0 ml-1 transition-transform text-gray-600 dark:text-gray-400 {isOpen
 				? 'rotate-180'

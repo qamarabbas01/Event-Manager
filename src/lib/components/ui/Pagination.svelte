@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import Arrowleft from './icons/Arrowleft.svelte';
-	import RightArrow from './icons/RightArrow.svelte';
+	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 
 	interface Props {
 		currentPage: number;
@@ -84,7 +83,7 @@
 			class="flex items-center gap-2 rounded-full {buttonBg} px-4 py-2 text-sm font-semibold text-[#59452B]
 		       transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
 		>
-			<Arrowleft size={14} />
+			<ChevronLeft size={14} />
 			<span class="hidden sm:inline">Back</span>
 		</button>
 
@@ -117,7 +116,7 @@
 		       transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
 		>
 			<span class="hidden sm:inline">Next</span>
-			<RightArrow size={14} />
+			<ChevronRight size={14} />
 		</button>
 	</nav>
 {/if}

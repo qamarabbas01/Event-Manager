@@ -2,10 +2,7 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import HouseOutline from './ui/icons/HouseOutline.svelte';
-	import PersonOutline from './ui/icons/PersonOutline.svelte';
-	import DoorIcon from './ui/icons/DoorIcon.svelte';
-	import MenuToggleIcon from './ui/icons/MenuToggleIcon.svelte';
+	import { Home, User, LogOut, Menu, X, Calendar, TrendingUp, Bell, Sun, Moon } from '@lucide/svelte';
 	import {
 		navItemsData,
 		appTitle,
@@ -18,24 +15,19 @@
 	import { theme } from '$lib/stores/theme';
 	import { logout } from '$lib/stores/auth';
 	import type { IconComponent } from '$lib/types/icons';
-	import CalendarIcon from './ui/icons/CalendarIcon.svelte';
-	import Revenue from './ui/icons/Revenue.svelte';
-	import BellIcon from './ui/icons/BellIcon.svelte';
-	import LightIcon from './ui/icons/Light.svelte';
-	import MoonIcon from './ui/icons/MoonIcon.svelte';
 
 	const iconMap: Record<string, IconComponent> = {
-		Home: HouseOutline,
-		Calendar: CalendarIcon,
-		Chart: Revenue,
-		Bell: BellIcon,
-		Profile: PersonOutline
+		Home,
+		Calendar,
+		Chart: TrendingUp,
+		Bell,
+		Profile: User
 	};
 
 	const navItems = $derived(
 		navItemsData.map((item) => ({
 			...item,
-			icon: iconMap[item.iconKey] ?? HouseOutline
+			icon: iconMap[item.iconKey] ?? Home
 		}))
 	);
 
@@ -74,7 +66,11 @@
 		class="md:hidden fixed top-4 right-4 z-50 p-2 cursor-pointer rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
 		aria-label={toggleMenuAriaLabel}
 	>
-		<MenuToggleIcon size={24} open={isMobileMenuOpen} />
+		{#if isMobileMenuOpen}
+			<X size={24} aria-hidden="true" />
+		{:else}
+			<Menu size={24} aria-hidden="true" />
+		{/if}
 	</button>
 
 	<aside
@@ -122,10 +118,10 @@
 					title={$theme === 'dark' ? themeLightLabel : themeDarkLabel}
 				>
 					{#if $theme === 'dark'}
-						<LightIcon size={20} class="shrink-0" />
+						<Sun size={20} class="shrink-0" />
 						<span class="flex-1">{themeLightLabel}</span>
 					{:else}
-						<MoonIcon size={20} class="shrink-0" />
+						<Moon size={20} class="shrink-0" />
 						<span class="flex-1">{themeDarkLabel}</span>
 					{/if}
 				</button>
@@ -133,7 +129,7 @@
 					onclick={handleLogout}
 					class="w-full flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
 				>
-					<DoorIcon size={20} class="text-red-600 dark:text-red-400 shrink-0" />
+					<LogOut size={20} class="text-red-600 dark:text-red-400 shrink-0" />
 					<span class="flex-1">{logoutLabel}</span>
 				</button>
 			</div>

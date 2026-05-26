@@ -2,11 +2,7 @@
 	import NotificationItem from '$lib/components/ui/NotificationItem.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
-	import InfoIcon from '$lib/components/ui/icons/InfoIcon.svelte';
-	import WarningIcon from '$lib/components/ui/icons/WarningIcon.svelte';
-	import BellIcon from '$lib/components/ui/icons/BellIcon.svelte';
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
+	import { CircleCheck, Info, TriangleAlert, Bell, Calendar } from '@lucide/svelte';
 	import {
 		notificationsPage,
 		notificationsInboxData,
@@ -17,9 +13,9 @@
 	type FilterKey = 'all' | NotificationType;
 
 	const iconMap: Record<string, IconComponent> = {
-		CheckFilled,
-		InfoIcon,
-		WarningIcon
+		CheckFilled: CircleCheck,
+		InfoIcon: Info,
+		WarningIcon: TriangleAlert
 	};
 
 	const filterOptions: { key: FilterKey; label: string }[] = [
@@ -36,7 +32,7 @@
 		notificationsInboxData.map((n, index) => ({
 			...n,
 			id: index,
-			icon: iconMap[n.iconKey] ?? InfoIcon
+			icon: iconMap[n.iconKey] ?? Info
 		}))
 	);
 
@@ -95,21 +91,21 @@
 			<MetricCard
 				label={notificationsPage.stats.unread}
 				value={stats.unread}
-				icon={BellIcon}
+				icon={Bell}
 				iconBgColor="bg-blue-100 dark:bg-blue-900/30"
 				iconColor="text-blue-600 dark:text-blue-400"
 			/>
 			<MetricCard
 				label={notificationsPage.stats.today}
 				value={stats.today}
-				icon={CalendarIcon}
+				icon={Calendar}
 				iconBgColor="bg-purple-100 dark:bg-purple-900/30"
 				iconColor="text-purple-600 dark:text-purple-400"
 			/>
 			<MetricCard
 				label={notificationsPage.stats.thisWeek}
 				value={stats.thisWeek}
-				icon={CheckFilled}
+				icon={CircleCheck}
 				iconBgColor="bg-green-100 dark:bg-green-900/30"
 				iconColor="text-green-600 dark:text-green-400"
 			/>

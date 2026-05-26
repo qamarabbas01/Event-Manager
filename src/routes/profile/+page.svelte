@@ -5,6 +5,7 @@
 	import { auth } from '$lib/stores/auth';
 	import { userStore } from '$lib/stores/user';
 	import { profilePage, addUserModal } from '$lib/data/dashboard';
+	import { Upload, Calendar, UserPlus } from '@lucide/svelte';
 	import type { UserRole } from '$lib/data/dashboard';
 
 	let name = $state('');
@@ -191,11 +192,9 @@
 			{/if}
 		</header>
 
-		<!-- Profile card -->
 		<div
 			class="bg-white dark:bg-[#212932] rounded-2xl border border-gray-200 dark:border-gray-700/50 shadow-sm overflow-hidden transition-colors"
 		>
-			<!-- Cover -->
 			<div class="relative h-36 sm:h-44 overflow-hidden">
 				{#if coverPicPreview}
 					<img
@@ -228,25 +227,13 @@
 					<label
 						class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-black/50 hover:bg-black/65 backdrop-blur-sm px-3 py-1.5 text-xs font-medium text-white cursor-pointer transition-colors"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="14"
-							height="14"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							aria-hidden="true"
-						>
-							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-						</svg>
+						<Upload size={14} aria-hidden="true" />
 						{profilePage.hero.editCoverText}
 						<input type="file" accept="image/*" class="sr-only" onchange={handleCoverPicChange} />
 					</label>
 				{/if}
 			</div>
 
-			<!-- Identity -->
 			<div
 				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-0 bg-linear-to-b from-[#1e2430] via-[#212932] to-[#212932] dark:from-[#151a22] dark:via-[#212932] dark:to-[#212932] sm:bg-transparent"
 			>
@@ -318,22 +305,7 @@
 							<span
 								class="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80 px-3 py-1 rounded-full sm:text-white/90 sm:bg-black/20 sm:backdrop-blur-sm"
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="12"
-									height="12"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									class="shrink-0"
-									aria-hidden="true"
-								>
-									<rect x="3" y="4" width="18" height="18" rx="2" />
-									<line x1="16" y1="2" x2="16" y2="6" />
-									<line x1="8" y1="2" x2="8" y2="6" />
-									<line x1="3" y1="10" x2="21" y2="10" />
-								</svg>
+								<Calendar size={12} class="shrink-0" aria-hidden="true" />
 								{profilePage.account.memberSinceLabel}
 								{$userStore.memberSince}
 							</span>
@@ -344,7 +316,6 @@
 		</div>
 
 		<div class="grid grid-cols-1 {isAdmin ? 'lg:grid-cols-5' : ''} gap-6">
-			<!-- Personal info -->
 			<section
 				class="{isAdmin
 					? 'lg:col-span-3'
@@ -509,21 +480,7 @@
 								<div
 									class="h-12 w-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 dark:text-gray-500 mb-3"
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="1.5"
-										aria-hidden="true"
-									>
-										<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-										<circle cx="9" cy="7" r="4" />
-										<line x1="19" y1="8" x2="19" y2="14" />
-										<line x1="22" y1="11" x2="16" y2="11" />
-									</svg>
+									<UserPlus size={24} strokeWidth={1.5} aria-hidden="true" />
 								</div>
 								<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
 									{profilePage.admin.emptyTeamTitle}

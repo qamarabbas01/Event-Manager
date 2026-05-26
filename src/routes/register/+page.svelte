@@ -3,8 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
-	import LightIcon from '$lib/components/ui/icons/Light.svelte';
-	import MoonIcon from '$lib/components/ui/icons/MoonIcon.svelte';
+	import { Sun, Moon } from '@lucide/svelte';
 	import { registerPage } from '$lib/data/register';
 	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';
@@ -76,9 +75,9 @@
 		title={$theme === 'dark' ? 'Light mode' : 'Dark mode'}
 	>
 		{#if $theme === 'dark'}
-			<LightIcon size={22} />
+			<Sun size={22} />
 		{:else}
-			<MoonIcon size={22} />
+			<Moon size={22} />
 		{/if}
 	</button>
 	<section class="w-full max-w-md">

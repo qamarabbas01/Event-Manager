@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { TrendingUp, TrendingDown } from '@lucide/svelte';
 	import type { IconComponent } from '$lib/types/icons';
 
 	interface Props {
@@ -34,54 +35,10 @@
 				<div class="flex items-center gap-1 mt-2">
 					{#if trend.isPositive}
 						<span class="text-green-600 text-sm font-medium">{trend.value}</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="12"
-							height="12"
-							viewBox="0 0 16 16"
-							fill="none"
-							class="text-green-600"
-						>
-							<path
-								d="M13.5 4.5L8.5 9.5L6 7L2.5 10.5"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M10.5 4.5H13.5V7.5"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
+						<TrendingUp size={12} class="text-green-600" aria-hidden="true" />
 					{:else}
 						<span class="text-red-600 text-sm font-medium">{trend.value}</span>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="12"
-							height="12"
-							viewBox="0 0 16 16"
-							fill="none"
-							class="text-red-600"
-						>
-							<path
-								d="M2.5 11.5L7.5 6.5L10 9L13.5 5.5"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-							<path
-								d="M5.5 11.5H2.5V8.5"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
+						<TrendingDown size={12} class="text-red-600" aria-hidden="true" />
 					{/if}
 				</div>
 			{/if}

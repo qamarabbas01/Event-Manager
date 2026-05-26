@@ -3,13 +3,15 @@
 	import LineChart from '$lib/components/ui/LineChart.svelte';
 	import BarChart from '$lib/components/ui/BarChart.svelte';
 	import NotificationItem from '$lib/components/ui/NotificationItem.svelte';
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
-	import Users from '$lib/components/ui/icons/Users.svelte';
-	import Revenue from '$lib/components/ui/icons/Revenue.svelte';
-	import Attendance from '$lib/components/ui/icons/Attendance.svelte';
-	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
-	import InfoIcon from '$lib/components/ui/icons/InfoIcon.svelte';
-	import WarningIcon from '$lib/components/ui/icons/WarningIcon.svelte';
+	import {
+		Calendar,
+		Users,
+		TrendingUp,
+		UserCheck,
+		CircleCheck,
+		Info,
+		TriangleAlert
+	} from '@lucide/svelte';
 	import {
 		dashboardPage,
 		metricsData,
@@ -22,13 +24,13 @@
 	import type { IconComponent } from '$lib/types/components';
 
 	const iconMap: Record<string, IconComponent> = {
-		CalendarIcon,
+		CalendarIcon: Calendar,
 		Users,
-		Revenue,
-		Attendance,
-		CheckFilled,
-		InfoIcon,
-		WarningIcon
+		Revenue: TrendingUp,
+		Attendance: UserCheck,
+		CheckFilled: CircleCheck,
+		InfoIcon: Info,
+		WarningIcon: TriangleAlert
 	};
 
 	const metrics = $derived(
@@ -37,7 +39,7 @@
 				key,
 				{
 					...m,
-					icon: iconMap[m.iconKey] ?? CalendarIcon
+					icon: iconMap[m.iconKey] ?? Calendar
 				}
 			])
 		)
@@ -46,7 +48,7 @@
 	const notifications = $derived(
 		notificationsData.map((n) => ({
 			...n,
-			icon: iconMap[n.iconKey] ?? InfoIcon
+			icon: iconMap[n.iconKey] ?? Info
 		}))
 	);
 </script>

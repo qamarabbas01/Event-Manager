@@ -4,11 +4,9 @@
 	import Input from '$lib/components/ui/Input.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
-	import MagnifyingGlass from '$lib/components/ui/icons/MagnifyingGlass.svelte';
-	import FilterIcon from '$lib/components/ui/icons/FilterIcon.svelte';
+	import { Search, ListFilter, ArrowLeft } from '@lucide/svelte';
 	import { browseEvents } from '$lib/data/events';
 	import { browseEventsPage } from '$lib/data/dashboard';
-	import Arrowleft from '$lib/components/ui/icons/Arrowleft.svelte';
 
 	let searchQuery = $state('');
 	let isFiltersOpen = $state(false);
@@ -113,7 +111,7 @@
 						class="text-sm items-center flex gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 cursor-pointer shrink-0"
 						aria-label={browseEventsPage.backToDashboardLink}
 					>
-						<Arrowleft size={16} class="shrink-0" />
+						<ArrowLeft size={16} class="shrink-0" />
 						<span>{browseEventsPage.backToDashboardLink}</span>
 					</a>
 				</div>
@@ -129,7 +127,7 @@
 				<Input
 					bind:value={searchQuery}
 					placeholder={browseEventsPage.searchPlaceholder}
-					leftIcon={MagnifyingGlass}
+					leftIcon={Search}
 					class="w-full rounded-lg border-gray-300"
 				/>
 			</div>
@@ -138,7 +136,7 @@
 				type="button"
 				variant="default"
 				size="default"
-				customIcon={FilterIcon}
+				customIcon={ListFilter}
 				iconSize={24}
 				rounded="lg"
 				class="shrink-0 border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700"

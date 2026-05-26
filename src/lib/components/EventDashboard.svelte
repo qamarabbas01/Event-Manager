@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from './ui/Button.svelte';
-	import Plus from './ui/icons/Plus.svelte';
+	import { Plus } from '@lucide/svelte';
 	import Table from './ui/Table.svelte';
 	import {
 		initialEvents,
