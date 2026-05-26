@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import Close from './icons/Close.svelte';
+	import { X } from 'lucide-svelte';
 	import { modalCloseAriaLabel } from '$lib/data/dashboard';
 
 	interface Props {
@@ -88,7 +88,7 @@
 					class="p-2 rounded-full cursor-pointer text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
 					aria-label={modalCloseAriaLabel}
 				>
-					<Close size={12} />
+					<X size={12} />
 				</button>
 			</div>
 			<div class="flex-1 overflow-y-auto px-6 py-4">

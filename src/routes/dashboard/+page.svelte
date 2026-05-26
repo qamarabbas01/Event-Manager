@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Button from '$lib/components/ui/Button.svelte';
-	import Plus from '$lib/components/ui/icons/Plus.svelte';
+	import { Plus, Calendar, CircleCheck, CirclePause } from 'lucide-svelte';
 	import Table from '$lib/components/ui/Table.svelte';
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
-	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
-	import PauseCircle from '$lib/components/ui/icons/PauseCircle.svelte';
 	import AddEventModal from '$lib/components/dashboard/AddEventModal.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';
 	import {
@@ -157,7 +154,7 @@
 			<StatCard
 				label={eventsStatsLabels.totalEvents}
 				value={totalEvents}
-				icon={CalendarIcon}
+				icon={Calendar}
 				valueColor="text-[#59452B]"
 				iconBg="bg-[#59452B1A]"
 				iconColor="text-[#59452B]"
@@ -165,7 +162,7 @@
 			<StatCard
 				label={eventsStatsLabels.active}
 				value={activeEvents}
-				icon={CheckFilled}
+				icon={CircleCheck}
 				valueColor="text-green-600"
 				iconBg="bg-green-100"
 				iconColor="text-green-600"
@@ -173,7 +170,7 @@
 			<StatCard
 				label={eventsStatsLabels.pending}
 				value={pendingEvents}
-				icon={PauseCircle}
+				icon={CirclePause}
 				valueColor="text-yellow-600"
 				iconBg="bg-yellow-100"
 				iconColor="text-yellow-600"
@@ -181,7 +178,7 @@
 			<StatCard
 				label={eventsStatsLabels.completed}
 				value={completedEvents}
-				icon={CheckFilled}
+				icon={CircleCheck}
 				valueColor="text-blue-600"
 				iconBg="bg-blue-100"
 				iconColor="text-blue-600"

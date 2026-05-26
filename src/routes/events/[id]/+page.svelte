@@ -6,12 +6,7 @@
 	import { eventDetailPage } from '$lib/data/dashboard';
 	import LineChart from '$lib/components/ui/LineChart.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import CalendarIcon from '$lib/components/ui/icons/CalendarIcon.svelte';
-	import MapPin from '$lib/components/ui/icons/MapPin.svelte';
-	import Users from '$lib/components/ui/icons/Users.svelte';
-	import Revenue from '$lib/components/ui/icons/Revenue.svelte';
-	import Attendance from '$lib/components/ui/icons/Attendance.svelte';
-	import Arrowleft from '$lib/components/ui/icons/Arrowleft.svelte';
+	import { Calendar, MapPin, Users, TrendingUp, UserCheck, ArrowLeft } from 'lucide-svelte';
 
 	const eventId = $derived(page.params.id ?? '');
 	const event = $derived(getEventById(eventId));
@@ -40,7 +35,7 @@
 			}}
 			class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-sm font-medium mb-4 transition-colors"
 		>
-			<Arrowleft size={18} />
+			<ArrowLeft size={18} />
 			{eventDetailPage.backLink}
 		</a>
 
@@ -76,7 +71,7 @@
 					<h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">{event.title}</h1>
 					<div class="flex flex-wrap gap-6 text-gray-600 dark:text-gray-400 mb-6">
 						<div class="flex items-center gap-2">
-							<CalendarIcon size={20} class="text-gray-400 dark:text-gray-500 shrink-0" />
+							<Calendar size={20} class="text-gray-400 dark:text-gray-500 shrink-0" />
 							<span>{formatEventDate(event.date)}</span>
 						</div>
 						<div class="flex items-center gap-2">
@@ -99,21 +94,21 @@
 				<MetricCard
 					label={eventDetailPage.metrics.ticketsSold}
 					value={`${event.attendees.toLocaleString()}/${event.capacity.toLocaleString()}`}
-					icon={CalendarIcon}
+					icon={Calendar}
 					iconBgColor="bg-green-100"
 					iconColor="text-green-600"
 				/>
 				<MetricCard
 					label={eventDetailPage.metrics.revenue}
 					value={event.revenue}
-					icon={Revenue}
+					icon={TrendingUp}
 					iconBgColor="bg-purple-100"
 					iconColor="text-purple-600"
 				/>
 				<MetricCard
 					label={eventDetailPage.metrics.availability}
 					value={`${event.availabilityPercent}%`}
-					icon={Attendance}
+					icon={UserCheck}
 					iconBgColor="bg-orange-100"
 					iconColor="text-orange-600"
 				/>

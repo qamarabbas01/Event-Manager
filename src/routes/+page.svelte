@@ -4,11 +4,7 @@
 	import HomeBanner from '$lib/components/HomeBanner.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
-	import CloseIcon from '$lib/components/ui/icons/CloseIcon.svelte';
-	import LightIcon from '$lib/components/ui/icons/Light.svelte';
-	import Menu from '$lib/components/ui/icons/Menu.svelte';
-	import MoonIcon from '$lib/components/ui/icons/MoonIcon.svelte';
-	import CheckFilled from '$lib/components/ui/icons/CheckFilled.svelte';
+	import { X, Sun, Menu, Moon, CircleCheck } from 'lucide-svelte';
 	import { homePage } from '$lib/data/home';
 	import { themeToggleAriaLabel } from '$lib/data/dashboard';
 	import { theme } from '$lib/stores/theme';
@@ -112,9 +108,9 @@
 					title={$theme === 'dark' ? 'Light mode' : 'Dark mode'}
 				>
 					{#if $theme === 'dark'}
-						<LightIcon size={22} />
+						<Sun size={22} />
 					{:else}
-						<MoonIcon size={22} />
+						<Moon size={22} />
 					{/if}
 				</button>
 				<div class="hidden md:flex items-center gap-3">
@@ -140,7 +136,7 @@
 					{#if !mobileNavOpen}
 						<Menu size={24} />
 					{:else}
-						<CloseIcon size={24} />
+						<X size={24} />
 					{/if}
 				</button>
 			</div>
@@ -313,7 +309,7 @@
 							<span
 								class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40"
 							>
-								<CheckFilled size={14} class="text-green-600 dark:text-green-400" />
+								<CircleCheck size={14} class="text-green-600 dark:text-green-400" />
 							</span>
 							<span class="text-sm sm:text-base leading-relaxed">{highlight}</span>
 						</li>

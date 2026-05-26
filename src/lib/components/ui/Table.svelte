@@ -1,12 +1,10 @@
 <script lang="ts">
-	import SearchIcon from './icons/SearchIcon.svelte';
+	import { Search, Trash2, Pencil } from 'lucide-svelte';
 	import Pagination from './Pagination.svelte';
 	import Input from './Input.svelte';
 	import SelectDropdown from './SelectDropdown.svelte';
 	import { categories, statuses, tableUi } from '$lib/data/dashboard';
 	import type { DashboardTableColumn, DashboardTableRow, TableAction } from '$lib/data/dashboard';
-	import DeleteIcon from './icons/DeleteIcon.svelte';
-	import Editicon from './icons/Editicon.svelte';
 
 	interface Props {
 		data: DashboardTableRow[];
@@ -155,7 +153,7 @@
 	{/if}
 	<div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-4">
 		<div class="flex-1 min-w-0 sm:max-w-xs">
-			<Input placeholder={searchPlaceholder} bind:value={searchQuery} leftIcon={SearchIcon} />
+			<Input placeholder={searchPlaceholder} bind:value={searchQuery} leftIcon={Search} />
 		</div>
 		<div class="flex flex-wrap items-center gap-3">
 			{#each filterableColumns as filter (filter.key)}
@@ -214,7 +212,7 @@
 												onAction?.('edit', row);
 											}}
 										>
-											<Editicon size={18} class="text-gray-900 dark:text-gray-100" />
+											<Pencil size={18} class="text-gray-900 dark:text-gray-100" />
 										</button>
 										<button
 											type="button"
@@ -225,7 +223,7 @@
 												onAction?.('delete', row);
 											}}
 										>
-											<DeleteIcon size={18} class="text-red-600 dark:text-red-400" />
+											<Trash2 size={18} class="text-red-600 dark:text-red-400" />
 										</button>
 									</div>
 								{/if}
@@ -282,7 +280,7 @@
 																onAction?.('edit', row);
 															}}
 														>
-															<Editicon size={18} class="text-gray-900 dark:text-gray-100" />
+															<Pencil size={18} class="text-gray-900 dark:text-gray-100" />
 														</button>
 														<button
 															type="button"
@@ -293,7 +291,7 @@
 																onAction?.('delete', row);
 															}}
 														>
-															<DeleteIcon size={18} class="text-red-600 dark:text-red-400" />
+															<Trash2 size={18} class="text-red-600 dark:text-red-400" />
 														</button>
 													</div>
 												{/if}
