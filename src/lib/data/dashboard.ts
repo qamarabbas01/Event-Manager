@@ -264,30 +264,65 @@ export const eventsDashboardPage = {
 
 export const browseEventsPage = {
 	title: 'Browse Events',
-	subtitle: 'Discover and manage all your events',
-	backToDashboardLink: 'Back to Dashboard',
-	searchPlaceholder: 'Search events...',
+	subtitle: 'Discover conferences, workshops, and experiences near you',
+	backToHomeLink: 'Back to home',
+	searchPlaceholder: 'Search by title, category, or city...',
 	filtersButtonText: 'Filters',
-	noResultsText: 'No events match your search.'
+	clearFiltersText: 'Clear all',
+	categoryLabel: 'Category',
+	sortLabel: 'Sort by',
+	sortRecommended: 'Recommended',
+	sortDateDesc: 'Date: Newest first',
+	sortDateAsc: 'Date: Oldest first',
+	sortAvailability: 'Most seats left',
+	timeFilterLabel: 'When',
+	timeAll: 'All events',
+	timeUpcoming: 'Upcoming',
+	timePast: 'Past',
+	resultsShowing: 'Showing',
+	resultsOf: 'of',
+	resultsEvents: 'events',
+	statTotal: 'Total events',
+	statUpcoming: 'Upcoming',
+	statCategories: 'Categories',
+	activeFiltersLabel: 'Active filters',
+	noResultsTitle: 'No events found',
+	noResultsText: 'Try adjusting your search or filters to find what you are looking for.',
+	previousPage: 'Previous',
+	nextPage: 'Next',
+	pageLabel: 'Page'
 } as const;
 
 export const eventDetailPage = {
 	backLink: 'Back to Events',
 	notFoundMessage: 'Event not found.',
+	notFoundHint: 'This event may have been removed or the link is incorrect.',
 	returnToBrowse: 'Return to Browse Events',
+	getTicketsCta: 'Get tickets',
+	shareCta: 'Share event',
+	aboutTitle: 'About this event',
+	venueTitle: 'Venue',
+	relatedTitle: 'More in this category',
 	metrics: {
 		attendees: 'Attendees',
 		ticketsSold: 'Tickets Sold',
 		revenue: 'Revenue',
 		availability: 'Availability'
 	},
-	ticketSalesTrendTitle: 'Ticket Sales Trend'
+	ticketSalesTrendTitle: 'Ticket Sales Trend',
+	capacityTitle: 'Ticket capacity',
+	spotsRemaining: 'spots remaining'
 } as const;
 
 export const eventCardUi = {
 	viewDetailsButtonText: 'View details',
 	availabilityLabel: 'Availability',
-	attendeesSuffix: 'attendees'
+	attendeesSuffix: 'attendees',
+	statusUpcoming: 'Upcoming',
+	statusToday: 'Today',
+	statusPast: 'Past',
+	statusAlmostFull: 'Almost full',
+	revenueLabel: 'Revenue'
 } as const;
 
 export const addEventModal = {

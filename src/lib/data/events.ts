@@ -365,3 +365,57 @@ export function getEventById(id: string): BrowseEvent | undefined {
 		image: eventImageMap[detail.imageKey]
 	};
 }
+
+export type EventTimeStatus = 'upcoming' | 'past' | 'today';
+
+function startOfDay(date: Date): Date {
+	const d = new Date(date);
+	d.setHours(0, 0, 0, 0);
+	return d;
+}
+
+export function getEventTimeStatus(dateStr: string, reference = new Date()): EventTimeStatus {
+	const eventDay = startOfDay(new Date(`${dateStr}T12:00:00`));
+	const today = startOfDay(reference);
+	if (eventDay.getTime() === today.getTime()) return 'today';
+	if (eventDay < today) return 'past';
+	return 'upcoming';
+}
+
+export function isAlmostFull(attendees: number, capacity: number): boolean {
+	return capacity > 0 && attendees / capacity >= 0.9;
+}
+
+export function formatBrowseDate(dateStr: string): string {
+	return new Date(`${dateStr}T12:00:00`).toLocaleDateString('en-US', {
+		weekday: 'short',
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric'
+	});
+}
+
+export function formatBrowseDateShort(dateStr: string): string {
+	return new Date(`${dateStr}T12:00:00`).toLocaleDateString('en-US', {
+		month: 'short',
+		day: 'numeric',
+		year: 'numeric'
+	});
+}
+
+export function spotsRemaining(attendees: number, capacity: number): number {
+	return Math.max(0, capacity - attendees);
+}
+
+export function getRelatedEvents(eventId: string, limit = 3): BrowseEvent[] {
+	const current = getEventById(eventId);
+	if (!current) return [];
+	return browseEvents
+		.filter((e) => e.id !== eventId && e.category === current.category)
+		.sort((a, b) => a.date.localeCompare(b.date))
+		.slice(0, limit);
+}
+
+export function countUpcomingEvents(reference = new Date()): number {
+	return browseEvents.filter((e) => getEventTimeStatus(e.date, reference) !== 'past').length;
+}
