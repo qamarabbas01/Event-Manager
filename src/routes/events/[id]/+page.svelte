@@ -62,11 +62,15 @@
 
 	function handleShare() {
 		if (!event || typeof navigator === 'undefined' || !navigator.share) return;
-		navigator.share({
-			title: event.title,
-			text: event.description,
-			url: window.location.href
-		});
+		navigator
+			.share({
+				title: event.title,
+				text: event.description,
+				url: window.location.href
+			})
+			.catch((err) => {
+				console.error('Error sharing event:', err);
+			});
 	}
 
 	const canShare = $derived(typeof navigator !== 'undefined' && !!navigator.share);

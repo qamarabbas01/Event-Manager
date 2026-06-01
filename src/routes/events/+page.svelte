@@ -41,10 +41,14 @@
 		return events.filter((e) => e.category === category);
 	}
 
-	function filterByTime(events: typeof browseEvents, filter: typeof timeFilter): typeof browseEvents {
+	function filterByTime(
+		events: typeof browseEvents,
+		filter: typeof timeFilter,
+		reference: Date
+	): typeof browseEvents {
 		if (filter === 'all') return events;
 		return events.filter((e) => {
-			const status = getEventTimeStatus(e.date);
+			const status = getEventTimeStatus(e.date, reference);
 			return filter === 'upcoming' ? status !== 'past' : status === 'past';
 		});
 	}
@@ -59,9 +63,11 @@
 		const copy = [...events];
 
 		if (sort === 'recommended') {
+			const refDate = new Date();
 			return copy.sort((a, b) => {
 				const orderDiff =
-					timeStatusOrder(getEventTimeStatus(a.date)) - timeStatusOrder(getEventTimeStatus(b.date));
+					timeStatusOrder(getEventTimeStatus(a.date, refDate)) -
+					timeStatusOrder(getEventTimeStatus(b.date, refDate));
 				if (orderDiff !== 0) return orderDiff;
 				return a.date.localeCompare(b.date);
 			});
@@ -80,10 +86,11 @@
 	}
 
 	function buildFilteredEvents(): typeof browseEvents {
+		const reference = new Date();
 		const query = normalizeQuery(searchQuery);
 		const searched = browseEvents.filter((e) => matchesQuery(e, query));
 		const categorized = filterByCategory(searched, selectedCategory);
-		const timed = filterByTime(categorized, timeFilter);
+		const timed = filterByTime(categorized, timeFilter, reference);
 		return sortEvents(timed, sortBy);
 	}
 
@@ -293,6 +300,7 @@
 				<button
 					type="button"
 					onclick={() => selectCategory(category)}
+					aria-pressed={selectedCategory === category}
 					class="shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-colors {selectedCategory ===
 					category
 						? 'bg-blue-600 text-white border-blue-600'

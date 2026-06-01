@@ -33,6 +33,9 @@
 		customIconPosition?: 'left' | 'right';
 		iconSize?: number;
 		onClick?: () => void;
+		ariaLabel?: string;
+		/** Lifts label/icon above a card-covering ::after overlay (stretched link pattern). */
+		stretchedLink?: boolean;
 	}
 
 	let {
@@ -47,8 +50,12 @@
 		customIcon,
 		customIconPosition = 'left',
 		iconSize,
-		onClick
+		onClick,
+		ariaLabel,
+		stretchedLink = false
 	}: Props = $props();
+
+	const childStackClass = $derived(stretchedLink ? 'relative z-[2]' : '');
 
 	let isDisabled = $derived(disabled || state === 'disabled');
 	let effectiveState = $derived(isDisabled ? 'disabled' : state);
@@ -183,15 +190,23 @@
 	);
 </script>
 
-<button type={buttonType} class={allClasses} disabled={isDisabled} onclick={onClick}>
+<button
+	type={buttonType}
+	class={allClasses}
+	disabled={isDisabled}
+	aria-label={ariaLabel}
+	onclick={onClick}
+>
 	{#if customIconPosition === 'right'}
-		<span>{text}</span>
+		<span class={childStackClass}>{text}</span>
 	{/if}
 	{#if customIcon}
 		{@const Icon = customIcon}
-		<Icon size={iconSize ?? (size === 'sm' ? 10 : size === 'lg' ? 16 : 16)} />
+		<span class="{childStackClass} inline-flex shrink-0">
+			<Icon size={iconSize ?? (size === 'sm' ? 10 : size === 'lg' ? 16 : 16)} />
+		</span>
 	{/if}
 	{#if customIconPosition === 'left'}
-		<span>{text}</span>
+		<span class={childStackClass}>{text}</span>
 	{/if}
 </button>

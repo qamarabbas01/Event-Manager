@@ -45,19 +45,17 @@
 					: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200'
 	);
 
+	const viewDetailsLabel = $derived(`${eventCardUi.viewDetailsButtonText} — ${event.title}`);
+
 	function handleViewDetails() {
 		onViewDetails?.(event.id);
 	}
 </script>
 
 <article
-	class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600"
+	class="group relative bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600"
 >
-	<button
-		type="button"
-		class="relative aspect-16/10 shrink-0 w-full cursor-pointer overflow-hidden text-left"
-		onclick={handleViewDetails}
-	>
+	<div class="relative aspect-16/10 shrink-0 overflow-hidden">
 		<img
 			src={event.image}
 			alt=""
@@ -74,16 +72,15 @@
 				{statusLabel}
 			</span>
 		</div>
-	</button>
+	</div>
 
 	<div class="p-4 flex flex-col flex-1">
-		<button type="button" class="text-left cursor-pointer" onclick={handleViewDetails}>
-			<h2
-				class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
-			>
-				{event.title}
-			</h2>
-		</button>
+		<h2
+			id="event-title-{event.id}"
+			class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+		>
+			{event.title}
+		</h2>
 
 		<div class="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
 			<div class="flex items-center gap-2">
@@ -121,6 +118,7 @@
 					aria-valuenow={availability}
 					aria-valuemin={0}
 					aria-valuemax={100}
+					aria-labelledby="event-title-{event.id}"
 				>
 					<div class="h-full {barColor} rounded-full transition-all" style="width: {availability}%"></div>
 				</div>
@@ -132,7 +130,9 @@
 				variant="primary-blue"
 				size="sm"
 				rounded="lg"
-				class="w-full"
+				class="w-full after:absolute after:inset-0 after:z-[1] after:content-['']"
+				stretchedLink
+				ariaLabel={viewDetailsLabel}
 				customIcon={ArrowRight}
 				customIconPosition="right"
 				iconSize={16}
