@@ -130,7 +130,7 @@
 				variant="primary-blue"
 				size="sm"
 				rounded="lg"
-				class="w-full after:absolute after:inset-0 after:z-[1] after:content-['']"
+				class="w-full after:absolute after:inset-0 after:z-1 after:content-['']"
 				stretchedLink
 				ariaLabel={viewDetailsLabel}
 				customIcon={ArrowRight}
