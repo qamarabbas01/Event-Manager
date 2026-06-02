@@ -22,7 +22,10 @@ const DEFAULT_DURATION_MS = 3200;
 const { subscribe, update } = writable<Toast[]>([]);
 
 function addToast(input: ToastInput): string {
-	const id = crypto.randomUUID();
+	const id =
+		typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+			? crypto.randomUUID()
+			: Math.random().toString(36).substring(2, 15);
 	const toast: Toast = {
 		id,
 		title: input.title,

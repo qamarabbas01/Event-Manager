@@ -26,6 +26,7 @@
 	let currentPage = $state(1);
 	let isLoading = $state(true);
 	let hasLoadError = $state(false);
+	let loadTimer: number | undefined;
 
 	function normalizeQuery(value: string): string {
 		return value.trim().toLowerCase();
@@ -207,15 +208,22 @@
 	}
 
 	function initializeEventsPage() {
+		if (loadTimer !== undefined) window.clearTimeout(loadTimer);
 		isLoading = true;
 		hasLoadError = false;
-		window.setTimeout(() => {
+		loadTimer = window.setTimeout(() => {
 			isLoading = false;
 		}, 250);
 	}
 
 	$effect(() => {
 		initializeEventsPage();
+		return () => {
+			if (loadTimer !== undefined) {
+				window.clearTimeout(loadTimer);
+				loadTimer = undefined;
+			}
+		};
 	});
 </script>
 

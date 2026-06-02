@@ -191,6 +191,7 @@
 							tabindex={onRowClick ? 0 : undefined}
 							onclick={() => onRowClick?.(row)}
 							onkeydown={(e) => {
+								if (e.target !== e.currentTarget) return;
 								if (e.key === 'Enter' || e.key === ' ') {
 									e.preventDefault();
 									onRowClick?.(row);
@@ -272,6 +273,7 @@
 									onclick={() => onRowClick?.(row)}
 									onkeydown={(e) => {
 										if (!onRowClick) return;
+										if (e.target !== e.currentTarget) return;
 										if (e.key === 'Enter' || e.key === ' ') {
 											e.preventDefault();
 											onRowClick(row);

@@ -43,7 +43,7 @@
 	let email = $state('');
 	let roleDisplay = $state<(typeof roleDisplayOptions)[number]>(addUserModal.roleUser);
 	let error = $state<string | null>(null);
-	const canSubmit = $derived(name.trim() !== '' && email.trim() !== '');
+	const canSubmit = $derived(name.trim() !== '' && email.trim() !== '' && email.includes('@'));
 
 	const isEditMode = $derived(open && userToEdit != null);
 	const modalTitle = $derived(isEditMode ? addUserModal.editUserTitle : addUserModal.title);

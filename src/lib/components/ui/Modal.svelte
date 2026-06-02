@@ -20,7 +20,7 @@
 	}: Props = $props();
 
 	let dialogRef: HTMLDivElement | undefined = $state();
-	let previouslyFocused: HTMLElement | null = $state(null);
+	let previouslyFocused: HTMLElement | null = null;
 
 	function close() {
 		open = false;

@@ -10,7 +10,7 @@
 </script>
 
 <div
-	class="pointer-events-none fixed inset-x-0 top-4 z-80 mx-auto flex w-full max-w-md flex-col gap-2 px-4"
+	class="pointer-events-none fixed inset-x-0 top-4 z-100 mx-auto flex w-full max-w-md flex-col gap-2 px-4"
 	aria-live="polite"
 	aria-atomic="true"
 >

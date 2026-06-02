@@ -28,11 +28,13 @@
 	let eventToEdit = $state<Event | null>(null);
 	let isLoading = $state(true);
 	let hasLoadError = $state(false);
+	let loadTimer: number | undefined;
 
 	function initializeDashboardData() {
+		if (loadTimer !== undefined) window.clearTimeout(loadTimer);
 		isLoading = true;
 		hasLoadError = false;
-		window.setTimeout(() => {
+		loadTimer = window.setTimeout(() => {
 			isLoading = false;
 		}, 250);
 	}
@@ -149,6 +151,12 @@
 
 	$effect(() => {
 		initializeDashboardData();
+		return () => {
+			if (loadTimer !== undefined) {
+				window.clearTimeout(loadTimer);
+				loadTimer = undefined;
+			}
+		};
 	});
 </script>
 
