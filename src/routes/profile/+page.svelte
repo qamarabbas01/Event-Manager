@@ -4,6 +4,7 @@
 	import AddUserModal from '$lib/components/dashboard/AddUserModal.svelte';
 	import { auth } from '$lib/stores/auth';
 	import { userStore } from '$lib/stores/user';
+	import { toastStore } from '$lib/stores/toast';
 	import { profilePage, addUserModal } from '$lib/data/dashboard';
 	import { Upload, Calendar, UserPlus } from 'lucide-svelte';
 	import type { UserRole } from '$lib/data/dashboard';
@@ -43,6 +44,7 @@
 	const hasCustomAvatar = $derived(
 		Boolean(profilePicPreview?.startsWith('blob:') || profilePicPreview?.startsWith('data:'))
 	);
+	const canSaveProfile = $derived(name.trim() !== '' && email.trim() !== '' && email.includes('@'));
 
 	function syncFormFromStore() {
 		name = $userStore.name;
@@ -113,6 +115,11 @@
 	}
 
 	function saveProfile() {
+		if (!canSaveProfile) {
+			toastStore.error('Profile not saved', 'Enter a valid name and email.');
+			return;
+		}
+
 		userStore.updateProfile({
 			name: name.trim(),
 			email: email.trim(),
@@ -135,6 +142,7 @@
 		profilePicFile = null;
 		coverPicFile = null;
 		isEditing = false;
+		toastStore.success('Profile updated', 'Your account changes were saved.');
 	}
 
 	$effect(() => {
@@ -148,16 +156,20 @@
 
 	function handleAddUser(payload: { name: string; email: string; role: UserRole }) {
 		addedUsers = [...addedUsers, { id: crypto.randomUUID(), ...payload }];
+		toastStore.success('Team member added', `${payload.name} joined your team list.`);
 	}
 
 	function handleEditUser(id: string, payload: { name: string; email: string; role: UserRole }) {
 		addedUsers = addedUsers.map((u) => (u.id === id ? { ...u, ...payload } : u));
 		userToEdit = null;
+		toastStore.success('Team member updated', `${payload.name}'s details were updated.`);
 	}
 
 	function handleDeleteUser(id: string) {
+		const existing = addedUsers.find((u) => u.id === id);
 		addedUsers = addedUsers.filter((u) => u.id !== id);
 		if (userToEdit?.id === id) userToEdit = null;
+		if (existing) toastStore.info('Team member removed', `${existing.name} was removed.`);
 	}
 
 	function openEditModal(user: { id: string; name: string; email: string; role: UserRole }) {
@@ -396,6 +408,7 @@
 								variant="primary-blue"
 								rounded="lg"
 								onClick={saveProfile}
+								disabled={!canSaveProfile}
 							/>
 							<Button
 								text={profilePage.account.cancelButtonText}

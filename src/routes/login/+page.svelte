@@ -8,6 +8,7 @@
 	import { theme } from '$lib/stores/theme';
 	import { login } from '$lib/stores/auth';
 	import { userStore } from '$lib/stores/user';
+	import { toastStore } from '$lib/stores/toast';
 
 	function toggleTheme() {
 		theme.set($theme === 'dark' ? 'light' : 'dark');
@@ -18,6 +19,7 @@
 	let showPassword = $state(false);
 	let isSubmitting = $state(false);
 	let error = $state<string | null>(null);
+	const canSubmit = $derived(email.trim() !== '' && password.trim() !== '');
 
 	function normalizeEmail(value: string): string {
 		return value.trim().toLowerCase();
@@ -44,6 +46,7 @@
 		const validationError = validateCredentials(cleanEmail, cleanPassword);
 		if (validationError) {
 			error = validationError;
+			toastStore.error('Login failed', validationError);
 			isSubmitting = false;
 			return;
 		}
@@ -51,6 +54,7 @@
 		const user = buildDemoUser(cleanEmail);
 		login(user);
 		userStore.syncFromAuth(user);
+		toastStore.success('Welcome back', 'Signed in successfully.');
 		goto(resolve('/dashboard/overview'));
 	}
 </script>
@@ -171,7 +175,7 @@
 					rounded="lg"
 					size="lg"
 					class="w-full"
-					disabled={isSubmitting}
+					disabled={isSubmitting || !canSubmit}
 				/>
 			</form>
 

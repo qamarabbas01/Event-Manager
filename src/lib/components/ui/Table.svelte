@@ -191,7 +191,10 @@
 							tabindex={onRowClick ? 0 : undefined}
 							onclick={() => onRowClick?.(row)}
 							onkeydown={(e) => {
-								if (e.key === 'Enter' || e.key === ' ') onRowClick?.(row);
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									onRowClick?.(row);
+								}
 							}}
 						>
 							<div class="flex items-start justify-between gap-3">
@@ -263,8 +266,19 @@
 						<tbody>
 							{#each paginatedData as row (row.id)}
 								<tr
-									class="border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+									class="border-b border-gray-200 dark:border-gray-700 {onRowClick
+										? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50'
+										: ''} transition-colors"
 									onclick={() => onRowClick?.(row)}
+									onkeydown={(e) => {
+										if (!onRowClick) return;
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											onRowClick(row);
+										}
+									}}
+									tabindex={onRowClick ? 0 : undefined}
+									role={onRowClick ? 'button' : undefined}
 								>
 									{#each sortedColumns as col (col.key)}
 										<td class="px-4 py-4 text-gray-900 dark:text-gray-100 {col.class ?? ''}">

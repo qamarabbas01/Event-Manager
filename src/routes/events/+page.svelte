@@ -5,6 +5,8 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import EventCard from '$lib/components/events/EventCard.svelte';
 	import Pagination from '$lib/components/ui/Pagination.svelte';
+	import LoadingState from '$lib/components/ui/LoadingState.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
 	import { Search, ListFilter, ArrowLeft, CalendarDays, Sparkles, Tag, X } from 'lucide-svelte';
 	import {
 		browseEvents,
@@ -22,6 +24,8 @@
 
 	const pageSize = 12;
 	let currentPage = $state(1);
+	let isLoading = $state(true);
+	let hasLoadError = $state(false);
 
 	function normalizeQuery(value: string): string {
 		return value.trim().toLowerCase();
@@ -201,6 +205,18 @@
 	function handlePageChange(page: number) {
 		currentPage = page;
 	}
+
+	function initializeEventsPage() {
+		isLoading = true;
+		hasLoadError = false;
+		window.setTimeout(() => {
+			isLoading = false;
+		}, 250);
+	}
+
+	$effect(() => {
+		initializeEventsPage();
+	});
 </script>
 
 <div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
@@ -419,7 +435,15 @@
 			</div>
 		{/if}
 
-		{#if filteredEvents.length === 0}
+		{#if isLoading}
+			<LoadingState label="Loading events..." />
+		{:else if hasLoadError}
+			<ErrorState
+				title="Could not load events"
+				description="Please retry to load event listings."
+				onRetry={initializeEventsPage}
+			/>
+		{:else if filteredEvents.length === 0}
 			<div
 				class="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 py-16 px-6 text-center"
 			>

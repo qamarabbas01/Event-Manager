@@ -42,6 +42,8 @@
 	let name = $state('');
 	let email = $state('');
 	let roleDisplay = $state<(typeof roleDisplayOptions)[number]>(addUserModal.roleUser);
+	let error = $state<string | null>(null);
+	const canSubmit = $derived(name.trim() !== '' && email.trim() !== '');
 
 	const isEditMode = $derived(open && userToEdit != null);
 	const modalTitle = $derived(isEditMode ? addUserModal.editUserTitle : addUserModal.title);
@@ -53,6 +55,7 @@
 		name = '';
 		email = '';
 		roleDisplay = addUserModal.roleUser;
+		error = null;
 	}
 
 	function handleClose() {
@@ -72,9 +75,17 @@
 	});
 
 	function handleSubmit() {
+		error = null;
 		const trimmedName = name.trim();
 		const trimmedEmail = email.trim();
-		if (!trimmedName || !trimmedEmail) return;
+		if (!trimmedName || !trimmedEmail) {
+			error = 'Name and email are required.';
+			return;
+		}
+		if (!trimmedEmail.includes('@')) {
+			error = 'Enter a valid email address.';
+			return;
+		}
 		const role = roleValueMap[roleDisplay] ?? 'user';
 		const payload: AddUserPayload = { name: trimmedName, email: trimmedEmail, role };
 		if (isEditMode && userToEdit) {
@@ -95,6 +106,14 @@
 		}}
 		class="space-y-4"
 	>
+		{#if error}
+			<p
+				class="text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-2.5"
+				role="alert"
+			>
+				{error}
+			</p>
+		{/if}
 		<div>
 			<label
 				for="add-user-name"
@@ -146,7 +165,7 @@
 				onClick={handleClose}
 				type="button"
 			/>
-			<Button text={submitButtonText} variant="default" size="default" type="submit" />
+			<Button text={submitButtonText} variant="default" size="default" type="submit" disabled={!canSubmit} />
 		</div>
 	</form>
 </Modal>
