@@ -5,6 +5,7 @@
 	import { resolve } from '$app/paths';
 	import SideBar from '$lib/components/SideBar.svelte';
 	import { auth } from '$lib/stores/auth';
+	import ToastViewport from '$lib/components/ui/ToastViewport.svelte';
 	import '$lib/stores/theme';
 	import './app.css';
 
@@ -57,3 +58,5 @@
 {:else}
 	{@render children()}
 {/if}
+
+<ToastViewport />

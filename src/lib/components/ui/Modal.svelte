@@ -20,6 +20,7 @@
 	}: Props = $props();
 
 	let dialogRef: HTMLDivElement | undefined = $state();
+	let previouslyFocused: HTMLElement | null = null;
 
 	function close() {
 		open = false;
@@ -36,12 +37,41 @@
 		if (e.key === 'Escape') {
 			close();
 		}
+
+		if (e.key !== 'Tab' || !dialogRef) return;
+		const focusable = Array.from(
+			dialogRef.querySelectorAll<HTMLElement>(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			)
+		).filter((el) => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+
+		if (focusable.length === 0) return;
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+
+		if (e.shiftKey && document.activeElement === first) {
+			e.preventDefault();
+			last.focus();
+			return;
+		}
+
+		if (!e.shiftKey && document.activeElement === last) {
+			e.preventDefault();
+			first.focus();
+		}
 	}
 
 	$effect(() => {
 		if (!open) return;
+		previouslyFocused = document.activeElement as HTMLElement | null;
 		const handler = (e: KeyboardEvent) => handleKeydown(e);
 		document.addEventListener('keydown', handler);
+		queueMicrotask(() => {
+			const firstFocusable = dialogRef?.querySelector<HTMLElement>(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			(firstFocusable ?? dialogRef)?.focus();
+		});
 		return () => document.removeEventListener('keydown', handler);
 	});
 
@@ -50,6 +80,7 @@
 			document.body.style.overflow = 'hidden';
 		} else {
 			document.body.style.overflow = '';
+			previouslyFocused?.focus();
 		}
 		return () => {
 			document.body.style.overflow = '';

@@ -9,6 +9,7 @@
 	import { theme } from '$lib/stores/theme';
 	import { login } from '$lib/stores/auth';
 	import { userStore } from '$lib/stores/user';
+	import { toastStore } from '$lib/stores/toast';
 
 	function toggleTheme() {
 		theme.set($theme === 'dark' ? 'light' : 'dark');
@@ -21,6 +22,13 @@
 	let showPassword = $state(false);
 	let isSubmitting = $state(false);
 	let error = $state<string | null>(null);
+	const canSubmit = $derived(
+		name.trim() !== '' &&
+			email.trim() !== '' &&
+			password.trim() !== '' &&
+			confirmPassword.trim() !== '' &&
+			password.trim().length >= 6
+	);
 
 	function normalizeEmail(value: string): string {
 		return value.trim().toLowerCase();
@@ -53,6 +61,7 @@
 		const validationError = validateRegistrationInput(input);
 		if (validationError) {
 			error = validationError;
+			toastStore.error('Could not create account', validationError);
 			isSubmitting = false;
 			return;
 		}
@@ -60,6 +69,7 @@
 		const user = { name: input.cleanName, email: input.cleanEmail };
 		login(user);
 		userStore.syncFromAuth(user);
+		toastStore.success('Account created', 'You are now signed in.');
 		goto(resolve('/dashboard/overview'));
 	}
 </script>
@@ -218,7 +228,7 @@
 					rounded="lg"
 					size="lg"
 					class="w-full"
-					disabled={isSubmitting}
+					disabled={isSubmitting || !canSubmit}
 				/>
 			</form>
 

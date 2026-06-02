@@ -5,6 +5,10 @@
 	import Table from '$lib/components/ui/Table.svelte';
 	import AddEventModal from '$lib/components/dashboard/AddEventModal.svelte';
 	import StatCard from '$lib/components/dashboard/StatCard.svelte';
+	import LoadingState from '$lib/components/ui/LoadingState.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import ErrorState from '$lib/components/ui/ErrorState.svelte';
+	import { toastStore } from '$lib/stores/toast';
 	import {
 		initialEvents,
 		tableColumns,
@@ -22,6 +26,18 @@
 	let events = $state<Event[]>([...initialEvents]);
 	let addEventModalOpen = $state(false);
 	let eventToEdit = $state<Event | null>(null);
+	let isLoading = $state(true);
+	let hasLoadError = $state(false);
+	let loadTimer: number | undefined;
+
+	function initializeDashboardData() {
+		if (loadTimer !== undefined) window.clearTimeout(loadTimer);
+		isLoading = true;
+		hasLoadError = false;
+		loadTimer = window.setTimeout(() => {
+			isLoading = false;
+		}, 250);
+	}
 
 	function handleAddEvent() {
 		eventToEdit = null;
@@ -45,6 +61,7 @@
 				status: payload.status
 			}
 		];
+		toastStore.success('Event added', `"${payload.title}" has been created.`);
 	}
 
 	function handleEditEvent(
@@ -67,6 +84,7 @@
 					}
 				: e
 		);
+		toastStore.success('Event updated', `"${payload.title}" has been saved.`);
 	}
 
 	function handleEdit(id: number) {
@@ -78,7 +96,9 @@
 	}
 
 	function handleDelete(id: number) {
+		const existing = events.find((e) => e.id === id);
 		events = events.filter((e) => e.id !== id);
+		if (existing) toastStore.info('Event deleted', `"${existing.title}" was removed.`);
 	}
 
 	function handleTableAction(action: TableAction, row: DashboardTableRow) {
@@ -128,6 +148,16 @@
 				return 'bg-gray-100 text-gray-800';
 		}
 	}
+
+	$effect(() => {
+		initializeDashboardData();
+		return () => {
+			if (loadTimer !== undefined) {
+				window.clearTimeout(loadTimer);
+				loadTimer = undefined;
+			}
+		};
+	});
 </script>
 
 <div
@@ -197,18 +227,33 @@
 
 						<a href={resolve('/events')} class="text-sm underline"> See Browse Events </a>
 					</div>
-					<Table
-						data={tableData}
-						columns={tableColumns}
-						emptyStateText={eventsDashboardPage.emptyStateText}
-						searchPlaceholder={tableUi.searchPlaceholder}
-						onAction={handleTableAction}
-						filterableColumns={[
-							{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
-							{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
-						]}
-						clearFiltersText={tableUi.clearFiltersText}
-					/>
+					{#if isLoading}
+						<LoadingState label="Loading dashboard events..." />
+					{:else if hasLoadError}
+						<ErrorState
+							title="Could not load dashboard events"
+							description="Please try reloading this section."
+							onRetry={initializeDashboardData}
+						/>
+					{:else if tableData.length === 0}
+						<EmptyState
+							title="No events yet"
+							description="Add your first event to start tracking activity."
+						/>
+					{:else}
+						<Table
+							data={tableData}
+							columns={tableColumns}
+							emptyStateText={eventsDashboardPage.emptyStateText}
+							searchPlaceholder={tableUi.searchPlaceholder}
+							onAction={handleTableAction}
+							filterableColumns={[
+								{ key: 'category', options: categories, label: tableUi.filterCategoryLabel },
+								{ key: 'status', options: statuses, label: tableUi.filterStatusLabel }
+							]}
+							clearFiltersText={tableUi.clearFiltersText}
+						/>
+					{/if}
 				</div>
 			</div>
 

@@ -30,6 +30,8 @@
 	let date = $state('');
 	let category = $state<Category>('Work');
 	let status = $state<Status>('Pending');
+	let error = $state<string | null>(null);
+	const canSubmit = $derived(title.trim() !== '');
 
 	const isEditMode = $derived(open && eventToEdit != null);
 	const modalTitle = $derived(
@@ -44,6 +46,7 @@
 		date = '';
 		category = 'Work';
 		status = 'Pending';
+		error = null;
 	}
 
 	function handleClose() {
@@ -64,8 +67,12 @@
 	});
 
 	function handleSubmit() {
+		error = null;
 		const trimmedTitle = title.trim();
-		if (!trimmedTitle) return;
+		if (!trimmedTitle) {
+			error = 'Event title is required.';
+			return;
+		}
 		const dateStr = date || new Date().toISOString().slice(0, 10);
 		const payload: EventPayload = {
 			title: trimmedTitle,
@@ -91,6 +98,14 @@
 		}}
 		class="space-y-4"
 	>
+		{#if error}
+			<p
+				class="text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-2.5"
+				role="alert"
+			>
+				{error}
+			</p>
+		{/if}
 		<div>
 			<label
 				for="add-event-title"
@@ -153,7 +168,7 @@
 				onClick={handleClose}
 				type="button"
 			/>
-			<Button text={submitButtonText} variant="default" size="default" type="submit" />
+			<Button text={submitButtonText} variant="default" size="default" type="submit" disabled={!canSubmit} />
 		</div>
 	</form>
 </Modal>
