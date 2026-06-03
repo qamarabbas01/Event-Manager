@@ -5,6 +5,7 @@
 	import { resolve } from '$app/paths';
 	import SideBar from '$lib/components/SideBar.svelte';
 	import { auth } from '$lib/stores/auth';
+	import { sidebarCollapsed } from '$lib/stores/sidebar';
 	import ToastViewport from '$lib/components/ui/ToastViewport.svelte';
 	import '$lib/stores/theme';
 	import './app.css';
@@ -51,7 +52,11 @@
 		class="flex min-h-screen bg-white dark:bg-[#1D232A] text-gray-900 dark:text-gray-100 transition-colors"
 	>
 		<SideBar />
-		<main class="flex-1 min-w-0 md:ml-64">
+		<main
+			class="flex-1 min-w-0 max-md:pt-14 max-md:pl-2 transition-[margin] duration-300 ease-in-out {$sidebarCollapsed
+				? 'md:ml-18'
+				: 'md:ml-64'}"
+		>
 			{@render children()}
 		</main>
 	</div>

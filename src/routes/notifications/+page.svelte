@@ -2,7 +2,7 @@
 	import NotificationItem from '$lib/components/ui/NotificationItem.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import MetricCard from '$lib/components/ui/MetricCard.svelte';
-	import { CircleCheck, Info, TriangleAlert, Bell, Calendar } from 'lucide-svelte';
+	import { CircleCheck, Info, TriangleAlert, Bell, Calendar, Check } from 'lucide-svelte';
 	import {
 		notificationsPage,
 		notificationsInboxData,
@@ -79,10 +79,12 @@
 				<Button
 					text={notificationsPage.markAllReadText}
 					variant="default"
-					rounded="lg"
+					rounded="full"
 					size="sm"
 					class="shrink-0 self-start sm:self-center"
 					onClick={markAllRead}
+					customIcon={Check}
+					iconSize={15}
 				/>
 			{/if}
 		</header>

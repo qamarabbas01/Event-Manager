@@ -238,6 +238,9 @@ export interface NavItemData {
 export { appTitle } from './app';
 export const logoutLabel = 'Logout';
 export const toggleMenuAriaLabel = 'Toggle menu';
+export const collapseSidebarLabel = 'Collapse sidebar';
+export const expandSidebarLabel = 'Expand sidebar';
+export const sidebarCollapseAriaLabel = 'Collapse or expand sidebar';
 
 export const themeLightLabel = 'Light';
 export const themeDarkLabel = 'Dark';
