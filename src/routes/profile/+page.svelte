@@ -249,7 +249,7 @@
 			</div>
 
 			<div
-				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-2 bg-white dark:bg-[#212932] border-t border-gray-100 dark:border-gray-700/40"
+				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-2 bg-white dark:bg-[#212932]"
 			>
 				<div
 					class="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-4 sm:gap-5"

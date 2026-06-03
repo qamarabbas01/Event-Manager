@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -35,7 +36,8 @@
 		sidebarMobileOpen,
 		toggleSidebarCollapsed,
 		toggleSidebarMobile,
-		closeSidebarMobile
+		closeSidebarMobile,
+		initSidebar
 	} from '$lib/stores/sidebar';
 	import { logout } from '$lib/stores/auth';
 	import type { IconComponent } from '$lib/types/icons';
@@ -57,6 +59,10 @@
 
 	const collapsed = $derived($sidebarCollapsed);
 	const mobileOpen = $derived($sidebarMobileOpen);
+
+	onMount(() => {
+		return initSidebar();
+	});
 
 	type NavHref = (typeof navItemsData)[number]['href'];
 
@@ -222,9 +228,10 @@
 	{#if mobileOpen}
 		<button
 			type="button"
+			tabindex="-1"
 			onclick={closeSidebarMobile}
 			class="fixed inset-0 z-30 cursor-default bg-black/50 md:hidden"
-			aria-label={toggleMenuAriaLabel}
+			aria-hidden="true"
 		></button>
 	{/if}
 </div>
