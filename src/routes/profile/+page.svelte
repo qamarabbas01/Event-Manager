@@ -6,7 +6,7 @@
 	import { userStore } from '$lib/stores/user';
 	import { toastStore } from '$lib/stores/toast';
 	import { profilePage, addUserModal } from '$lib/data/dashboard';
-	import { Upload, Calendar, UserPlus } from 'lucide-svelte';
+	import { Upload, Calendar, UserPlus, Pencil, Check, X } from 'lucide-svelte';
 	import type { UserRole } from '$lib/data/dashboard';
 
 	let name = $state('');
@@ -196,10 +196,12 @@
 				<Button
 					text={profilePage.account.editButtonText}
 					variant="primary-blue"
-					rounded="lg"
+					rounded="full"
 					size="sm"
 					class="shrink-0 self-start sm:self-center"
 					onClick={startEditing}
+					customIcon={Pencil}
+					iconSize={13}
 				/>
 			{/if}
 		</header>
@@ -232,7 +234,7 @@
 					></div>
 				{/if}
 				<div
-					class="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent"
+					class="absolute inset-0 bg-linear-to-t from-black/35 via-black/5 to-transparent dark:from-black/50 dark:via-black/10"
 					aria-hidden="true"
 				></div>
 				{#if isEditing}
@@ -247,7 +249,7 @@
 			</div>
 
 			<div
-				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-0 bg-linear-to-b from-[#1e2430] via-[#212932] to-[#212932] dark:from-[#151a22] dark:via-[#212932] dark:to-[#212932] sm:bg-transparent"
+				class="relative px-5 sm:px-8 pb-6 sm:pb-8 -mt-14 sm:-mt-16 pt-16 sm:pt-2 bg-white dark:bg-[#212932]"
 			>
 				<div
 					class="flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-4 sm:gap-5"
@@ -290,32 +292,28 @@
 						{/if}
 					</div>
 
-					<div
-						class="min-w-0 w-full sm:flex-1 pt-0 sm:pt-1 sm:pb-1 text-gray-900 dark:text-white sm:text-white"
-					>
+					<div class="min-w-0 w-full sm:flex-1 pt-0 sm:pt-1 sm:pb-1">
 						<h2
-							class="text-xl sm:text-3xl font-bold truncate text-gray-900 dark:text-white sm:drop-shadow-sm"
+							class="text-xl sm:text-3xl font-bold truncate text-gray-900 dark:text-gray-100"
 						>
 							{displayName}
 						</h2>
-						<p
-							class="mt-1 text-sm sm:text-base truncate text-gray-600 dark:text-gray-300 sm:text-white/85"
-						>
+						<p class="mt-1 text-sm sm:text-base truncate text-gray-600 dark:text-gray-300">
 							{email}
 						</p>
 						{#if phone}
-							<p class="mt-0.5 text-sm truncate text-gray-500 dark:text-gray-400 sm:text-white/70">
+							<p class="mt-0.5 text-sm truncate text-gray-500 dark:text-gray-400">
 								{phone}
 							</p>
 						{/if}
 						<div class="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
 							<span
-								class="inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200 border border-purple-200/60 dark:border-purple-700/50 sm:bg-white/20 sm:text-white sm:border-white/25 sm:backdrop-blur-sm"
+								class="inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-500/20 dark:text-purple-200 border border-purple-200/60 dark:border-purple-700/50"
 							>
 								{roleLabel}
 							</span>
 							<span
-								class="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800/80 px-3 py-1 rounded-full sm:text-white/90 sm:bg-black/20 sm:backdrop-blur-sm"
+								class="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/80 px-3 py-1 rounded-full"
 							>
 								<Calendar size={12} class="shrink-0" aria-hidden="true" />
 								{profilePage.account.memberSinceLabel}
@@ -406,15 +404,17 @@
 							<Button
 								text={profilePage.account.saveButtonText}
 								variant="primary-blue"
-								rounded="lg"
+								rounded="full"
 								onClick={saveProfile}
 								disabled={!canSaveProfile}
+								customIcon={Check}
 							/>
 							<Button
 								text={profilePage.account.cancelButtonText}
 								variant="default"
-								rounded="lg"
+								rounded="full"
 								onClick={cancelEditing}
+								customIcon={X}
 							/>
 						</div>
 					{:else}
