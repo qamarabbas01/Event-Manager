@@ -184,7 +184,7 @@
 </script>
 
 <div class="min-h-screen bg-[#F8FAFC] dark:bg-[#1D232A] p-4 md:p-6 transition-colors">
-	<div class="w-full flex flex-col gap-6">
+	<div class="w-full max-w-5xl mx-auto flex flex-col gap-6">
 		<header
 			class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-2 border-b border-gray-200 dark:border-gray-700/60"
 		>
@@ -553,7 +553,7 @@
 												variant="light-gray"
 												size="sm"
 												rounded="full"
-												class="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+												class="text-red-600! hover:bg-red-50! dark:text-red-400! dark:hover:bg-red-900/20!"
 												onClick={() => handleDeleteUser(user.id)}
 												customIcon={Trash2}
 												iconSize={13}
