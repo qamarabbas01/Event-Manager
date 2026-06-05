@@ -6,7 +6,7 @@
 	import { userStore } from '$lib/stores/user';
 	import { toastStore } from '$lib/stores/toast';
 	import { profilePage, addUserModal } from '$lib/data/dashboard';
-	import { Upload, Calendar, UserPlus, Pencil, Check, X } from 'lucide-svelte';
+	import { Upload, Calendar, UserPlus, Pencil, Check, X, Trash2 } from 'lucide-svelte';
 	import type { UserRole } from '$lib/data/dashboard';
 
 	let name = $state('');
@@ -204,7 +204,7 @@
 					iconSize={13}
 				/>
 			{/if}
-		</header>
+		</header> 
 
 		<div
 			class="bg-white dark:bg-[#212932] rounded-2xl border border-gray-200 dark:border-gray-700/50 shadow-sm overflow-hidden transition-colors"
@@ -218,7 +218,7 @@
 					/>
 				{:else}
 					<div
-						class="absolute inset-0 bg-linear-to-br from-blue-600 via-indigo-600 to-purple-700 dark:from-blue-800 dark:via-indigo-900 dark:to-purple-950"
+						class="absolute inset-0 bg-linear-to-br from-gray-600 via-gray-900 to-gray-950 dark:from-gray-800 dark:via-gray-900 dark:to-gray-950"
 					></div>
 					<div
 						class="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_20%_20%,white_0%,transparent_45%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.35)_0%,transparent_40%)]"
@@ -256,7 +256,7 @@
 				>
 					<div class="relative w-fit shrink-0">
 						<div
-							class="inline-flex rounded-full p-1 bg-linear-to-br from-blue-500 to-purple-600 shadow-lg ring-4 ring-white/90 dark:ring-[#212932]"
+							class="inline-flex rounded-full p-1 bg-linear-to-br from-gray-500 to-gray-900 shadow-lg ring-4 ring-white/90 dark:ring-[#212932]"
 						>
 							{#if hasCustomAvatar && profilePicPreview}
 								<img
@@ -266,14 +266,14 @@
 								/>
 							{:else}
 								<div
-									class="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-linear-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-xl sm:text-3xl font-bold"
+									class="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-linear-to-br from-gray-500 to-gray-900 text-white flex items-center justify-center text-xl sm:text-3xl font-bold"
 								>
 									{getInitials(displayName)}
 								</div>
 							{/if}
 						</div>
 						<span
-							class="absolute bottom-0.5 right-0.5 sm:bottom-1 sm:right-1 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded-full bg-emerald-500 border-2 border-white dark:border-[#212932]"
+							class="absolute bottom-0.5 right-0.5 sm:bottom-2 z-50 sm:right-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded-full bg-emerald-500 border-2 border-white dark:border-[#212932]"
 							title={profilePage.hero.activeStatusTitle}
 							aria-hidden="true"
 						></span>
@@ -481,9 +481,11 @@
 						<Button
 							text={profilePage.admin.addUsersButtonText}
 							variant="primary-blue"
-							rounded="lg"
+							rounded="full"
 							class="w-full"
 							onClick={() => (addUserModalOpen = true)}
+							customIcon={UserPlus}
+							iconSize={15}
 						/>
 
 						{#if addedUsers.length === 0}
@@ -541,16 +543,20 @@
 												text={profilePage.admin.editUserButtonText}
 												variant="light-gray"
 												size="sm"
-												rounded="lg"
+												rounded="full"
 												onClick={() => openEditModal(user)}
+												customIcon={Pencil}
+												iconSize={13}
 											/>
 											<Button
 												text={profilePage.admin.deleteUserButtonText}
 												variant="light-gray"
 												size="sm"
-												rounded="lg"
-												class="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+												rounded="full"
+												class="text-red-600! hover:bg-red-50! dark:text-red-400! dark:hover:bg-red-900/20!"
 												onClick={() => handleDeleteUser(user.id)}
+												customIcon={Trash2}
+												iconSize={13}
 											/>
 										</div>
 									</li>
